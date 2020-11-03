@@ -4,8 +4,8 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
 /**
- * TTAddGroupAction is an action that represents a player adding selected cards
- * to a group
+ * @description TTAddGroupAction is an action that represents a player adding selected cards
+ * adding selected cards to a group
  * @author Nick Ohara
  * @version 11/3/2020
  */

@@ -4,7 +4,7 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
 /**
- * TTDrawAction represents when a card is drawn from either the
+ * @description TTDrawAction represents when a card is drawn from either the
  * discard pile or deck pile
  * @author Nick Ohara
  * @version 11/3/20

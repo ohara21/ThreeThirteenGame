@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
-
 import java.util.ArrayList;
 
-import edu.up.threethirteengame.TTGame.Card;
-
+/**
+ * @description GameBoard class displays the Graphical User Interface on the screen
+ * @author Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
+ * @version 11/3/20
+ */
 public class GameBoard extends SurfaceView {
 
     //instance variables that will define locations on the GameBoard
@@ -146,6 +148,10 @@ public class GameBoard extends SurfaceView {
 
     }
 
+    /**
+     * displays the GUI
+     * @param canvas
+     */
     @Override
     public void onDraw(Canvas canvas){
         //creates all 52 cards and places them into an array list called deck

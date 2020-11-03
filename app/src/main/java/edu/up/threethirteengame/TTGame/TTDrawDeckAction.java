@@ -3,7 +3,9 @@ package edu.up.threethirteengame.TTGame;
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 
 /**
- * TTDrawDeckAction represents drawing a card from the deck
+ * @description TTDrawDeckAction represents drawing a card from the deck
+ * @author Nick Ohara
+ * @version 11/3/20
  */
 public abstract class TTDrawDeckAction extends TTDrawAction {
     /**

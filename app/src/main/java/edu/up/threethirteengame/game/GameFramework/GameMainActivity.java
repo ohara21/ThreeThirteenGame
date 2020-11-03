@@ -26,12 +26,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
+
+import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GameConfig;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GamePlayerType;
 import edu.up.threethirteengame.game.GameFramework.utilities.IPCoder;
 import edu.up.threethirteengame.game.GameFramework.utilities.Logger;
 import edu.up.threethirteengame.game.GameFramework.utilities.MessageBox;
-import edu.up.threethirteengame.game.R;
 
 /**
  * class GameMainActivity

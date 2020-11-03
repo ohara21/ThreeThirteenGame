@@ -1,18 +1,16 @@
 package edu.up.threethirteengame.TTGame;
-/**
- * @description: GameState class contains information about the current state of the game
- * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
- * @version: 10/20/2020
- */
 
 import java.util.ArrayList;
 import java.util.Collections;
+import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
 
-import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
-import edu.up.threethirteengame.game.GameFramework.LocalGame;
-import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GameConfig;
-
-public class TTGameState {
+/**
+ * @description: GameState class contains information about the
+ * current state of the game and all game logic
+ * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version: 10/20/2020
+ */
+public class TTGameState extends GameState {
 
     //creating a deck of 52 cards
     private static char[] suite = new char[] {'c','s','h','d'};

@@ -3,7 +3,7 @@ package edu.up.threethirteengame.TTGame;
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 
 /**
- * TTDrawDiscardAction represents card being drawn from discard pile
+ * @description TTDrawDiscardAction represents card being drawn from discard pile
  * @author Nick Ohara
  * @version 11/3/20
  */

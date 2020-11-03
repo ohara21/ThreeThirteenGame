@@ -4,7 +4,7 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
 /**
- * TTGoOutAction is an action that represents a player attempting to Go Out
+ * @description TTGoOutAction is an action that represents a player attempting to Go Out
  * @author Nick Ohara
  * @version 11/3/20
  */
