@@ -18,14 +18,30 @@ public class TTLocalGame extends LocalGame {
      * Source: https://github.com/cs301up/SlapJack.git
      */
 
+    // the game's state
+    private TTGameState state;
+
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
 
     }
 
+    /**
+     * can this player move
+     * @param playerIdx
+     * 		the player's player-number (ID)
+     * @return
+     */
     @Override
     protected boolean canMove(int playerIdx) {
-        return false;
+        if (playerIdx < 0 || playerIdx > 1) {
+            // if our player-number is out of range, return false
+            return false;
+        }
+        else {
+            // player can move if it's their turn
+            return state.canMove(state);
+        }
     }
 
     @Override
