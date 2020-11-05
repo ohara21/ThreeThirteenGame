@@ -167,15 +167,29 @@ public class Hand {
         return checkHand;
     }
 
+    /**
+     * puts a selected group of cards into the specified user's grouping ArrayList
+     * @param hand
+     */
     public void createGrouping(ArrayList<Card> hand){
+        //TODO: implement some error checks
         groupings.add(hand);
     }
 
-    public void addToGroup(Card add, ArrayList<Card> group){
-        group.add(add);
+    /**
+     * user chooses a card in a group and removes the selected group from
+     * their grouping ArrayList
+     * @param cardToRemove
+     */
+    public void removeGrouping(Card cardToRemove){
+        //TODO: implement error checks and finish method
     }
 
-    public void removeFromGroup(Card remove, ArrayList<Card> group) {
-        group.remove(remove);
-    }
+//    public void addToGroup(Card add, ArrayList<Card> group){
+//        group.add(add);
+//    }
+//
+//    public void removeFromGroup(Card remove, ArrayList<Card> group) {
+//        group.remove(remove);
+//    }
 }

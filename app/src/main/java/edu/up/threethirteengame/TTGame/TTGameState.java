@@ -208,10 +208,10 @@ public class TTGameState extends GameState {
      * @param gameState
      * @return
      */
-    public void playerDrawDiscard(TTGameState gameState){
+    public boolean playerDrawDiscard(TTGameState gameState){
         //checks if there are cards in discard
         if(discardPile.size() == 0){
-            return;
+            return false;
         }
 
         //checks if it is currently the player's turn
@@ -219,7 +219,9 @@ public class TTGameState extends GameState {
         if(canMove(gameState) == true){
             currentPlayerHand().addToHand(discardPile.get(0));
             discardPile.remove(0);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -259,7 +261,7 @@ public class TTGameState extends GameState {
                 numGroups++;
             }
 
-            //checkthat all the groups ar valid
+            //check that all the groups are valid
             if(numValidGroups==numGroups){
                 return true;
             }

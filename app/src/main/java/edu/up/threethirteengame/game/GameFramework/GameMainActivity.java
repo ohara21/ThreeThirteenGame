@@ -27,7 +27,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
-import edu.up.threethirteengame.R;
+import edu.up.threethirteengame.game.R;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GameConfig;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GamePlayerType;
 import edu.up.threethirteengame.game.GameFramework.utilities.IPCoder;
