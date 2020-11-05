@@ -9,7 +9,7 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * the game rules; handles interactions between players.
  *
  * @author Nick Ohara, Shane Matsushima, Lindsey Warren, Adrian Muth
- * @version 11/3/20
+ * @version 11/5/20
  */
 public class TTLocalGame extends LocalGame {
 
@@ -21,10 +21,21 @@ public class TTLocalGame extends LocalGame {
     // the game's state
     private TTGameState state;
 
+    /**
+     * creates a deep copy of current game state and sends it to given player
+     * @param p
+     */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
+        //if there is no state to send, ignore
+        if (state == null) {
+            return;
+        }
 
-    }
+        //create a deep copy of the state to send to the player
+        TTGameState stateForPlayer = new TTGameState(state);
+        p.sendInfo(stateForPlayer);
+    }//sendUpdatedStateTo
 
     /**
      * can this player move
@@ -42,15 +53,68 @@ public class TTLocalGame extends LocalGame {
             // player can move if it's their turn
             return state.canMove(state);
         }
-    }
+    }//canMove
 
+    /**
+     * the game is over when the Round is 11 and both players have thirteen cards in their hand
+     * @return whether the game is over
+     */
     @Override
     protected String checkIfGameOver() {
+        if(state.getRoundNum() == 11){
+            if((state.getNumCards(0) == 13) && (state.getNumCards(1) == 13)){
+                return "The game is over";
+            }
+        }
         return null;
-    }
+    }//checkIfGameOver
 
+    /**
+     * There are several types of actions that could be sent:
+     * discard, draw (from deck or discard pile), go out, and add group
+     * @param action
+     * 			The move that the player has sent to the game
+     * @return
+     */
     @Override
     protected boolean makeMove(GameAction action) {
-        return false;
-    }
-}
+        // check that we have three thirteen action; if so cast it
+        if (!(action instanceof TTMoveAction)) {
+            return false;
+        }
+        TTMoveAction ttma = (TTMoveAction) action;
+
+        // get the index of the player making the move; return false
+        int thisPlayerIdx = getPlayerIdx(ttma.getPlayer());
+
+        if ((thisPlayerIdx < 0) || (thisPlayerIdx > 1)) {
+            // illegal player
+            return false;
+        }
+
+        //game logic for these actions are located in the TTGameState
+        if(ttma.isDiscard()){
+            //TODO: need to finish after player's can select card
+        }
+        else if(ttma.isDrawDiscard()){
+            state.playerDrawDiscard(state);
+        }
+        else if(ttma.isDrawDeck()){
+            state.playerDrawDeck(state);
+        }
+        else if(ttma.isGoOut()){
+            state.playerGoOut(state);
+        }
+        else if(ttma.isAddGroup()){
+            //TODO: need to finish after player's can select multiple cards
+        }
+        else {
+            //unexpected action
+            return false;
+        }
+
+        //the move was successful at this point
+        return true;
+    }//makeMove
+
+}//TTLocalGame

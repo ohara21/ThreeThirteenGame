@@ -17,7 +17,7 @@ public class TTGameState extends GameState {
     private ArrayList<Card> deck = new ArrayList<Card>();
     private ArrayList<Card> discardPile = new ArrayList<Card>();
     private Hand player0Hand  = new Hand();
-    private  Hand player1Hand = new Hand();
+    private Hand player1Hand = new Hand();
     private int roundNum;
     private int player0Score;
     private int player1Score;
@@ -119,6 +119,21 @@ public class TTGameState extends GameState {
 
     public int getWildCard() {
         return wildCard;
+    }
+
+    /**
+     * gets the number of cards in a given player's hand
+     * @param player
+     * @return number of cards in hand
+     */
+    public int getNumCards(int player){
+        if(player == 0){
+            return player0Hand.getSize();
+        }
+        else if(player == 1){
+            return player1Hand.getSize();
+        }
+        return 0;
     }
 
     /**

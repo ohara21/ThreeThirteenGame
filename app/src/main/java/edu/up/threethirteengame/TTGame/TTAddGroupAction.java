@@ -9,9 +9,9 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/3/2020
  */
-public abstract class TTAddGroupAction extends GameAction {
+public abstract class TTAddGroupAction extends TTMoveAction {
     /**
-     * constructor for GameAction
+     * constructor for TTAddGroupAction
      *
      * @param player the player who created the action
      */

@@ -8,9 +8,9 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public abstract class TTGoOutAction extends GameAction {
+public abstract class TTGoOutAction extends TTMoveAction {
     /**
-     * constructor for GameAction
+     * constructor for TTGoOutAction
      *
      * @param player the player who created the action
      */

@@ -7,7 +7,7 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public abstract class TTDrawDiscardAction extends TTDrawAction {
+public abstract class TTDrawDiscardAction extends TTMoveAction {
 
     /**
      * constructor for TTDrawDiscardAction class
