@@ -16,13 +16,14 @@ public class TTGameState extends GameState {
     private static char[] suite = new char[] {'c','s','h','d'};
     private ArrayList<Card> deck = new ArrayList<Card>();
     private ArrayList<Card> discardPile = new ArrayList<Card>();
-    private Hand player0Hand  = new Hand();
-    private Hand player1Hand = new Hand();
+    private Hand player0Hand  = new Hand(); // User Hand
+    private Hand player1Hand = new Hand(); // Computer Hand
     private int roundNum;
     private int player0Score;
     private int player1Score;
     private int isPlayerTurn;
     private int wildCard;
+    private boolean roundOver;
 
     /**
      * Gamestate initialization constructor
@@ -121,6 +122,8 @@ public class TTGameState extends GameState {
         return wildCard;
     }
 
+    public boolean getRoundOver() { return roundOver; }
+
     /**
      * gets the number of cards in a given player's hand
      * @param player
@@ -200,17 +203,16 @@ public class TTGameState extends GameState {
 
     /**
      * determines if the player can draw a card from deck
-     * @param gameState
      * @return
      */
-    public boolean playerDrawDeck(TTGameState gameState){
+    public boolean playerDrawDeck(){
         //checks if there are cards in deck
         if(deck.size() == 0){
             return false;
         }
 
         //removes card from deck and adds it to the current player's hand
-        if(canMove(gameState)){
+        if(canMove()){
             currentPlayerHand().addToHand(deck.get(0));
             deck.remove(0);
             return true;
@@ -220,10 +222,9 @@ public class TTGameState extends GameState {
 
     /**
      *  draw a card from discard pile
-     * @param gameState
      * @return
      */
-    public boolean playerDrawDiscard(TTGameState gameState){
+    public boolean playerDrawDiscard(){
         //checks if there are cards in discard
         if(discardPile.size() == 0){
             return false;
@@ -231,7 +232,7 @@ public class TTGameState extends GameState {
 
         //checks if it is currently the player's turn
         //removes card from discard pile and adds it to the current player's hand
-        if(canMove(gameState) == true){
+        if(canMove() == true){
             currentPlayerHand().addToHand(discardPile.get(0));
             discardPile.remove(0);
             return true;
@@ -241,12 +242,11 @@ public class TTGameState extends GameState {
 
     /**
      * determines if player can discard a card from their current hand after drawing card
-     * @param gameState
      * @return
      */
-    public boolean playerDiscard(TTGameState gameState){
+    public boolean playerDiscard(){
         //checks if it is currently the player's turn
-        if(canMove(gameState) && (currentPlayerHand().getSize() == (this.roundNum+3))){
+        if(canMove() && (currentPlayerHand().getSize() == (this.roundNum+3))){
             return true;
         }
         return false;
@@ -255,17 +255,16 @@ public class TTGameState extends GameState {
     /**
      * determines if player can Go Out
      * Go Out: all of player's cards except one must be in run/set to Go Out
-     * @param gameState
      * @return
      */
-    public boolean playerGoOut(TTGameState gameState){
+    public boolean canPlayerGoOut(){
         //check to make sure there are groups
         if(currentPlayerHand().getGroupings().get(0).isEmpty()){
             return false;
         }
 
         //checks if it is currently the player's turn and can discard
-        if(playerDiscard(gameState)){
+        if(playerDiscard()){
             int numValidGroups = 0;
             int numGroups = 0;
             //iterate through player's groupings to check for valid runs and sets
@@ -285,12 +284,20 @@ public class TTGameState extends GameState {
     }
 
     /**
+     * action method for player to go out
+     */
+    public void goOut(){
+        //TODO: create method for player to discard last card and end round
+        roundOver = true;
+    }
+
+
+    /**
      * determines if the player can take action
-     * @param gameState
      * @return
      */
-    public boolean canMove(TTGameState gameState){
-        if(gameState.getIsPlayerTurn() == this.isPlayerTurn){
+    public boolean canMove(){
+        if(this.getIsPlayerTurn() == this.isPlayerTurn){
             return true;
         }
         return false;
@@ -301,7 +308,6 @@ public class TTGameState extends GameState {
      * Sets a card value to the wild card based on the hand count
      */
     public void setWild(){
-        //TODO: set wild card to round # + 2
         wildCard = roundNum + 2;
     }
 
@@ -350,8 +356,13 @@ public class TTGameState extends GameState {
         if(this.isPlayerTurn == 0){
             return player0Hand;
         }
-        else{
+        else {
             return player1Hand;
         }
     }
+
+    public void RoundOver() {
+    }
+
+
 }
