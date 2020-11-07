@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">ThreeThirteenGame</string>
+    <string name="save_config_as_default" />
+    <string name="start_the_game" />
+    <string name="on_screen_logging" />
+    <string name="debug_logging" />
+    <string name="player_name" />
+    <string name="player_type" />
+    <string name="add_player" />
+    <string name="remove_player" />
+    <string name="guest" />
+    <string name="server_ip_code" />
+    <string name="Config_Error_Msg" />
+    <string name="Game_Creation_Error_Msg" />
+    <string name="Local_Player_Name_Error_Msg" />
+    <string name="Game_Server_Error_Msg" />
+    <string name="Mult_GUI_Tabl_Error_Msg" />
+    <string name="Saved_Config_Msg" />
+    <string name="Saved_Config_Error_Msg" />
+    <string name="Min_Player_Error_Msg" />
+    <string name="Max_Player_Error_Msg" />
+    <string name="dialog_quit_question" />
+    <string name="dialog_quit_label" />
+    <string name="dialog_continue_label" />
+    <string name="local_tab" />
+    <string name="remote_tab" />
+    <string name="settings_tab" />
 </resources>

@@ -27,7 +27,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
-import edu.up.threethirteengame.game.R;
+//import edu.up.threethirteengame.game.R;
+import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GameConfig;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GamePlayerType;
 import edu.up.threethirteengame.game.GameFramework.utilities.IPCoder;
@@ -506,16 +507,17 @@ public abstract class GameMainActivity extends Activity implements
 
     }// initStarterGui
 
-    @Override
+   // Commented out because menu buttons are built into game screen
+    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.game_main, menu);
         return true;
-    }//onCreateOptionsMenu
+    }//onCreateOptionsMenu */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_help:
+            case R.id.helpButton:
                 Logger.log(TAG, "This is the help button!");
                 return true;
             default:
