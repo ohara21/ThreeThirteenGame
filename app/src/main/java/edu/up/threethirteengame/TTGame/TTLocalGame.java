@@ -22,8 +22,16 @@ public class TTLocalGame extends LocalGame {
     private TTGameState state;
 
     /**
+     * Constructor for LocalGame creates a new GameState for the beginning of the game
+     */
+    public TTLocalGame(){
+        state = new TTGameState();
+    }//TTLocalGame
+
+    /**
      * creates a deep copy of current game state and sends it to given player
-     * @param p
+     * @param p the player that the LocalGame needs to send the
+     *          current GameState to
      */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
@@ -41,7 +49,7 @@ public class TTLocalGame extends LocalGame {
      * can this player move
      * @param playerIdx
      * 		the player's player-number (ID)
-     * @return
+     * @return whether the player can move or not
      */
     @Override
     protected boolean canMove(int playerIdx) {
@@ -51,7 +59,7 @@ public class TTLocalGame extends LocalGame {
         }
         else {
             // player can move if it's their turn
-            return state.canMove(state);
+            return state.canMove();
         }
     }//canMove
 
@@ -74,7 +82,7 @@ public class TTLocalGame extends LocalGame {
      * discard, draw (from deck or discard pile), go out, and add group
      * @param action
      * 			The move that the player has sent to the game
-     * @return
+     * @return whether the move was successful or not
      */
     @Override
     protected boolean makeMove(GameAction action) {
@@ -97,13 +105,13 @@ public class TTLocalGame extends LocalGame {
             //TODO: need to finish after player's can select card
         }
         else if(ttma.isDrawDiscard()){
-            state.playerDrawDiscard(state);
+            state.playerDrawDiscard();
         }
         else if(ttma.isDrawDeck()){
-            state.playerDrawDeck(state);
+            state.playerDrawDeck();
         }
         else if(ttma.isGoOut()){
-            state.playerGoOut(state);
+            state.canPlayerGoOut();
         }
         else if(ttma.isAddGroup()){
             //TODO: need to finish after player's can select multiple cards

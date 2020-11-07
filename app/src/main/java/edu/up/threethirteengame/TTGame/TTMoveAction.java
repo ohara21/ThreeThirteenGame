@@ -3,6 +3,11 @@ package edu.up.threethirteengame.TTGame;
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
+/**
+ * @description TTMoveAction represents the moves a player could make in our Three Thirteen game
+ * @author Nick Ohara
+ * @version 11/5/20
+ */
 public class TTMoveAction extends GameAction {
     /**
      * constructor for GameAction
