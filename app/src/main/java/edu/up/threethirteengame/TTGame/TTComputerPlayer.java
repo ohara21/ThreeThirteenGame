@@ -33,7 +33,10 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         else {
-            game.sendAction(new TTDiscardAction(this));
+            //TODO: some method to get a card that is wanted to be discarded
+            //temp discard card
+            Card discard = new Card(1, 'h', 4);
+            game.sendAction(new TTDiscardAction(this, discard));
         }
 
     }
@@ -172,7 +175,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
     }
 
     /**
-     * Finds index of smallest sum in arraylist
+     * Finds index of smallest sum in array list
      * @param sum
      * @return
      */

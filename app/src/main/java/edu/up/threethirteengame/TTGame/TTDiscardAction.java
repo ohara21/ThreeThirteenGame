@@ -9,17 +9,22 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @version 11/3/20
  */
 public class TTDiscardAction extends TTMoveAction{
+
     /**
      * constructor for TTDiscardAction
      *
      * @param player the player who created the action
      */
-    public TTDiscardAction(GamePlayer player) {
-        super(player);
+    public TTDiscardAction(GamePlayer player) { super(player); }
+
+    public TTDiscardAction(GamePlayer player, Card c){
+        super(player, c);
     }
+
 
     /**
      * @return whether this action is a "discard" move
      */
     public boolean isDiscard(){return true;}
+
 }
