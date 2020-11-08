@@ -7,10 +7,10 @@ import java.util.Collections;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
 
 /**
- * @description: GameState class contains information about the
+ * @description GameState class contains information about the
  * current state of the game and all game logic
- * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
- * @version: 10/20/2020
+ * @author Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version 10/20/2020
  */
 public class TTGameState extends GameState {
 
@@ -48,7 +48,7 @@ public class TTGameState extends GameState {
     private int wildCard;
 
     /**
-     * Gamestate initialization constructor
+     * GameState initialization constructor
      */
     public TTGameState() {
         //populate deck with 52 card objects then shuffle deck randomly
