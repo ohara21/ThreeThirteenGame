@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
@@ -35,6 +36,10 @@ public class TTHumanPlayer extends GameHumanPlayer{
     private Button removeGroupButton;
     private Button addGroupButton;
 
+    //text views
+    private TextView roundText;
+    private TextView yourScoreText;
+    private TextView opponScoreText;
     /**
      * constructor
      * @param name: the player's name
@@ -76,12 +81,22 @@ public class TTHumanPlayer extends GameHumanPlayer{
      * updates the display by removing/adding cards, updating the scores and round number
      */
     protected void updateDisplay() {
-
+        //setAsGui(myActivity);
+        roundText.setText("Round " + state.getRoundNum());
+        yourScoreText.setText("You: " + state.getPlayer0Score());
+        opponScoreText.setText("Opponent's score: " + state.getPlayer1Score());
     }
 
+    /**
+     *
+     * @param activity
+     */
     @Override
     public void setAsGui(GameMainActivity activity) {
-
+        myActivity.setContentView(R.layout.activity_main);
+        roundText = (TextView) myActivity.findViewById(R.id.roundText);
+        yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
+        opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
     }
 
 }

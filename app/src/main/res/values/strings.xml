@@ -25,4 +25,7 @@
     <string name="local_tab" />
     <string name="remote_tab" />
     <string name="settings_tab" />
+    <string name="round_num">Round 1</string>
+    <string name="human_score">You: 0</string>
+    <string name="computer_score">Opponent: 0</string>
 </resources>

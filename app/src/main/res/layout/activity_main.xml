@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:background="#AC2300"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Round 1"
+            android:text="@string/round_num"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
@@ -61,7 +61,7 @@
                     android:layout_weight="1"
                     android:background="#AC2300"
                     android:gravity="center_horizontal"
-                    android:text="You: 0"
+                    android:text="@string/human_score"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp" />
 
@@ -75,7 +75,7 @@
                     android:layout_weight="1"
                     android:background="#AC2300"
                     android:gravity="center_horizontal"
-                    android:text="Opponent: 0"
+                    android:text="@string/computer_score"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp" />
             </LinearLayout>
