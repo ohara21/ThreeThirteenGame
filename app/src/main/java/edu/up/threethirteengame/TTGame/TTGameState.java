@@ -241,9 +241,49 @@ public class TTGameState extends GameState {
 
         //the round is over if the previous statements weren't caught
         return true;
-
     }
 
+    /**
+     * if the round is over, the player's scores, if they went out in this round,
+     * and round number need to be updated
+     */
+    public void updateGameState(){
+        //do nothing if the round isn't over
+        if(!isRoundOver()){
+            return;
+        }
+
+        //update round num
+        roundNum++;
+
+        //update player's scores
+        updateScores();
+
+        //it is a new round so reset that player's went out
+        player0GoneOut = false;
+        player1GoneOut = false;
+    }
+
+    /**
+     * updates the players scores
+     * method called when the round is over
+     */
+    public void updateScores(){
+
+        //update player 0's score
+        int roundScore = 0;
+        for(Card c0 : player0Hand.getHand()){
+            roundScore += c0.getCardRank();
+        }
+        player0Score += roundScore;
+
+        //update player 1's score
+        roundScore = 0;
+        for(Card c1 : player1Hand.getHand()){
+            roundScore += c1.getCardRank();
+        }
+        player1Score += roundScore;
+    }
     @Override
     public String toString() {
         String round = "Round number: " + roundNum;
@@ -271,6 +311,11 @@ public class TTGameState extends GameState {
             //have to draw from discard
             playerDrawDiscard();
             return true;
+        }
+
+        //can't draw a card if you already have enough cards in your hand
+        if(currentPlayerHand().getHand().size() != roundNum){
+            return false;
         }
 
         //can go again if the other player has Gone Out, you have NOT GoneOut yet, and
@@ -319,12 +364,39 @@ public class TTGameState extends GameState {
             return true;
         }
 
+        //can't draw a card if you already have enough cards in your hand
+        if(currentPlayerHand().getHand().size() != roundNum){
+            return false;
+        }
+
+        //can go again if the other player has Gone Out, you have NOT GoneOut yet, and
+        //you have already taken your turn
+        if(this.isPlayerTurn == 0){
+            //player 0's turn
+            if(player1GoneOut && !player0GoneOut && (player0TurnsTaken == roundNum)){
+                //removes card from deck and adds it to the current player's hand
+                currentPlayerHand().addToHand(discardPile.get(0));
+                discardPile.remove(0);
+                return true;
+            }
+        }
+        else {
+            //player 1's turn
+            if(player0GoneOut && !player1GoneOut && (player1TurnsTaken == roundNum)){
+                //removes card from deck and adds it to the current player's hand
+                currentPlayerHand().addToHand(discardPile.get(0));
+                discardPile.remove(0);
+                return true;
+            }
+        }
+
+        //the current player is drawing for the first time in this round
         //removes card from discard pile and adds it to the current player's hand
         currentPlayerHand().addToHand(discardPile.get(0));
         discardPile.remove(0);
-        if (this.getIsPlayerTurn() == 0) {
+        if (this.isPlayerTurn == 0) {
             player0TurnsTaken++;
-        } else if (this.getIsPlayerTurn() == 1) {
+        } else if (this.isPlayerTurn == 1) {
             player1TurnsTaken++;
         }
         return true;
@@ -373,10 +445,15 @@ public class TTGameState extends GameState {
             if(card == c){
                 discardPile.add(card);
                 currentPlayerHand().getHand().remove(card);
-
-                //the player's turn always ends when they discard
-                nextTurn();
+                break;
             }
+        }
+        //the player's turn always ends when they discard
+        nextTurn();
+
+        //check if the round is over and update variables if needed
+        if(isRoundOver()){
+            roundNum++;
         }
     }
 
