@@ -95,7 +95,22 @@ public class TTComputerPlayer extends GameComputerPlayer {
         //TODO: check for incomplete run
         //TODO: check for incomplete set
         //TODO: Check for use of wild cards
-        //TODO: return cards not in group
+        if(computerHand.hasWildCard(wildValue)){
+
+        }
+        // return cards not in group
+        for(Card c: computerHand.getHand()){
+            boolean outcast = false;
+            for(int i = 0; i < finalGrouping.size(); i++){
+                if(finalGrouping.get(i).indexOf(c) == -1){
+                    outcast= true;
+                }
+            }
+            if(outcast){
+                needed.add(c);
+            }
+        }
+
         return needed;
     }
 
@@ -170,7 +185,5 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
         return sum.indexOf(smallest);
     }
-
-
 
 }

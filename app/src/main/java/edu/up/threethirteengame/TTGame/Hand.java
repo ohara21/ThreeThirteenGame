@@ -62,6 +62,8 @@ public class Hand {
 
     public int getSize(){return this.userHand.size();}
 
+    public int getGroupingSize(){return this.groupings.size();}
+
     public ArrayList<ArrayList<Card>> getGroupings() {
         return groupings;
     }
@@ -77,6 +79,7 @@ public class Hand {
      * Source:https://stackoverflow.com/questions/9109890/android-java-how-to-sort-a-list-of-objects-by-a-certain-value-within-the-object
      * Solution: used the code
      */
+    //TODO: Failed Unit Test
     public ArrayList<Card> sortByRank(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
@@ -92,6 +95,7 @@ public class Hand {
      * @param hand
      * @return a sorted array list of a given hand
      */
+    //TODO: Should sort by suit and rank
     public ArrayList<Card> sortBySuit(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
@@ -116,6 +120,7 @@ public class Hand {
      * @param set a given set
      * @return whether it's valid or not
      */
+    //TODO: Failed Unit Test
     public boolean checkIfSet(ArrayList<Card> set){
 
         //checks to make sure set isn't empty and is not null pointer
@@ -161,6 +166,20 @@ public class Hand {
             }
         }
         return true;
+    }
+
+    /**
+     * Checks if wild card is in hand
+     * @param wildCard
+     * @return
+     */
+    public boolean hasWildCard(int wildCard){
+        for(Card c: userHand){
+            if(c.getCardRank() == wildCard){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
