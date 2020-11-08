@@ -102,6 +102,7 @@ public class TTLocalGame extends LocalGame {
         //game logic for these actions are located in the TTGameState
         if(ttma.isDiscard()){
             //TODO: need to finish after player's can select card
+            state.discardCard(ttma.getDiscard());
         }
         else if(ttma.isDrawDiscard()){
             state.playerDrawDiscard();

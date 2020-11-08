@@ -9,6 +9,9 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @version 11/5/20
  */
 public class TTMoveAction extends GameAction {
+
+    private Card discard;
+
     /**
      * constructor for GameAction
      *
@@ -17,6 +20,12 @@ public class TTMoveAction extends GameAction {
     public TTMoveAction(GamePlayer player) {
         super(player);
     }
+
+    public TTMoveAction(GamePlayer player, Card card){
+        super(player);
+        discard = card;
+    }
+
 
     /**
      * @return whether this is a "add group" move
@@ -42,4 +51,6 @@ public class TTMoveAction extends GameAction {
      * @return whether this is a "go out" move
      */
     public boolean isGoOut(){return false;}
+
+    public Card getDiscard(){return discard;}
 }

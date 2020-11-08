@@ -96,6 +96,7 @@ public class Hand {
      * @return a sorted array list of a given hand
      */
     //TODO: Should sort by suit and rank
+    //Break apart into groups by suit then sort by rank then combine back into a hand
     public ArrayList<Card> sortBySuit(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
@@ -120,7 +121,6 @@ public class Hand {
      * @param set a given set
      * @return whether it's valid or not
      */
-    //TODO: Failed Unit Test
     public boolean checkIfSet(ArrayList<Card> set){
 
         //checks to make sure set isn't empty and is not null pointer
@@ -143,6 +143,7 @@ public class Hand {
      * @param run a given run
      * @return whether it's valid or not
      */
+    //TODO: Failed Unit Test
     public boolean checkIfRun(ArrayList<Card> run){
         //checks to make sure run isn't empty and is not null pointer
         if(run.isEmpty() || (run == null)){
