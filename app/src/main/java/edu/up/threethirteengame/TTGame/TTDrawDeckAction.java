@@ -7,7 +7,7 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public abstract class TTDrawDeckAction extends TTMoveAction {
+public class TTDrawDeckAction extends TTMoveAction {
     /**
      * constructor for TTDrawDeckAction
      *

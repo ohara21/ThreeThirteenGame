@@ -8,7 +8,7 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public abstract class TTDiscardAction extends TTMoveAction{
+public class TTDiscardAction extends TTMoveAction{
     /**
      * constructor for TTDiscardAction
      *

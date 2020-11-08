@@ -58,6 +58,8 @@ public class Hand {
 
     public ArrayList<Card> getHand(){return this.userHand;}
 
+    public Card getCard(int index) {return this.userHand.get(index);}
+
     public int getSize(){return this.userHand.size();}
 
     public ArrayList<ArrayList<Card>> getGroupings() {
@@ -95,11 +97,19 @@ public class Hand {
             @Override
             public int compare(Card card1, Card card2) {
                 //TODO: this just sorts by suit, doesn't numerically sort in each suit
-                return Integer.valueOf(card1.getCardSuit()).compareTo(Integer.valueOf(card2.getCardSuit()));
+                return Character.valueOf(card1.getCardSuit()).compareTo(Character.valueOf(card2.getCardSuit()));
             }
         });
         return hand;
     }
+
+    /**
+     * Sorts cards by suite and rank
+     */
+    public ArrayList<Card> sortBySuiteAndRank(ArrayList<Card> hand){
+        return hand;
+    }
+
 
     /**
      * checks if a given arrayList of cards is a valid set
