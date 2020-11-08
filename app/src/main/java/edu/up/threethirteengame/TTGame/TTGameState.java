@@ -24,6 +24,9 @@ public class TTGameState extends GameState {
     //the current round number
     private int roundNum;
 
+    //if the current round is over
+    private boolean roundOver;
+
     //player's running score, updated after each round
     private int player0Score;
     private int player1Score;
@@ -42,7 +45,6 @@ public class TTGameState extends GameState {
 
     //the card value of the card that can be used as any card in a group for a given round
     private int wildCard;
-    private boolean roundOver;
 
     /**
      * Gamestate initialization constructor
@@ -62,6 +64,7 @@ public class TTGameState extends GameState {
 
         //sets round number and the wild card
         roundNum = 1;
+        roundOver = false;
         wildCard = roundNum + 2;
 
         //populate player 0 and player 1 hands with three cards from deck
@@ -107,6 +110,7 @@ public class TTGameState extends GameState {
         this.player0GoneOut = orig.player0GoneOut;
         this.player1GoneOut = orig.player1GoneOut;
         this.roundNum = orig.getRoundNum();
+        this.roundOver = orig.getRoundOver();
         this.isPlayerTurn = orig.getIsPlayerTurn();
         this.wildCard = orig.getWildCard();
     }
@@ -217,14 +221,27 @@ public class TTGameState extends GameState {
     }
 
     /**
-     * checks and sets the round number
+     * checks if the round is over
      * the round number is dependent on how many turns each player took
      */
-    public void setRoundNum() {
-        //the round number is increase
-        if(player0Hand.getSize() == player1Hand.getSize()){
+    public boolean isRoundOver() {
 
+        //both players need to have the same amount of turns
+        if(player0TurnsTaken != player1TurnsTaken){
+            return false;
         }
+
+        //the amount of turns should be equal to the current round number
+        if(player0TurnsTaken != roundNum){
+            return false;
+        }
+        else if(player1TurnsTaken != roundNum){
+            return false;
+        }
+
+        //the round is over if the previous statements weren't caught
+        return true;
+
     }
 
     @Override
@@ -250,49 +267,67 @@ public class TTGameState extends GameState {
     public boolean playerDrawDeck(){
         //checks if there are cards in deck
         if(deck.size() == 0){
-            Log.d("playerDrawDeck()","deck is apparently empty");
-            return false;
-        }
-
-        //removes card from deck and adds it to the current player's hand
-        if(canMove()){
-            currentPlayerHand().addToHand(deck.get(0));
-            deck.remove(0);
-            if(this.getIsPlayerTurn() == 0){
-                player0TurnsTaken++;
-            }
-            else if(this.getIsPlayerTurn() == 1){
-                player1TurnsTaken++;
-            }
+            Log.d("playerDrawDeck()","deck is apparently empty, drawing from discard");
+            //have to draw from discard
+            playerDrawDiscard();
             return true;
         }
-        return false;
-    }
+
+        //can go again if the other player has Gone Out, you have NOT GoneOut yet, and
+        //you have already taken your turn
+        if(this.isPlayerTurn == 0){
+            //player 0's turn
+            if(player1GoneOut && !player0GoneOut && (player0TurnsTaken == roundNum)){
+                //removes card from deck and adds it to the current player's hand
+                currentPlayerHand().addToHand(deck.get(0));
+                deck.remove(0);
+                return true;
+            }
+        }
+        else {
+            //player 1's turn
+            if(player0GoneOut && !player1GoneOut && (player1TurnsTaken == roundNum)){
+                //removes card from deck and adds it to the current player's hand
+                currentPlayerHand().addToHand(deck.get(0));
+                deck.remove(0);
+                return true;
+            }
+        }
+
+
+        //removes card from deck and adds it to the current player's hand
+        currentPlayerHand().addToHand(deck.get(0));
+        deck.remove(0);
+        if (this.isPlayerTurn == 0) {
+            player0TurnsTaken++;
+        } else if (this.isPlayerTurn == 1) {
+            player1TurnsTaken++;
+        }
+        return true;
+    }//playerDrawDeck
 
     /**
-     *  action method that determines the player can draw a card from discard pile
+     *  action method that determines if the player can draw a card from discard pile
      * @return
      */
     public boolean playerDrawDiscard(){
         //checks if there are cards in discard
         if(discardPile.size() == 0){
-            return false;
-        }
-
-        //checks if it is currently the player's turn
-        //removes card from discard pile and adds it to the current player's hand
-        if(canMove() == true){
-            currentPlayerHand().addToHand(discardPile.get(0));
-            discardPile.remove(0);
-            if(this.getIsPlayerTurn() == 0){
-                player0TurnsTaken++;
-            }
-            else if(this.getIsPlayerTurn() == 1){
-                player1TurnsTaken++;
-            }
+            Log.d("playerDrawDiscard()","discard is apparently empty, drawing from deck");
+            //have to draw from discard
+            playerDrawDeck();
             return true;
         }
-        return false;
+
+        //removes card from discard pile and adds it to the current player's hand
+        currentPlayerHand().addToHand(discardPile.get(0));
+        discardPile.remove(0);
+        if (this.getIsPlayerTurn() == 0) {
+            player0TurnsTaken++;
+        } else if (this.getIsPlayerTurn() == 1) {
+            player1TurnsTaken++;
+        }
+        return true;
     }
 
     /**
@@ -307,7 +342,7 @@ public class TTGameState extends GameState {
         }
 
         //checks if it is currently the player's turn and they have enough cards
-        if(canMove() && (currentPlayerHand().getSize() == (this.roundNum+3))){
+        if(currentPlayerHand().getSize() == (this.roundNum+3)){
             if(isCardInHand(c)) {
                 return true;
             }
@@ -337,7 +372,7 @@ public class TTGameState extends GameState {
         for(Card c : currentPlayerHand().getHand()){
             if(card == c){
                 discardPile.add(card);
-                currentPlayerHand().getHand().remove(c);
+                currentPlayerHand().getHand().remove(card);
 
                 //the player's turn always ends when they discard
                 nextTurn();
@@ -358,12 +393,12 @@ public class TTGameState extends GameState {
 
         //checks to make sure they haven't already Gone Out this round
         if(isPlayerTurn == 0){
-            if(player0GoneOut == true){
+            if(player0GoneOut){
                 return false;
             }
         }
         else{
-            if(player1GoneOut == true){
+            if(player1GoneOut){
                 return false;
             }
         }
@@ -371,20 +406,21 @@ public class TTGameState extends GameState {
         //the player may be able to Go Out based on groupings
         //there should only be one card that isn't in a group
         Card discardGoOut = null;
-        for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
-            for(Card c : groups){
-                //for each card in each group, check if it is in the user's hand
-                //if it is NOT in their hand, then that COULD be the card that's to be discarded
-                if(!isCardInHand(c)){
-                    if(discardGoOut == null){
-                        //so far, there is only one card to discard
-                        discardGoOut = c;
-                    }
-                    else{
-                        //there is more than one card in the groupings that isn't in the player's hand
-                        //therefore, we don't take any action and they can't really Go Out
-                        return false;
-                    }
+
+        //for each card in the players hand
+        for(Card cHand: currentPlayerHand().getHand()){
+            //check if that card is in a group
+            if(!isCardInGroup(cHand)){
+                //the card in the player's hand isn't in a group
+                //therefore, this card is to be discarded
+                if(discardGoOut == null){
+                    //so far, there is only one card to discard
+                    discardGoOut = cHand;
+                }
+                else{
+                    //there is more than one card in the groupings that isn't in the player's hand
+                    //therefore, we don't take any action and they can't really Go Out
+                    return false;
                 }
             }
         }
@@ -418,18 +454,17 @@ public class TTGameState extends GameState {
             return;
         }
 
-        //the player is able to Go Out at this point
+        //the player IS able to Go Out at this point
         //there should only be one card that isn't in a group
         Card discardGoOut = null;
-        for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
-            for(Card c : groups){
-                //for each card in each group, check if it is in the user's hand
-                //if it is NOT in their hand, then that is the card to be discarded
-                if(!isCardInHand(c)){
-                    if(discardGoOut == null){
-                        discardGoOut = c;
-                    }
-                }
+
+        //for each card in the players hand
+        for(Card cHand: currentPlayerHand().getHand()){
+            //check if that card is in a group
+            if(!isCardInGroup(cHand)){
+                //the card in the player's hand isn't in a group
+                //therefore, this card is to be discarded
+                discardGoOut = cHand;
             }
         }
 
@@ -514,25 +549,12 @@ public class TTGameState extends GameState {
         return false;
     }//isCardInHand
 
-
-    /**
-     * determines if the player can take action
-     * @return
-     */
-    public boolean canMove(){
-        if(this.getIsPlayerTurn() == this.isPlayerTurn){
-            return true;
-        }
-        return false;
-    }
-
-
     /**
      * Sets a card value to the wild card based on the hand count
      */
     public void setWild(){
         wildCard = roundNum + 2;
-    }
+    }//setWild
 
     /**
      * adds card to a users hand
@@ -554,7 +576,7 @@ public class TTGameState extends GameState {
             user.addToHand(inputDeck.get(0));
             inputDeck.remove(0);
         }
-    }
+    }//dealHand
 
     /**
      * returns the current player's hand depending on turn
@@ -567,10 +589,6 @@ public class TTGameState extends GameState {
         else {
             return player1Hand;
         }
-    }
-
-    public void roundOver() {
-    }
-
+    }//currentPlayerHand
 
 }

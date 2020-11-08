@@ -59,7 +59,7 @@ public class TTLocalGame extends LocalGame {
         }
         else {
             // player can move if it's their turn
-            return state.canMove();
+            return state.getIsPlayerTurn() == playerIdx;
         }
     }//canMove
 
@@ -94,7 +94,6 @@ public class TTLocalGame extends LocalGame {
 
         // get the index of the player making the move; return false
         int thisPlayerIdx = getPlayerIdx(ttma.getPlayer());
-
         if ((thisPlayerIdx < 0) || (thisPlayerIdx > 1)) {
             // illegal player
             return false;
@@ -111,7 +110,7 @@ public class TTLocalGame extends LocalGame {
             state.playerDrawDeck();
         }
         else if(ttma.isGoOut()){
-            state.canPlayerGoOut();
+            state.goOut();
         }
         else if(ttma.isAddGroup()){
             //TODO: need to finish after player's can select multiple cards

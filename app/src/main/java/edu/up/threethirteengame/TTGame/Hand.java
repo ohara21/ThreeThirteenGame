@@ -136,7 +136,7 @@ public class Hand {
         //get the first card's suit
         char checkSuit = run.get(0).getCardSuit();
 
-        //iterate through through the run to check if they all have the same suit
+        //iterate through the run to check if they all have the same suit
         for(Card c : run){
             if(c.getCardRank() != checkSuit){
                 return false;
