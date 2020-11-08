@@ -121,6 +121,7 @@ public class Hand {
      * @param set a given set
      * @return whether it's valid or not
      */
+    //TODO: Failed Unit Test
     public boolean checkIfSet(ArrayList<Card> set){
 
         //checks to make sure set isn't empty and is not null pointer

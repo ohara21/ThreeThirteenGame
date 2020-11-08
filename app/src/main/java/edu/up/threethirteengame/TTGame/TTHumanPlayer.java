@@ -79,6 +79,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
 
     /**
      * updates the display by removing/adding cards, updating the scores and round number
+     * setting textViews
      */
     protected void updateDisplay() {
         //setAsGui(myActivity);

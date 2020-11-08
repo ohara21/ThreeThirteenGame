@@ -15,9 +15,30 @@ public class TTGameStateTest {
 
     @Test
     public void isRoundOver() throws Exception{
+        //create GameState, round shouldn't be over from the beginning
         TTGameState ttGameState = new TTGameState();
         assertFalse(ttGameState.isRoundOver());
-    }
+
+        //player 0 goes first
+        assertTrue(ttGameState.playerDrawDeck());
+        assertTrue(ttGameState.playerDiscard(ttGameState.getPlayer0Hand().getHand().get(0)));
+        ttGameState.discardCard(ttGameState.getPlayer0Hand().getHand().get(0));
+        assertEquals(1,ttGameState.getPlayer0TurnsTaken());
+        assertEquals(1,ttGameState.getRoundNum());
+
+        //player 1 goes next
+        assertTrue(ttGameState.playerDrawDiscard());
+        assertTrue(ttGameState.playerDiscard(ttGameState.getPlayer1Hand().getHand().get(0)));
+        ttGameState.discardCard(ttGameState.getPlayer1Hand().getHand().get(0));
+        assertEquals(1,ttGameState.getPlayer1TurnsTaken());
+
+        //at this point the game has determined the round is over and
+        //calls updateGameState, therefore the round number should
+        //now be 2
+        assertEquals(1,ttGameState.getPlayer0TurnsTaken());
+        assertEquals(1,ttGameState.getPlayer1TurnsTaken());
+        assertEquals(2,ttGameState.getRoundNum());
+    }//isRoundOver
 
     @Test
     public void updateGameState() throws Exception {
@@ -58,7 +79,7 @@ public class TTGameStateTest {
         //Player 1 tries to draw but shouldn't be able to until player 0 discards
         assertFalse(ttGameState.playerDrawDeck());
         assertFalse(ttGameState.playerDrawDiscard());
-    }
+    }//playerDrawDeck
 
     @Test
     public void playerDrawDiscard() throws Exception{
@@ -85,8 +106,7 @@ public class TTGameStateTest {
         assertEquals(topRank,p0Hand.get(p0Hand.size()-1).getCardRank());
         assertEquals(topSuit,p0Hand.get(p0Hand.size()-1).getCardSuit());
         assertEquals(p0Hand.get(p0Hand.size()-1), discardTop);
-
-    }
+    }//playerDrawDiscard
 
     @Test
     public void discardCard() throws Exception{
@@ -126,7 +146,7 @@ public class TTGameStateTest {
         assertEquals(discardRank,ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1).getCardRank());
         assertEquals(discardSuit,ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1).getCardSuit());
         assertEquals(discardBot,ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
-    }
+    }//discardCard
 
     @Test
     public void canPlayerGoOut() throws Exception{
@@ -154,6 +174,7 @@ public class TTGameStateTest {
             }
         }
         //unlikely that we won't find 3 Aces in deck, but possible
+        //therefore the test may fail every so often
         for(Card a : p0Hand){
             assertNotEquals(null,a);
             assertEquals(1,a.getCardRank());
@@ -191,7 +212,7 @@ public class TTGameStateTest {
 
         //player should be able to go out
         assertTrue(ttGameState.canPlayerGoOut());
-    }
+    }//canPlayerGoOut
 
     @Test
     public void goOut() throws Exception{
@@ -235,17 +256,6 @@ public class TTGameStateTest {
         assertTrue(ttGameState.isPlayer0GoneOut());
         assertFalse(ttGameState.isPlayer1GoneOut());
         assertEquals(1,ttGameState.getPlayerTurn());
+    }//goOut
 
-
-    }
-
-    @Test
-    public void isCardInGroup() {
-        TTGameState ttGameState = new TTGameState();
-    }
-
-    @Test
-    public void isCardInHand() {
-        TTGameState ttGameState = new TTGameState();
-    }
 }
