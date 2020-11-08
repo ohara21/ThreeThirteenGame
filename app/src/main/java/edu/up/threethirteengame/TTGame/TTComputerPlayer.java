@@ -24,7 +24,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         if(newState.getRoundOver() == true){
-            newState.roundOver();
+            newState.isRoundOver();
         }
 
          else if(newState.canPlayerGoOut()){

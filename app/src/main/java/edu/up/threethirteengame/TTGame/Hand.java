@@ -12,7 +12,7 @@ import java.util.Comparator;
 public class Hand {
     private ArrayList<Card> userHand = null;
     private ArrayList<ArrayList<Card>> groupings = null;
-    private static final int MAX_NUM_GROUPS = 4;
+    public static final int MAX_NUM_GROUPS = 4;
 
     /**
      * Hand Class default constructor
@@ -23,7 +23,7 @@ public class Hand {
     public Hand(){
         this.userHand = new ArrayList<Card>();
         this.groupings = new ArrayList<ArrayList<Card>>(MAX_NUM_GROUPS);
-        for(int i=0; i<MAX_NUM_GROUPS; i++){
+        for(int i=1; i<MAX_NUM_GROUPS; i++){
             groupings.add(new ArrayList<Card>());
         }
     }
@@ -114,7 +114,7 @@ public class Hand {
         }
 
         //the difference between each consecutive card should be 0 in a set
-        int[] checkSet = checkHand(set);
+        int[] checkSet = checkGroup(set);
         for(int i=0; i<checkSet.length;i++){
             if(checkSet[i] != 0){
                 return false;
@@ -144,7 +144,7 @@ public class Hand {
         }
 
         //check to make sure the difference between consecutive cards is 1
-        int[] checkRun = checkHand(run);
+        int[] checkRun = checkGroup(run);
         for(int i=0; i<checkRun.length;i++){
             if(checkRun[i] != 1){
                 return false;
@@ -154,17 +154,17 @@ public class Hand {
     }
 
     /**
-     * checks the given hand by returning an array with the differences between each consecutive card
-     * @param hand a given user's hand
-     * @return an int array with calculated differences in rank
+     * checks the given group by returning an array with the differences between each consecutive card
+     * @param group a given group
+     * @return groupDiff: an int array with calculated differences in rank
      */
-    public int[] checkHand(ArrayList<Card> hand){
-        int[] checkHand = new int[hand.size()-1];
-        ArrayList<Card> sortedHand = sortByRank(hand);
-        for(int i=0; i<checkHand.length; i++){
-            checkHand[i] = sortedHand.get(i+1).getCardRank()-sortedHand.get(i).getCardRank();
+    public int[] checkGroup(ArrayList<Card> group){
+        int[] groupDiff = new int[group.size()-1];
+        ArrayList<Card> sortedHand = sortByRank(group);
+        for(int i=0; i<groupDiff.length; i++){
+            groupDiff[i] = sortedHand.get(i+1).getCardRank()-sortedHand.get(i).getCardRank();
         }
-        return checkHand;
+        return groupDiff;
     }
 
     /**

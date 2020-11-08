@@ -20,6 +20,7 @@ public class TTGameState extends GameState {
     private ArrayList<Card> discardPile = new ArrayList<Card>();
     private Hand player0Hand  = new Hand(); // User Hand
     private Hand player1Hand = new Hand(); // Computer Hand
+    public static final int MAX_NUM_GROUPS = 4;
 
     //the current round number
     private int roundNum;
@@ -41,7 +42,7 @@ public class TTGameState extends GameState {
     private boolean player1GoneOut;
 
     //the current player's turn
-    private int isPlayerTurn;
+    private int playerTurn;
 
     //the card value of the card that can be used as any card in a group for a given round
     private int wildCard;
@@ -58,9 +59,9 @@ public class TTGameState extends GameState {
         }
         Collections.shuffle(deck);
 
-        //start the discard pile
-        discardPile.add(deck.get(0));
-        deck.remove(0);
+        //start the discard pile from top of deck
+        discardPile.add(deck.get(deck.size()-1));
+        deck.remove(deck.size()-1);
 
         //sets round number and the wild card
         roundNum = 1;
@@ -68,8 +69,7 @@ public class TTGameState extends GameState {
         wildCard = roundNum + 2;
 
         //populate player 0 and player 1 hands with three cards from deck
-        dealHand(deck, player0Hand, roundNum);
-        dealHand(deck, player1Hand, roundNum);
+        dealHand();
 
         //each player starts with a score of 0
         player0Score = 0;
@@ -80,7 +80,7 @@ public class TTGameState extends GameState {
         player1GoneOut = false;
 
         //player 0 goes first
-        isPlayerTurn = 0;
+        playerTurn = 0;
     }
 
     /**
@@ -111,7 +111,7 @@ public class TTGameState extends GameState {
         this.player1GoneOut = orig.player1GoneOut;
         this.roundNum = orig.getRoundNum();
         this.roundOver = orig.getRoundOver();
-        this.isPlayerTurn = orig.getIsPlayerTurn();
+        this.playerTurn = orig.getPlayerTurn();
         this.wildCard = orig.getWildCard();
     }
 
@@ -151,11 +151,19 @@ public class TTGameState extends GameState {
         return player1TurnsTaken;
     }
 
+    public boolean isPlayer0GoneOut() {
+        return player0GoneOut;
+    }
+
+    public boolean isPlayer1GoneOut() {
+        return player1GoneOut;
+    }
+
     public int getRoundNum() {
         return roundNum;
     }
 
-    public int getIsPlayerTurn() {return isPlayerTurn;}
+    public int getPlayerTurn() {return playerTurn;}
 
     public int getWildCard() {
         return wildCard;
@@ -214,10 +222,10 @@ public class TTGameState extends GameState {
      * changes which player can take actions
      */
     public void nextTurn(){
-        if(isPlayerTurn == 1)
-            isPlayerTurn = 0;
+        if(playerTurn == 1)
+            playerTurn = 0;
         else
-            isPlayerTurn = 1;
+            playerTurn = 1;
     }
 
     /**
@@ -291,7 +299,7 @@ public class TTGameState extends GameState {
         String discardSize = "Discard pile amount: " + discardPile.size();
         String playerCard = "Player 0 card amount: " + player0Hand.getSize();
         String computerCard = "Player 1 card amount: " + player1Hand.getSize();
-        String turn = "Player " + isPlayerTurn + " turn";
+        String turn = "Player " + playerTurn + " turn";
         String playerScoreString = "Player 0 score: " + player0Score;
         String computerScoreString = "Player 1 score: " + player1Score;
         String toString = round + "\n" + deckSize + "\n" + discardSize + "\n" + playerCard + "\n"
@@ -309,23 +317,22 @@ public class TTGameState extends GameState {
         if(deck.size() == 0){
             Log.d("playerDrawDeck()","deck is apparently empty, drawing from discard");
             //have to draw from discard
-            playerDrawDiscard();
-            return true;
+            return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
-        if(currentPlayerHand().getHand().size() != roundNum){
+        if(currentPlayerHand().getHand().size() == (roundNum+3)){
             return false;
         }
 
         //can go again if the other player has Gone Out, you have NOT GoneOut yet, and
         //you have already taken your turn
-        if(this.isPlayerTurn == 0){
+        if(this.playerTurn == 0){
             //player 0's turn
             if(player1GoneOut && !player0GoneOut && (player0TurnsTaken == roundNum)){
                 //removes card from deck and adds it to the current player's hand
-                currentPlayerHand().addToHand(deck.get(0));
-                deck.remove(0);
+                currentPlayerHand().addToHand(deck.get(deck.size()-1));
+                deck.remove(deck.size()-1);
                 return true;
             }
         }
@@ -333,19 +340,19 @@ public class TTGameState extends GameState {
             //player 1's turn
             if(player0GoneOut && !player1GoneOut && (player1TurnsTaken == roundNum)){
                 //removes card from deck and adds it to the current player's hand
-                currentPlayerHand().addToHand(deck.get(0));
-                deck.remove(0);
+                currentPlayerHand().addToHand(deck.get(deck.size()-1));
+                deck.remove(deck.size()-1);
                 return true;
             }
         }
 
 
         //removes card from deck and adds it to the current player's hand
-        currentPlayerHand().addToHand(deck.get(0));
-        deck.remove(0);
-        if (this.isPlayerTurn == 0) {
+        currentPlayerHand().addToHand(deck.get(deck.size()-1));
+        deck.remove(deck.size()-1);
+        if (this.playerTurn == 0) {
             player0TurnsTaken++;
-        } else if (this.isPlayerTurn == 1) {
+        } else if (this.playerTurn == 1) {
             player1TurnsTaken++;
         }
         return true;
@@ -360,23 +367,22 @@ public class TTGameState extends GameState {
         if(discardPile.size() == 0){
             Log.d("playerDrawDiscard()","discard is apparently empty, drawing from deck");
             //have to draw from discard
-            playerDrawDeck();
-            return true;
+            return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
-        if(currentPlayerHand().getHand().size() != roundNum){
+        if(currentPlayerHand().getHand().size() == (roundNum+3)){
             return false;
         }
 
         //can go again if the other player has Gone Out, you have NOT GoneOut yet, and
         //you have already taken your turn
-        if(this.isPlayerTurn == 0){
+        if(this.playerTurn == 0){
             //player 0's turn
             if(player1GoneOut && !player0GoneOut && (player0TurnsTaken == roundNum)){
                 //removes card from deck and adds it to the current player's hand
-                currentPlayerHand().addToHand(discardPile.get(0));
-                discardPile.remove(0);
+                currentPlayerHand().addToHand(discardPile.get(discardPile.size()-1));
+                discardPile.remove(discardPile.size()-1);
                 return true;
             }
         }
@@ -384,19 +390,19 @@ public class TTGameState extends GameState {
             //player 1's turn
             if(player0GoneOut && !player1GoneOut && (player1TurnsTaken == roundNum)){
                 //removes card from deck and adds it to the current player's hand
-                currentPlayerHand().addToHand(discardPile.get(0));
-                discardPile.remove(0);
+                currentPlayerHand().addToHand(discardPile.get(discardPile.size()-1));
+                discardPile.remove(discardPile.size()-1);
                 return true;
             }
         }
 
         //the current player is drawing for the first time in this round
         //removes card from discard pile and adds it to the current player's hand
-        currentPlayerHand().addToHand(discardPile.get(0));
-        discardPile.remove(0);
-        if (this.isPlayerTurn == 0) {
+        currentPlayerHand().addToHand(discardPile.get(discardPile.size()-1));
+        discardPile.remove(discardPile.size()-1);
+        if (this.playerTurn == 0) {
             player0TurnsTaken++;
-        } else if (this.isPlayerTurn == 1) {
+        } else if (this.playerTurn == 1) {
             player1TurnsTaken++;
         }
         return true;
@@ -451,10 +457,8 @@ public class TTGameState extends GameState {
         //the player's turn always ends when they discard
         nextTurn();
 
-        //check if the round is over and update variables if needed
-        if(isRoundOver()){
-            roundNum++;
-        }
+        //the round may be over so the GameState may need to be updated
+        updateGameState();
     }
 
     /**
@@ -463,19 +467,22 @@ public class TTGameState extends GameState {
      * @return whether the player can Go Out or not
      */
     public boolean canPlayerGoOut(){
-        //check to make sure there are groups
-        if(currentPlayerHand().getGroupings().get(0).isEmpty()){
+        //check to make sure there is at least one group in 2D groupings
+        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
+            Log.d("canPlayerGoOut()","last group is empty");
             return false;
         }
 
         //checks to make sure they haven't already Gone Out this round
-        if(isPlayerTurn == 0){
+        if(playerTurn == 0){
             if(player0GoneOut){
+                Log.d("canPlayerGoOut()","player 0 has already gone out");
                 return false;
             }
         }
         else{
             if(player1GoneOut){
+                Log.d("canPlayerGoOut()","player 1 has already gone out");
                 return false;
             }
         }
@@ -497,6 +504,7 @@ public class TTGameState extends GameState {
                 else{
                     //there is more than one card in the groupings that isn't in the player's hand
                     //therefore, we don't take any action and they can't really Go Out
+                    Log.d("canPlayerGoOut()","more than one card to be removed");
                     return false;
                 }
             }
@@ -508,10 +516,13 @@ public class TTGameState extends GameState {
             int numGroups = 0;
             //iterate through player's groupings to check for valid runs and sets
             for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
-                if(currentPlayerHand().checkIfRun(groups) || currentPlayerHand().checkIfSet(groups)){
+                if(currentPlayerHand().checkIfRun(groups) || currentPlayerHand().checkIfSet(groups)) {
                     numValidGroups++;
+                    numGroups++;
                 }
-                numGroups++;
+                else if(!groups.isEmpty()){
+                    numGroups++;
+                }
             }
 
             //check that all the groups are valid
@@ -552,11 +563,11 @@ public class TTGameState extends GameState {
 
             //player has gone out for this round and the other player should have another turn
             //if they already went
-            if(this.isPlayerTurn == 0){
-                player0GoneOut = true;
+            if(this.playerTurn == 0){
+                player1GoneOut = true;
             }
             else{
-                player1GoneOut = true;
+                player0GoneOut = true;
             }
         }
         else{
@@ -581,7 +592,7 @@ public class TTGameState extends GameState {
         }
 
         //check to make sure there are groups in the current player's hand
-        if(currentPlayerHand().getGroupings().get(0).isEmpty()){
+        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
             return false;
         }
 
@@ -638,20 +649,21 @@ public class TTGameState extends GameState {
      * in round 1, player's receive 3 cards
      * in remaining rounds, player receives 1 card per round
      */
-    public void dealHand(ArrayList<Card> inputDeck, Hand user, int round){
+    public void dealHand(){
         setWild();
-        if(round != roundNum){
-            return;
-        }
-        if(round == 1) {
-            for (int i = 0; i <= round + 1; i++) {
-                user.addToHand(inputDeck.get(0));
-                inputDeck.remove(0);
+        if(roundNum == 1) {
+            for (int i = 0; i <= roundNum + 1; i++) {
+                player0Hand.addToHand(deck.get(deck.size()-1));
+                deck.remove(deck.size()-1);
+                player1Hand.addToHand(deck.get(deck.size()-1));
+                deck.remove(deck.size()-1);
             }
         }
         else{
-            user.addToHand(inputDeck.get(0));
-            inputDeck.remove(0);
+            player0Hand.addToHand(deck.get(deck.size()-1));
+            deck.remove(deck.size()-1);
+            player1Hand.addToHand(deck.get(deck.size()-1));
+            deck.remove(deck.size()-1);
         }
     }//dealHand
 
@@ -660,7 +672,7 @@ public class TTGameState extends GameState {
      * @return current player's hand
      */
     public Hand currentPlayerHand(){
-        if(this.isPlayerTurn == 0){
+        if(this.playerTurn == 0){
             return player0Hand;
         }
         else {

@@ -59,7 +59,7 @@ public class TTLocalGame extends LocalGame {
         }
         else {
             // player can move if it's their turn
-            return state.getIsPlayerTurn() == playerIdx;
+            return state.getPlayerTurn() == playerIdx;
         }
     }//canMove
 
