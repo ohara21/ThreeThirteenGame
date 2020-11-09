@@ -1,6 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,7 +13,7 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
-public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener {
+public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener, View.OnTouchListener {
 
     //our game state
     private TTGameState state;
@@ -102,11 +103,26 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     @Override
     public void setAsGui(GameMainActivity activity) {
        // Getting xml elements
+        myActivity = activity;
         myActivity.setContentView(R.layout.tt_human_player);
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
+
+        //assign surfaceView
         gameBoard = myActivity.findViewById(R.id.surfaceView);
+
+        //assign buttons
+        helpButton = myActivity.findViewById(R.id.helpButton);
+        quitButton = myActivity.findViewById(R.id.quitButton);
+        restartButton = myActivity.findViewById(R.id.restartButton);
+        goOutButton = myActivity.findViewById(R.id.goOutButton);
+        discardButton = myActivity.findViewById(R.id.discardButton);
+        addGroupButton = myActivity.findViewById(R.id.addGroupButton);
+        removeGroupButton = myActivity.findViewById(R.id.removeGroupButton);
+
+        //set onTouch listener
+        gameBoard.setOnTouchListener(this);
 
         // Setting onClick listeners for buttons
         helpButton.setOnClickListener(this);
@@ -116,6 +132,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         discardButton.setOnClickListener(this);
         addGroupButton.setOnClickListener(this);
         removeGroupButton.setOnClickListener(this);
+
+        // if the state is not null, simulate having just received the state so that
+        // any state-related processing is done
+        if (state != null) {
+            receiveInfo(state);
+        }
     }
 
     @Override
@@ -147,5 +169,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 // do nothing
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return false;
     }
 }
