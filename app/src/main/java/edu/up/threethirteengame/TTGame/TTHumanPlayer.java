@@ -1,11 +1,6 @@
 package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,13 +8,11 @@ import android.widget.TextView;
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
 import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
-import edu.up.threethirteengame.game.GameFramework.animation.AnimationSurface;
-import edu.up.threethirteengame.game.GameFramework.animation.Animator;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
-public class TTHumanPlayer extends GameHumanPlayer{
+public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener {
 
     //our game state
     private TTGameState state;
@@ -33,7 +26,6 @@ public class TTHumanPlayer extends GameHumanPlayer{
     private Button restartButton;
     private Button goOutButton;
     private Button discardButton;
-    private Button selectCardsButton;
     private Button removeGroupButton;
     private Button addGroupButton;
 
@@ -109,11 +101,51 @@ public class TTHumanPlayer extends GameHumanPlayer{
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
+       // Getting xml elements
         myActivity.setContentView(R.layout.tt_human_player);
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
         gameBoard = myActivity.findViewById(R.id.surfaceView);
+
+        // Setting onClick listeners for buttons
+        helpButton.setOnClickListener(this);
+        quitButton.setOnClickListener(this);
+        restartButton.setOnClickListener(this);
+        goOutButton.setOnClickListener(this);
+        discardButton.setOnClickListener(this);
+        addGroupButton.setOnClickListener(this);
+        removeGroupButton.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.helpButton):
+                // popup window with rules
+                break;
+            case (R.id.quitButton):
+                // close program
+                System.exit(0);
+                break;
+            case (R.id.restartButton):
+                // back to game config screen
+                break;
+            case (R.id.goOutButton):
+                state.goOut();
+                break;
+            case (R.id.discardButton):
+                // if card is selected, discard it
+                break;
+            case (R.id.addGroupButton):
+                // if card is selected, add it to group
+                break;
+            case (R.id.removeGroupButton):
+                // if card is selected, remove from group
+                break;
+            default:
+                // do nothing
+                break;
+        }
+    }
 }
