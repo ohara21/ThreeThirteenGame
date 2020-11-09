@@ -31,7 +31,7 @@ public class GameBoard extends SurfaceView {
     //instance variables that will define locations on the GameBoard
     float viewWidth;
     float viewHeight;
-    float padx = 26;
+    float padx = 35;
     float pady = 4;
 
     //used to rotate the card images
@@ -132,6 +132,7 @@ public class GameBoard extends SurfaceView {
     public void drawCard(Canvas canvas, float x, float y, Card card){
 
 
+
         Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.cardId);
         Bitmap cardObj = Bitmap.createScaledBitmap(tempObj,card.getWidth(),card.getHeight(),true);
 
@@ -171,16 +172,19 @@ public class GameBoard extends SurfaceView {
         float sectionWidth = this.getWidth()/4;
         float sectionHeight = this.getHeight()/5;
         ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
+        int numCards = 0;
 
         //Discard and Deck pile
+        rotate.setRotate(90);
         drawRotCard(canvas, 128, 74, new Card(1,'h',10));
         drawRotCard(canvas, 630, 74, new Card(0));
 
         //Grid system used to showcase hand of user
         for(int col = 0; col < 4; col++){
             for(int row = 1; row < 5; row++){
-                for(Card c: userHand) {
-                    drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, c);
+                if(numCards <= userHand.size()) {
+                    drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
+                    numCards++;
                 }
             }
         }

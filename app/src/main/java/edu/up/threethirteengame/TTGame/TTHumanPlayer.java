@@ -19,7 +19,7 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
-public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener {
+public class TTHumanPlayer extends GameHumanPlayer {
 
     //our game state
     private TTGameState state;
@@ -33,6 +33,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private Button restartButton;
     private Button goOutButton;
     private Button discardButton;
+    private Button selectCardsButton;
     private Button removeGroupButton;
     private Button addGroupButton;
 
@@ -108,51 +109,11 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
-        // Getting values to change
         myActivity.setContentView(R.layout.tt_human_player);
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
         gameBoard = myActivity.findViewById(R.id.surfaceView);
-
-        // Setting onTouch listeners
-        helpButton.setOnClickListener(this);
-        quitButton.setOnClickListener(this);
-        restartButton.setOnClickListener(this);
-        goOutButton.setOnClickListener(this);
-        discardButton.setOnClickListener(this);
-        removeGroupButton.setOnClickListener(this);
-        addGroupButton.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.helpButton:
-                // popup window of instructions
-                break;
-            case R.id.quitButton:
-               // terminate program
-                System.exit(0);
-                break;
-            case R.id.restartButton:
-                // take user back to config screen
-                break;
-            case R.id.goOutButton:
-                // do if possible
-                break;
-            case R.id.discardButton:
-                // do if possible
-                break;
-            case R.id.removeGroup:
-                // card is removed from hand
-                break;
-            case R.id.addGroup:
-                // card is added to hand
-                break;
-            default:
-                // don't do anything
-                break;
-        }
-    }
 }
