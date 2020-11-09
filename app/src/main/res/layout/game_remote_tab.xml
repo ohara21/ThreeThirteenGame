@@ -2,7 +2,7 @@
     android:id="@+id/remoteTabLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginLeft="2dp"
+    android:layout_marginLeft="@dimen/config_horiz_margin"
     android:orientation="vertical" >
 
     <TableLayout
