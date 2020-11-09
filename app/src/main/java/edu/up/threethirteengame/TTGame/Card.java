@@ -73,6 +73,10 @@ public class Card {
         }
     }
 
+    public void setIsClick(boolean isClick) {
+        this.isClick = isClick;
+    }
+
     //returns the vertical height of the card depending on its type
     public int getHeight(){
         if(cardType == 1) {

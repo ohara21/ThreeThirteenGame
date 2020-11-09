@@ -2,6 +2,9 @@ package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.icu.util.LocaleData;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.PopupWindow;
+import android.content.Intent;
 
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
@@ -41,6 +45,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private TextView yourScoreText;
     private TextView opponScoreText;
     private GameBoard gameBoard;
+
+    // empty card used to get width and height
+    private Card card = new Card(1);
+
     /**
      * constructor
      * @param name: the player's name
@@ -146,6 +154,8 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -187,6 +197,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.restartButton):
                 // back to game config screen
+                myActivity.recreate();
                 break;
             case (R.id.goOutButton):
                 state.goOut();
@@ -208,6 +219,28 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        int x = (int)motionEvent.getX();
+        int y = (int)motionEvent.getY();
+        int xLowerBound;
+        int xUpperBound;
+        int yLowerBound;
+        int yUpperBound;
+        String string = "X: " + x + " Y: " + y;
+        Log.d("TTHumanPlayer", string);
+        for (int row = 1; row < 5; row++) {
+            for (int col = 0; col < 4; col++) {
+                xLowerBound = (int) (col * gameBoard.sectionWidth + gameBoard.padx);
+                xUpperBound = xLowerBound + card.getWidth();
+                yLowerBound = (int) (row * gameBoard.sectionHeight + gameBoard.pady);
+                yUpperBound = yLowerBound + card.getHeight();
+                if (x < xUpperBound && x > xLowerBound && y < yUpperBound && y > yLowerBound) {
+                    Log.d("TTHumanPlayer", "you clicked on a card");
+                    
+                    break;
+                }
+            }
+        }
         return false;
     }
 }
+
