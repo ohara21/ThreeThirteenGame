@@ -25,7 +25,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
     private TTGameState state;
 
     //our activity
-    private Activity myActivity;
+    private Activity myActivity = null;
 
     //our buttons
     private Button helpButton;
@@ -69,12 +69,24 @@ public class TTHumanPlayer extends GameHumanPlayer{
     @Override
     public void receiveInfo(GameInfo info) {
         // ignore the message if it's not a CounterState message
-        if (!(info instanceof TTGameState)){
+        if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
+            return;
+        }
+        else if (!(info instanceof TTGameState)){
             return;
         }
         else{
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
+
+            //don't do anything if the gameBoard hasn't been initialized
+            if(gameBoard == null){
+                return;
+            }
+
+            //send the current state to the GameBoard and redraws it
+            gameBoard.setTtGameState(this.state);
+            gameBoard.invalidate();
             updateDisplay();
         }
     }

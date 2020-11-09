@@ -18,6 +18,16 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
  */
 public class GameBoard extends SurfaceView {
 
+    /**
+     * External Citation
+     * Problem: Needed help understanding the relationship between GameBoard and HumanPlayer
+     * Source: Dylan Pascua (previous CS301 student)
+     * Solution: figured it out with his help
+     */
+
+    //we need the current GameState to access the player's hand
+    TTGameState ttGameState = null;
+
     //instance variables that will define locations on the GameBoard
     float viewWidth;
     float viewHeight;
@@ -102,6 +112,14 @@ public class GameBoard extends SurfaceView {
     }
 
     /**
+     * allows the GameState to be set
+     * @param currentGameState the current GameState is sent from TTHumanPlayer when they receiveInfo
+     */
+    public void setTtGameState(TTGameState currentGameState){
+        ttGameState = currentGameState;
+    }
+
+    /**
      * This function draws the specified card object to a given x and y on a given canvas
      * Works for both front and back showing cards
      */
@@ -165,17 +183,6 @@ public class GameBoard extends SurfaceView {
             }
         }
 
-
-
-
-
-
     }
-
-
-
-
-
-
 
 }
