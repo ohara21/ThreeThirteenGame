@@ -150,7 +150,7 @@
                     android:textColor="@android:color/white" />
 
                 <Button
-                    android:id="@+id/addGroup"
+                    android:id="@+id/addGroupButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
@@ -162,7 +162,7 @@
                     android:textColor="@android:color/white" />
 
                 <Button
-                    android:id="@+id/removeGroup"
+                    android:id="@+id/removeGroupButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
