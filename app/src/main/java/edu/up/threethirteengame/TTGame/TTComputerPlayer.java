@@ -2,6 +2,7 @@ package edu.up.threethirteengame.TTGame;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Random;
 
 import edu.up.threethirteengame.game.GameFramework.GameComputerPlayer;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
@@ -19,6 +20,11 @@ public class TTComputerPlayer extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
+
+        //dumb ai could also just discard randomly from hand
+
+        Random rand = new Random();
+
         TTGameState newState = (TTGameState)info;
         if(info instanceof NotYourTurnInfo){
             return;
@@ -33,9 +39,10 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         else {
-            //TODO: some method to get a card that is wanted to be discarded
-            //temp discard card
-            Card discard = new Card(1, 'h', 4);
+            Card discard;
+            int handSize = newState.getPlayer1Hand().getSize();
+            int randomIndex = rand.nextInt(handSize);
+            discard = newState.getPlayer1Hand().getCard(randomIndex);
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
