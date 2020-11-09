@@ -56,7 +56,12 @@ public class Hand {
 
     public void setHand(ArrayList<Card> hand){this.userHand = hand;}
 
-    public ArrayList<Card> getHand(){return this.userHand;}
+    public ArrayList<Card> getHand(){
+        if(this.userHand != null) {
+            return this.userHand;
+        }
+        return null;
+    }
 
     public Card getCard(int index) {return this.userHand.get(index);}
 
