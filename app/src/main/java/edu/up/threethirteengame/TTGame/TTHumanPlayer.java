@@ -1,9 +1,15 @@
 package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
+import android.content.Context;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.PopupWindow;
 
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
@@ -122,7 +128,30 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.helpButton):
-                // popup window with rules
+                // display a popup window with rules
+
+                // inflate
+                LayoutInflater inflater = (LayoutInflater)
+                        myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.popup_window, null);
+
+                // create popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                // show popup window
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+                // dismiss the popup window when touched
+                popupView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        popupWindow.dismiss();
+                        return true;
+                    }
+                });
                 break;
             case (R.id.quitButton):
                 // close program
@@ -149,3 +178,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
     }
 }
+/**
+ * External Citation
+ * Problem: Didn't know how to create pop up window
+ * Source: https://stackoverflow.com/questions/5944987/how-to-create-a-popup-window-popupwindow-in-android
+ * Solution: used example provided
+ */
