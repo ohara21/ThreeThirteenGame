@@ -17,7 +17,7 @@ public class Card {
     private final int CARDHEIGHT = 323;
     private int finalCardWidth;
     private int finalCardHeight;
-    private double backScale = 1.32;
+    private double backScale = 0.91891;
     private final int BACKWIDTH = 223;
     private final int BACKHEIGHT = 307;
     private int finalBackWidth;

@@ -468,6 +468,9 @@ public class TTGameState extends GameState {
      */
     public boolean canPlayerGoOut(){
         //check to make sure there is at least one group in 2D groupings
+        if(currentPlayerHand().getGroupings().isEmpty()){
+            return false;
+        }
         if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
             Log.d("canPlayerGoOut()","last group is empty");
             return false;

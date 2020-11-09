@@ -25,10 +25,10 @@ public class TTComputerPlayer extends GameComputerPlayer {
 
         Random rand = new Random();
 
-        TTGameState newState = (TTGameState)info;
         if(info instanceof NotYourTurnInfo){
             return;
         }
+        TTGameState newState = (TTGameState)info;
 
         if(newState.playerDrawDeck()){
             game.sendAction(new TTDrawDeckAction(this));
