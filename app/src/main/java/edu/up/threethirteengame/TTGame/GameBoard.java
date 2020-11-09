@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.ArrayList;
 
+import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
+
 /**
  * @description GameBoard class displays the Graphical User Interface on the screen
  * @author Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren

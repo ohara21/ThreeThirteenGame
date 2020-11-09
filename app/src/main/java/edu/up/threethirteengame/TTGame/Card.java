@@ -26,6 +26,8 @@ public class Card {
     private int cardRank;
     private char cardSuit;
 
+    private boolean isClick;
+
     public int cardId = R.drawable.back_vert;
 
     // constructor sets the type of card and scales the card
@@ -37,12 +39,14 @@ public class Card {
         if(cType == 1) {
             cardId = getId(suit, value);
         }
+        this.isClick = false;
     }
 
     //base constructor for the card object
     public Card(int cType){
         this.cardType = cType;
         scaleCard(this.cardType);
+        this.isClick = false;
     }
 
     //copy Construct
@@ -52,6 +56,7 @@ public class Card {
         this.cardSuit = orig.cardSuit;
         scaleCard(this.cardType);
         this.cardId = orig.cardId;
+        this.isClick = false;
     }
 
 
