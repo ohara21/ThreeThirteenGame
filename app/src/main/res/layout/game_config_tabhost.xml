@@ -22,9 +22,9 @@
 
             <include
                 android:id="@+id/localTabLayout"
+                layout="@layout/game_local_tab"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/game_local_tab" />
+                android:layout_height="122dp" />
 
         </LinearLayout>
 

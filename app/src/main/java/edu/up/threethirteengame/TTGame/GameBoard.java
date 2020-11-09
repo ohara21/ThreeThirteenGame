@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.ArrayList;
 
+import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
+
 /**
  * @description GameBoard class displays the Graphical User Interface on the screen
  * @author Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
@@ -181,30 +183,10 @@ public class GameBoard extends SurfaceView {
         drawRotCard(canvas, stockWidth, midHeight, backCard);
 
         //draws opponent's hand
-        drawCard(canvas,150, topY,backCard);
-        drawCard(canvas, 250, topY, backCard);
-        drawCard(canvas, 350, topY, backCard);
-        drawCard(canvas, 450, topY, backCard);
-        drawCard(canvas, 550, topY, backCard);
-        drawCard(canvas, 100, topY2, backCard);
-        drawCard(canvas, 200, topY2, backCard);
-        drawCard(canvas, 300, topY2, backCard);
-        drawCard(canvas,400,topY2, backCard);
-        drawCard(canvas,500,topY2, backCard);
-        drawCard(canvas, 600, topY2, backCard);
+
 
         //draws player's hand
-        drawCard(canvas,150, botY2,twoClubsCard);
-        drawCard(canvas, 250, botY2, twoDiamondsCard);
-        drawCard(canvas, 350, botY2, threeHeartsCard);
-        drawCard(canvas, 450, botY2, sixSpadesCard);
-        drawCard(canvas, 550, botY2, sevenHeartsCard);
-        drawCard(canvas, 100, botY, aceDiamondsCard);
-        drawCard(canvas, 200, botY, aceClubsCard);
-        drawCard(canvas, 300, botY, tenSpadesCard);
-        drawCard(canvas,400,botY,tenHeartsCard);
-        drawCard(canvas,500,botY,tenDiamondsCard);
-        drawCard(canvas, 600, botY, kingClubsCard );
+
 
     }
 

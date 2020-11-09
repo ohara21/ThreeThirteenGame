@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
     private TextView roundText;
     private TextView yourScoreText;
     private TextView opponScoreText;
+    private GameBoard gameBoard;
     /**
      * constructor
      * @param name: the player's name
@@ -86,6 +88,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
         roundText.setText("Round " + state.getRoundNum());
         yourScoreText.setText("You: " + state.getPlayer0Score());
         opponScoreText.setText("Opponent's score: " + state.getPlayer1Score());
+        // Might have to add invalidate and do something w/ gameBoard
     }
 
     /**
@@ -98,6 +101,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
+        gameBoard = myActivity.findViewById(R.id.surfaceView);
     }
 
 }
