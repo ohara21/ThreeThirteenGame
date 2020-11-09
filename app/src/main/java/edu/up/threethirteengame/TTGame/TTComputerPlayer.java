@@ -41,7 +41,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
         else {
             Card discard;
             int handSize = newState.getPlayer1Hand().getSize();
-            int randomIndex = rand.nextInt(handSize);
+            int randomIndex = rand.nextInt(handSize-1);
             discard = newState.getPlayer1Hand().getCard(randomIndex);
             game.sendAction(new TTDiscardAction(this, discard));
         }
