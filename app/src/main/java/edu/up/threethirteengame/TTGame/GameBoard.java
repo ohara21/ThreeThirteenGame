@@ -175,6 +175,7 @@ public class GameBoard extends SurfaceView {
             return;
         }
         ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
+
         //Discard and Deck pile
         rotate.setRotate(90);
         drawRotCard(canvas, 128, 74, new Card(1, 'h', 10));
@@ -184,8 +185,8 @@ public class GameBoard extends SurfaceView {
             int numCards = 0;
 
             //Grid system used to showcase hand of user
-            for (int col = 0; col < 4; col++) {
-                for (int row = 1; row < 5; row++) {
+            for (int row = 1; row < 5; row++) {
+                for (int col = 1; col < 5; col++) {
                     if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
                         numCards++;
