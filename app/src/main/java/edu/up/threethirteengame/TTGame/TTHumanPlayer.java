@@ -137,10 +137,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             case (R.id.discardButton):
                 // if card is selected, discard it
                 break;
-            case (R.id.addGroup):
+            case (R.id.addGroupButton):
                 // if card is selected, add it to group
                 break;
-            case (R.id.removeGroup):
+            case (R.id.removeGroupButton):
                 // if card is selected, remove from group
                 break;
             default:
