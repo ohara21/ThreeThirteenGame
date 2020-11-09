@@ -171,6 +171,9 @@ public class GameBoard extends SurfaceView {
     public void onDraw(Canvas canvas){
         float sectionWidth = this.getWidth()/4;
         float sectionHeight = this.getHeight()/5;
+        if(ttGameState == null){
+            return;
+        }
         ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
         //Discard and Deck pile
         rotate.setRotate(90);
