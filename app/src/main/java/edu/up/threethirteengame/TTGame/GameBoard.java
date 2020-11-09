@@ -19,14 +19,8 @@ public class GameBoard extends SurfaceView {
     //instance variables that will define locations on the GameBoard
     float viewWidth;
     float viewHeight;
-    float midWidth;
-    float midHeight;
-    float discardWidth;
-    float stockWidth;
-    float topY;
-    float topY2;
-    float botY;
-    float botY2;
+    float padx = 26;
+    float pady = 4;
 
     //used to rotate the card images
     Matrix rotate = new Matrix();
@@ -154,57 +148,25 @@ public class GameBoard extends SurfaceView {
      */
     @Override
     public void onDraw(Canvas canvas){
-        //creates all 52 cards and places them into an array list called deck
-        for(int s = 0; s < 4; s++){
-            for(int v = 1; v <= 13; v++){
-                deck.add(new Card(1,suite[s],v));
+        float sectionWidth = this.getWidth()/4;
+        float sectionHeight = this.getHeight()/5;
+
+        //Discard and Deck pile
+        drawRotCard(canvas, 128, 74, new Card(1,'h',10));
+        drawRotCard(canvas, 630, 74, new Card(0));
+
+        //Grid sysstem used to showcase hand of user
+        for(int col = 0; col < 4; col++){
+            for(int row = 1; row < 5; row++){
+                //replace card with arraylist of hand using a for loop
+                drawCard(canvas, col*sectionWidth + padx, row*sectionHeight + pady, new Card(1, 'h', 13));
             }
         }
 
-        //initialize coordinates based on the GameBoard's dimensions
-        viewWidth = this.getWidth();
-        viewHeight = this.getHeight();
-        midWidth = viewWidth/2.0f;
-        midHeight = viewHeight/2.0f - tenClubsCard.getWidth()/2.0f;
-        discardWidth = midWidth - tenClubsCard.getHeight() - 50.0f;
-        stockWidth = midWidth + 50.0f;
-        topY = midHeight - tenClubsCard.getHeight() - 75.0f;
-        topY2 = topY -tenClubsCard.getHeight()/3.0f;
-        botY = midHeight + tenClubsCard.getHeight() + 75.0f;
-        botY2 = botY - tenClubsCard.getHeight()/3.0f;
 
-        //rotate the matrix 90 degrees
-        rotate.setRotate(90);
 
-        //draw the discard and stock piles
-        drawRotCard(canvas,discardWidth,midHeight,tenClubsCard);
-        drawRotCard(canvas, stockWidth, midHeight, backCard);
 
-        //draws opponent's hand
-        drawCard(canvas,150, topY,backCard);
-        drawCard(canvas, 250, topY, backCard);
-        drawCard(canvas, 350, topY, backCard);
-        drawCard(canvas, 450, topY, backCard);
-        drawCard(canvas, 550, topY, backCard);
-        drawCard(canvas, 100, topY2, backCard);
-        drawCard(canvas, 200, topY2, backCard);
-        drawCard(canvas, 300, topY2, backCard);
-        drawCard(canvas,400,topY2, backCard);
-        drawCard(canvas,500,topY2, backCard);
-        drawCard(canvas, 600, topY2, backCard);
 
-        //draws player's hand
-        drawCard(canvas,150, botY2,twoClubsCard);
-        drawCard(canvas, 250, botY2, twoDiamondsCard);
-        drawCard(canvas, 350, botY2, threeHeartsCard);
-        drawCard(canvas, 450, botY2, sixSpadesCard);
-        drawCard(canvas, 550, botY2, sevenHeartsCard);
-        drawCard(canvas, 100, botY, aceDiamondsCard);
-        drawCard(canvas, 200, botY, aceClubsCard);
-        drawCard(canvas, 300, botY, tenSpadesCard);
-        drawCard(canvas,400,botY,tenHeartsCard);
-        drawCard(canvas,500,botY,tenDiamondsCard);
-        drawCard(canvas, 600, botY, kingClubsCard );
 
     }
 

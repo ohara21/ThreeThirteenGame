@@ -12,7 +12,7 @@ public class Card {
     // cardType designates if the card is:
     // front(1), back (2)
     private int cardType;
-    private double scale = 1.25;
+    private double scale = 0.91891;
     private final int CARDWIDTH = 222;
     private final int CARDHEIGHT = 323;
     private int finalCardWidth;
