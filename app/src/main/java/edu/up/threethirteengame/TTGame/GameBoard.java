@@ -186,7 +186,7 @@ public class GameBoard extends SurfaceView {
 
             //Grid system used to showcase hand of user
             for (int row = 1; row < 5; row++) {
-                for (int col = 1; col < 5; col++) {
+                for (int col = 0; col < 4; col++) {
                     if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
                         numCards++;
