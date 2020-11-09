@@ -177,7 +177,7 @@ public class GameBoard extends SurfaceView {
         drawRotCard(canvas, 128, 74, new Card(1, 'h', 10));
         drawRotCard(canvas, 630, 74, new Card(0));
 
-        if(ttGameState.getPlayer0Hand().getHand() != null) {
+        if(ttGameState.getPlayer0Hand().getHand() != null && !ttGameState.getPlayer0Hand().getHand().isEmpty()) {
             ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
             int numCards = 0;
 
