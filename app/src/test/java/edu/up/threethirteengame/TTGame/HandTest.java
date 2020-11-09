@@ -89,34 +89,27 @@ public class HandTest {
     public void sortByRank() {
         ArrayList<Card> hand = new ArrayList<>();
         ArrayList<Card> sorted = new ArrayList<>();
-        Card c1 = new Card(1, 'c', 3);
-        Card c2 = new Card(1, 'c', 4);
-        Card c3 = new Card(1, 'h', 5);
-        Card c4 = new Card(1, 'h',6);
-        Card c5 = new Card(1, 'h',7);
+        Card c1 = new Card(1, 'c', 1);
+        Card c2 = new Card(1, 'c', 2);
+        Card c3 = new Card(1, 'h', 3);
+        Card c4 = new Card(1, 'h',5);
+        Card c5 = new Card(1, 'h',8);
 
         Hand userHand = new Hand();
 
         hand.add(c1);
         hand.add(c3);
         hand.add(c5);
-        hand.add(c2);
         hand.add(c4);
+        hand.add(c2);
         userHand.setHand(hand);
-        hand = userHand.sortBySuit(userHand.getHand());
-        for(Card c : hand){
-            System.out.println("Actual Hand: " + c.getCardSuit() + Integer.toString(c.getCardRank()));
-        }
+        hand = userHand.sortByRank(userHand.getHand());
 
         sorted.add(c1);
         sorted.add(c2);
         sorted.add(c3);
         sorted.add(c4);
         sorted.add(c5);
-
-        for(Card c: sorted){
-            System.out.println("Sorted Hand: " + c.getCardSuit() + Integer.toString(c.getCardRank()));
-        }
 
         assertEquals(sorted, hand);
     }
@@ -182,7 +175,8 @@ public class HandTest {
     }
 
     @Test
-    public void checkIfRun() {Hand hand = new Hand();
+    public void checkIfRun() {
+        Hand hand = new Hand();
         ArrayList<Card> group1 = new ArrayList<>();
         ArrayList<Card> group2 = new ArrayList<>();
         ArrayList<Card> group3 = new ArrayList<>();
@@ -202,8 +196,33 @@ public class HandTest {
 
         assertFalse(hand.checkIfSet(group1));
         assertFalse(hand.checkIfSet(group2));
-        assertFalse(hand.checkIfSet(group4));
         assertTrue(hand.checkIfSet(group3));
+        assertFalse(hand.checkIfSet(group4));
+
+    }
+
+    @Test
+    public void checkGroup() {
+        Hand hand = new Hand();
+        ArrayList<Card> group1 = new ArrayList<>();
+
+        group1.add(new Card(1,'d',7));
+        group1.add(new Card(1,'d',6));
+        group1.add(new Card(1,'d',5));
+
+        int[] check1 = hand.checkGroup(group1);
+        int[] actual = {1,1};
+        for(int x : actual){
+            System.out.print(actual[x] + " ");
+        }
+        System.out.println();
+        for(int y : check1){
+            System.out.print(check1[y] + " ");
+        }
+
+        assertEquals(check1, actual);
+
+
     }
 
 

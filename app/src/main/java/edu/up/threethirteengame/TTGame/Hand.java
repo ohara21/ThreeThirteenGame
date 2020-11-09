@@ -155,7 +155,7 @@ public class Hand {
 
         //iterate through the run to check if they all have the same suit
         for(Card c : run){
-            if(c.getCardRank() != checkSuit){
+            if(c.getCardSuit() != checkSuit){
                 return false;
             }
         }
@@ -189,6 +189,7 @@ public class Hand {
      * @param group a given group
      * @return groupDiff: an int array with calculated differences in rank
      */
+    //TODO: Failed Unit Test
     public int[] checkGroup(ArrayList<Card> group){
         int[] groupDiff = new int[group.size()-1];
         ArrayList<Card> sortedHand = sortByRank(group);
