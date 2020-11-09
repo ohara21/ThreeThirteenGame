@@ -170,16 +170,18 @@ public class GameBoard extends SurfaceView {
     public void onDraw(Canvas canvas){
         float sectionWidth = this.getWidth()/4;
         float sectionHeight = this.getHeight()/5;
+        ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
 
         //Discard and Deck pile
         drawRotCard(canvas, 128, 74, new Card(1,'h',10));
         drawRotCard(canvas, 630, 74, new Card(0));
 
-        //Grid sysstem used to showcase hand of user
+        //Grid system used to showcase hand of user
         for(int col = 0; col < 4; col++){
             for(int row = 1; row < 5; row++){
-                //replace card with arraylist of hand using a for loop
-                drawCard(canvas, col*sectionWidth + padx, row*sectionHeight + pady, new Card(1, 'h', 13));
+                for(Card c: userHand) {
+                    drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, c);
+                }
             }
         }
 
