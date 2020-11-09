@@ -19,7 +19,7 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
-public class TTHumanPlayer extends GameHumanPlayer{
+public class TTHumanPlayer extends GameHumanPlayer {
 
     //our game state
     private TTGameState state;
