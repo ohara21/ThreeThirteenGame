@@ -177,14 +177,14 @@ public class GameBoard extends SurfaceView {
         drawRotCard(canvas, 128, 74, new Card(1, 'h', 10));
         drawRotCard(canvas, 630, 74, new Card(0));
 
-        if(ttGameState.getPlayer0Hand() != null) {
+        if(ttGameState.getPlayer0Hand().getHand() != null) {
             ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
             int numCards = 0;
 
             //Grid system used to showcase hand of user
             for (int col = 0; col < 4; col++) {
                 for (int row = 1; row < 5; row++) {
-                    if (numCards <= userHand.size()) {
+                    if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
                         numCards++;
                     }
