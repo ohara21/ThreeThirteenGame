@@ -54,12 +54,12 @@ public class TTMainActivity extends GameMainActivity {
 //                return new TTComputerPlayer2(name);
 //            }});
 
-        // Create a game configuration class for Counter:
+        // Create a game configuration class for Three Thirteen:
         // - player types as given above
         // - from 1 to 2 players
-        // - name of game is "Counter Game"
+        // - name of game is "Three Thirteen Game"
         // - port number as defined above
-        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Counter Game",
+        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Three Thirteen Game",
                 PORT_NUMBER);
 
         // Add the default players to the configuration
