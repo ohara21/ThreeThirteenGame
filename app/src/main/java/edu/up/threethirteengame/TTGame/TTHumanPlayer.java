@@ -1,11 +1,6 @@
 package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,8 +8,6 @@ import android.widget.TextView;
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
 import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
-import edu.up.threethirteengame.game.GameFramework.animation.AnimationSurface;
-import edu.up.threethirteengame.game.GameFramework.animation.Animator;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
