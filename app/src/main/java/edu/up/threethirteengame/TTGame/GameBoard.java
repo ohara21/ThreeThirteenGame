@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.ArrayList;
@@ -33,6 +35,13 @@ public class GameBoard extends SurfaceView {
     float viewHeight;
     float padx = 35;
     float pady = 4;
+
+    //paints for drawing the card borders depending on group
+    Paint blue = new Paint();
+    Paint yellow = new Paint();
+    Paint orange = new Paint();
+    Paint purple = new Paint();
+    Paint black = new Paint();
 
     //used to rotate the card images
     Matrix rotate = new Matrix();
@@ -131,13 +140,89 @@ public class GameBoard extends SurfaceView {
      */
     public void drawCard(Canvas canvas, float x, float y, Card card){
 
-
-
         Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.cardId);
         Bitmap cardObj = Bitmap.createScaledBitmap(tempObj,card.getWidth(),card.getHeight(),true);
 
         canvas.drawBitmap(cardObj, x, y, null);
+        drawCardBorder(canvas,x,y,card);
+    }
 
+    /**
+     * draws a border around the card
+     * @param canvas what the card is to be drawn on
+     * @param x the x location of the card
+     * @param y the y location of the card
+     */
+    public void drawCardBorder(Canvas canvas, float x, float y, Card card){
+        //set the paint style for the borders
+        blue.setColor(Color.BLUE);
+        blue.setStrokeWidth(5.0f);
+        blue.setStyle(Paint.Style.STROKE);
+        yellow.setColor(Color.YELLOW);
+        yellow.setStrokeWidth(5.0f);
+        yellow.setStyle(Paint.Style.STROKE);
+        orange.setColor(Color.rgb(255, 165, 0));
+        orange.setStrokeWidth(5.0f);
+        orange.setStyle(Paint.Style.STROKE);
+        purple.setColor(Color.rgb(106,13,173));
+        purple.setStrokeWidth(5.0f);
+        purple.setStyle(Paint.Style.STROKE);
+        black.setColor(Color.BLACK);
+        black.setStrokeWidth(5.0f);
+        black.setStyle(Paint.Style.STROKE);
+
+        if(ttGameState.getPlayer0Hand().getHand() == null){
+            //do nothing if player hand doesn't exist
+            return;
+        }
+        else if(ttGameState.getPlayer0Hand().getHand().isEmpty()){
+            //do nothing if player hand is empty
+            return;
+        }
+
+        if(!ttGameState.isCardInGroup(card)){
+            //draw a black border if it isn't in a group
+            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
+        }
+        else{
+            //find which group it's in
+            int grpIdx = 0;
+            boolean flag = false;
+
+            //iterate through the current player's groupings for the given card
+            for(ArrayList<Card> groups : ttGameState.currentPlayerHand().getGroupings()){
+                for(Card c : groups){
+                    //if the given card has the same rank and suit as the card in groups, they have the card
+                    if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
+                        flag = true;
+                    }
+                }
+                //check if the card was found first
+                if(flag){
+                    //break out of the outer for loop
+                    break;
+                }
+                //increment grpIdx every time we check the next group
+                grpIdx++;
+            }
+
+            switch (grpIdx){
+                case 0:
+                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),blue);
+                    break;
+                case 1:
+                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),yellow);
+                    break;
+                case 2:
+                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),orange);
+                    break;
+                case 3:
+                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),purple);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     /**
@@ -155,11 +240,21 @@ public class GameBoard extends SurfaceView {
      * Solution: used the method suggested
      */
     public void drawRotCard(Canvas canvas, float x, float y, Card card){
+        //black border for discarded card
+        black.setColor(Color.BLACK);
+        black.setStrokeWidth(5.0f);
+        black.setStyle(Paint.Style.STROKE);
 
+        //draw the rotated card
         Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.cardId);
         Bitmap cardObj = Bitmap.createScaledBitmap(tempObj,card.getWidth(),card.getHeight(),true);
         Bitmap rotObj = Bitmap.createBitmap(cardObj, 0, 0, cardObj.getWidth(),cardObj.getHeight(), rotate, true);
         canvas.drawBitmap(rotObj, x , y,null);
+
+        //only need to draw a border for a front facing card
+        if(card.getCardType() == 1) {
+            canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), black);
+        }
 
     }
 
@@ -183,6 +278,12 @@ public class GameBoard extends SurfaceView {
 
         if(userHand != null && !userHand.isEmpty()) {
             int numCards = 0;
+
+            //TODO: used for displaying the final board screen, remove later
+            for(int i=0;i<11;i++){
+                ttGameState.currentPlayerHand().addToHand(ttGameState.getDeck().get(0));
+                ttGameState.getDeck().remove(0);
+            }
 
             //Grid system used to showcase hand of user
             for (int row = 1; row < 5; row++) {

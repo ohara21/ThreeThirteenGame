@@ -157,6 +157,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.popup_window, null);
 
+                /**
+                 * External Citation
+                 * Problem: Didn't know how to create pop up window
+                 * Source: https://stackoverflow.com/questions/5944987/how-to-create-a-popup-window-popupwindow-in-android
+                 * Solution: used example provided
+                 */
                 // create popup window
                 int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -205,9 +211,3 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         return false;
     }
 }
-/**
- * External Citation
- * Problem: Didn't know how to create pop up window
- * Source: https://stackoverflow.com/questions/5944987/how-to-create-a-popup-window-popupwindow-in-android
- * Solution: used example provided
- */

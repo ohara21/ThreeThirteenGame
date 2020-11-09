@@ -595,6 +595,11 @@ public class TTGameState extends GameState {
         }
 
         //check to make sure there are groups in the current player's hand
+        if(currentPlayerHand().getGroupings().isEmpty()){
+            return false;
+        }
+
+        //check to make sure there are groups in the current player's hand
         if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
             return false;
         }

@@ -84,6 +84,11 @@ public class Card {
 
     }
 
+    //returns if its a front or back card
+    public int getCardType(){
+        return this.cardType;
+    }
+
     //returns the horizontal width of the card depending on its type
     public int getWidth(){
         if(cardType == 1) {
