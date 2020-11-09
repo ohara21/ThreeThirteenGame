@@ -94,7 +94,7 @@ public class TTHumanPlayer extends GameHumanPlayer{
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
-        myActivity.setContentView(R.layout.activity_main);
+        myActivity.setContentView(R.layout.tt_human_player);
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
