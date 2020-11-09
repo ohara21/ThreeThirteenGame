@@ -129,20 +129,26 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.helpButton):
+                // popup window with rules
                 break;
             case (R.id.quitButton):
-                // Close program
+                // close program
                 System.exit(0);
                 break;
             case (R.id.restartButton):
+                // back to game config screen
                 break;
             case (R.id.goOutButton):
+                state.goOut();
                 break;
             case (R.id.discardButton):
+                // if card is selected, discard it
                 break;
             case (R.id.addGroup):
+                // if card is selected, add it to group
                 break;
             case (R.id.removeGroup):
+                // if card is selected, remove from group
                 break;
             default:
                 // do nothing
