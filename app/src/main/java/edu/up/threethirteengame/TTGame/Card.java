@@ -28,7 +28,7 @@ public class Card {
 
     private boolean isClick;
 
-    public int cardId = R.drawable.back_vert;
+    private int cardId = R.drawable.back_vert;
 
     // constructor sets the type of card and scales the card
     public Card(int cType, char suit, int value){
@@ -87,6 +87,11 @@ public class Card {
     //returns if its a front or back card
     public int getCardType(){
         return this.cardType;
+    }
+
+    //returns the drawable Id
+    public int getCardId() {
+        return cardId;
     }
 
     //returns the horizontal width of the card depending on its type

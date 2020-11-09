@@ -140,7 +140,7 @@ public class GameBoard extends SurfaceView {
      */
     public void drawCard(Canvas canvas, float x, float y, Card card){
 
-        Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.cardId);
+        Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.getCardId());
         Bitmap cardObj = Bitmap.createScaledBitmap(tempObj,card.getWidth(),card.getHeight(),true);
 
         canvas.drawBitmap(cardObj, x, y, null);
@@ -246,7 +246,7 @@ public class GameBoard extends SurfaceView {
         black.setStyle(Paint.Style.STROKE);
 
         //draw the rotated card
-        Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.cardId);
+        Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.getCardId());
         Bitmap cardObj = Bitmap.createScaledBitmap(tempObj,card.getWidth(),card.getHeight(),true);
         Bitmap rotObj = Bitmap.createBitmap(cardObj, 0, 0, cardObj.getWidth(),cardObj.getHeight(), rotate, true);
         canvas.drawBitmap(rotObj, x , y,null);

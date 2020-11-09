@@ -13,7 +13,7 @@ public class TTMoveAction extends GameAction {
     private Card discard;
 
     /**
-     * constructor for GameAction
+     * constructor for TTMoveAction
      *
      * @param player the player who created the action
      */
@@ -21,6 +21,11 @@ public class TTMoveAction extends GameAction {
         super(player);
     }
 
+    /**
+     * constructor for TTMoveAction if there's a card to be discarded
+     * @param player the player who created the action
+     * @param card the card to be discarded
+     */
     public TTMoveAction(GamePlayer player, Card card){
         super(player);
         discard = card;
