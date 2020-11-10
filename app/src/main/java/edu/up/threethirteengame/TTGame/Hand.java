@@ -5,6 +5,8 @@ package edu.up.threethirteengame.TTGame;
  * @version: 10/20/2020
  */
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -188,6 +190,71 @@ public class Hand {
         }
         return false;
     }
+
+    /**
+     * determines if the given card is in the user's groupings
+     * used in Go Out
+     * @param card the card in question
+     * @return whether this card is in the current player's groupings
+     */
+    public boolean isCardInGroup(Card card){
+
+        //checks to make sure card exists
+        if(card == null){
+            Log.d("isCardInGroup()", "passed card was null");
+            return false;
+        }
+
+        //check to make sure there are groups in the current player's hand
+        if(this.groupings.isEmpty()){
+            return false;
+        }
+
+        //check to make sure there are groups in the current player's hand
+        if(this.groupings.get(MAX_NUM_GROUPS-1).isEmpty()){
+            return false;
+        }
+
+        //iterate through the current player's groupings for the given card
+        for(ArrayList<Card> groups : this.groupings){
+            for(Card c : groups){
+                //if the given card has the same rank and suit as the card in groups, they have the card
+                if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
+                    return true;
+                }
+            }
+        }
+
+        //the card was not found
+        return false;
+    }//isCardInGroup
+
+    /**
+     * determines if the given card is in the user's hand
+     * @param card the card in question
+     * @return whether the card was found in the user's hand
+     */
+    public boolean isCardInHand(Card card){
+        //checks to make sure card exists
+        if(card == null){
+            Log.d("isCardInGroup()", "passed card was null");
+            return false;
+        }
+
+        //check to make sure the player's hand is not null
+        if(this.userHand == null){
+            return false;
+        }
+
+        for(Card c : this.userHand){
+            //if the given card has the same rank and suit as the card in player's hand, they have the card
+            if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
+                return true;
+            }
+        }
+        //the card was not found
+        return false;
+    }//isCardInHand
 
     /**
      * checks the given group by returning an array with the differences between each consecutive card

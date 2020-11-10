@@ -31,10 +31,14 @@ public class Card {
     private int finalBackWidth;
     private int finalBackHeight;
 
+    //card's rank and suit
     private int cardRank;
     private char cardSuit;
 
+    //if the card is currently selected
     private boolean isClick;
+
+    //the card's location on the GameBoard's grid
     private int boardLocation = 0;
 
     private int cardId = R.drawable.back_vert;

@@ -466,6 +466,7 @@ public class TTGameState extends GameState {
      * Go Out: all of player's cards except one must be in run/set to Go Out
      * @return whether the player can Go Out or not
      */
+    //TODO: doesn't account for wild card yet
     public boolean canPlayerGoOut(){
         //check to make sure there is at least one group in 2D groupings
         if(currentPlayerHand().getGroupings().isEmpty()){
@@ -539,6 +540,7 @@ public class TTGameState extends GameState {
     /**
      * action method for the current player to go out
      */
+    //TODO: doesn't account for wild card yet
     public void goOut(){
         //check if player can Go Out, all cards are in a group except one
         if(!this.canPlayerGoOut()){
