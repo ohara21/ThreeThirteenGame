@@ -231,6 +231,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.removeGroupButton):
                 // if card is selected, remove from group
+                for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
+                    if (state.currentPlayerHand().getCard(i).getIsClick()) {
+                        state.currentPlayerHand().removeGrouping(state.currentPlayerHand().getCard(i));
+                        break;
+                    }
+                }
                 break;
             default:
                 // do nothing
