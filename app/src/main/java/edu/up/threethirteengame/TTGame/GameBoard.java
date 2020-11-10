@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 import java.util.ArrayList;
 
@@ -248,9 +249,19 @@ public class GameBoard extends SurfaceView {
 
         //Discard and Deck pile
         rotate.setRotate(90);
-        //TODO: this should work
+
+        //draw the discard pile
+        if(!ttGameState.getDiscardPile().isEmpty()) {
+            Log.d("GameBoard","the discard pile isn't empty");
+            Log.d("discardPile size",String.valueOf(ttGameState.getDiscardPile().size()));
+            Log.d("discardPile top card",String.valueOf(ttGameState.getDiscardPile().get(0).getCardRank()));
+            drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(0));
+        }
+        else{
+            Log.d("GameBoard","the discard pile isn't empty");
+            Log.d("discardPile size",String.valueOf(ttGameState.getDiscardPile().size()));
+        }
         //drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
-        drawRotCard(canvas, 128, 74, new Card(1, 's',10));
         drawRotCard(canvas, 630, 74, new Card(0));
 
         if(userHand != null && !userHand.isEmpty()) {
