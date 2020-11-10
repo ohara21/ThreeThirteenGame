@@ -263,19 +263,25 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             Log.d("h", "clicked on discard");
             // draw pile
             // check if user hasn't already drawn this round
-            if (!state.getPlayer0Drawn()) {
-                state.playerDrawDiscard();
-                state.setPlayer0Drawn(true);
-            }
+//            if (!state.getPlayer0Drawn()) {
+//                state.playerDrawDiscard();
+//                state.setPlayer0Drawn(true);
+//            }
+
+            //send a draw from discard action to the local game
+            game.sendAction(new TTDrawDiscardAction(this));
         }
         if (x < backCard.getHeight() + 630 && x > 630 && y < backCard.getWidth() + 74 && y > 74) {
             Log.d("H", "clicked on deck");
             // discard pile
             // check if user hasn't already drawn this round
-            if (!state.getPlayer0Drawn()) {
-                state.playerDrawDeck();
-                state.setPlayer0Drawn(true);
-            }
+//            if (!state.getPlayer0Drawn()) {
+//                state.playerDrawDeck();
+//                state.setPlayer0Drawn(true);
+//            }
+
+            //send a draw from deck action to the local game
+            game.sendAction(new TTDrawDeckAction(this));
         }
         // search for card based on grid location
         for (int row = 1; row < 5; row++) {
