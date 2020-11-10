@@ -277,6 +277,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 }
             }
         }
+
+        //redraw the GameBoard
+        gameBoard.invalidate();
         return false;
     }
 }

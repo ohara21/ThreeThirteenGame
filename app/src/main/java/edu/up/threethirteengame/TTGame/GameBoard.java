@@ -122,7 +122,7 @@ public class GameBoard extends SurfaceView {
         black.setStrokeWidth(5.0f);
         black.setStyle(Paint.Style.STROKE);
         red.setColor(Color.RED);
-        red.setStrokeWidth(5.0f);
+        red.setStrokeWidth(7.0f);
         red.setStyle(Paint.Style.STROKE);
 
         if(ttGameState.getPlayer0Hand().getHand() == null){
@@ -138,7 +138,8 @@ public class GameBoard extends SurfaceView {
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),red);
         } else if(!ttGameState.isCardInGroup(card)){
             //draw a black border if it isn't in a group
-            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),magenta);
+            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
+            return;
         }
         else{
             //find which group it's in
@@ -254,9 +255,11 @@ public class GameBoard extends SurfaceView {
             int numCards = 0;
 
             //TODO: used for displaying the final board screen, remove later
-            for(int i=0;i<11;i++){
-                ttGameState.currentPlayerHand().addToHand(ttGameState.getDeck().get(0));
-                ttGameState.getDeck().remove(0);
+            if(ttGameState.currentPlayerHand().getHand().size() <=3) {
+                for (int i = 0; i < 11; i++) {
+                    ttGameState.currentPlayerHand().addToHand(ttGameState.getDeck().get(0));
+                    ttGameState.getDeck().remove(0);
+                }
             }
 
             //Grid system used to showcase hand of user
