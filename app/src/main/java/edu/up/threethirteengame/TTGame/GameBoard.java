@@ -248,7 +248,7 @@ public class GameBoard extends SurfaceView {
 
         //Discard and Deck pile
         rotate.setRotate(90);
-        drawRotCard(canvas, 128, 74, new Card(1, 'h', 10));
+        drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
         drawRotCard(canvas, 630, 74, new Card(0));
 
         if(userHand != null && !userHand.isEmpty()) {

@@ -199,7 +199,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.quitButton):
                 // close program
-                System.exit(0);
+                myActivity.startActivity(new Intent(myActivity, QuitMenu.class));
                 break;
             case (R.id.restartButton):
                 // back to game config screen
@@ -213,6 +213,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
                         state.discardCard(state.currentPlayerHand().getCard(i));
+                        gameBoard.invalidate();
                         break;
                     }
                 }

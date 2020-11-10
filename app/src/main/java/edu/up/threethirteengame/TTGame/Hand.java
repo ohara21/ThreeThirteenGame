@@ -319,12 +319,4 @@ public class Hand {
             }
         }
     }
-
-//    public void addToGroup(Card add, ArrayList<Card> group){
-//        group.add(add);
-//    }
-//
-//    public void removeFromGroup(Card remove, ArrayList<Card> group) {
-//        group.remove(remove);
-//    }
 }
