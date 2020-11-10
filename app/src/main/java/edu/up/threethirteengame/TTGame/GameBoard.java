@@ -270,6 +270,7 @@ public class GameBoard extends SurfaceView {
                     //draw the card
                     if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
+                        userHand.get(numCards).setBoardLocation(numCards);
                         numCards++;
                     }
                 }

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.PopupWindow;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
 import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
@@ -48,6 +50,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     // empty card used to get width and height
     private Card card = new Card(1);
+
+    // hand to hold selected cards to form groups
+    private Hand selectHand = new Hand();
 
     /**
      * constructor
@@ -203,10 +208,22 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 state.goOut();
                 break;
             case (R.id.discardButton):
-                // if card is selected, discard it
+                // Loop through all player cards until reaches clicked card, then discard
+                for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
+                    if (state.currentPlayerHand().getCard(i).getIsClick()) {
+                        state.discardCard(state.currentPlayerHand().getCard(i));
+                        break;
+                    }
+                }
                 break;
             case (R.id.addGroupButton):
                 // if card is selected, add it to group
+                for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
+                    if (state.currentPlayerHand().getCard(i).getIsClick()) {
+                        
+                        break;
+                    }
+                }
                 break;
             case (R.id.removeGroupButton):
                 // if card is selected, remove from group
@@ -225,20 +242,30 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         int xUpperBound;
         int yLowerBound;
         int yUpperBound;
+        int gridLocation = 0;
         String string = "X: " + x + " Y: " + y;
         Log.d("TTHumanPlayer", string);
         for (int row = 1; row < 5; row++) {
             for (int col = 0; col < 4; col++) {
+                if((row == 4) && (col ==0)){
+                    continue;
+                }
+                gridLocation++;
                 xLowerBound = (int) (col * gameBoard.sectionWidth + gameBoard.padx);
                 xUpperBound = xLowerBound + card.getWidth();
                 yLowerBound = (int) (row * gameBoard.sectionHeight + gameBoard.pady);
                 yUpperBound = yLowerBound + card.getHeight();
                 if (x < xUpperBound && x > xLowerBound && y < yUpperBound && y > yLowerBound) {
+                    // edit out log d once this completely works
                     Log.d("TTHumanPlayer", "you clicked on a card");
-                    int id = view.getId();
-                    gameBoard.findCardById(id).setIsClick(true);
-                    Log.d("id", String.valueOf(id));
-                    Log.d("TTHumanPlayer", "Clicked: " + gameBoard.findCardById(id).getIsClick());
+                    Log.d("TTHumanPlayer", "grid spot: " + gridLocation);
+                    // click card to select it, click again to de-select
+                    if (state.currentPlayerHand().getCard(gridLocation).getIsClick()) {
+                        state.currentPlayerHand().getCard(gridLocation).setIsClick(false);
+                    } else {
+                        state.currentPlayerHand().getCard(gridLocation).setIsClick(true);
+                    }
+                    Log.d("TTHumanPlayer", "Is clicked: " + state.currentPlayerHand().getCard(gridLocation).getIsClick());
                     break;
                 }
             }

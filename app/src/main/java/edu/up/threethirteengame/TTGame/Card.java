@@ -35,6 +35,7 @@ public class Card {
     private char cardSuit;
 
     private boolean isClick;
+    private int boardLocation = 0;
 
     private int cardId = R.drawable.back_vert;
 
@@ -81,10 +82,17 @@ public class Card {
         }
     }
 
+    // returns and sets whether the card has been clicked or not
     public boolean getIsClick() {return isClick;}
+
     public void setIsClick(boolean isClick) {
         this.isClick = isClick;
     }
+
+    // returns and sets the spot of the card on the board, if any
+    public int getBoardLocation() {return boardLocation;}
+
+    public void setBoardLocation(int boardLocation) {this.boardLocation = boardLocation;}
 
     //returns the vertical height of the card depending on its type
     public int getHeight(){
