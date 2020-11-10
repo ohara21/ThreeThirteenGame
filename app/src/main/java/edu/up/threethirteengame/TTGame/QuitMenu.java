@@ -24,7 +24,7 @@ public class QuitMenu extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.id.quit_menu);
+        setContentView(R.layout.quit_menu);
 
         yesButton = findViewById(R.id.yes_quit_button);
         noButton = findViewById(R.id.no_quit_button);

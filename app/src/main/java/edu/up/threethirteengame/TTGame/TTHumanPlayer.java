@@ -199,7 +199,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.quitButton):
                 // close program
-                myActivity.startActivity(new Intent(myActivity, QuitMenu.class));
+                System.exit(0);
+                //TODO: use bottom code when we figure it out
+                //myActivity.startActivity(new Intent(myActivity, QuitMenu.class));
                 break;
             case (R.id.restartButton):
                 // back to game config screen
