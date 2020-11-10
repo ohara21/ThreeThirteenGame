@@ -253,8 +253,8 @@ public class TTGameStateTest {
         ttGameState.goOut();
         assertEquals(goOutCard,ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
         assertEquals(3,p0Hand.size());
-        assertTrue(ttGameState.isPlayer0GoneOut());
-        assertFalse(ttGameState.isPlayer1GoneOut());
+        assertTrue(ttGameState.getIsPlayer0GoneOut());
+        assertFalse(ttGameState.getIsPlayer1GoneOut());
         assertEquals(1,ttGameState.getPlayerTurn());
     }//goOut
 
