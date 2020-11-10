@@ -48,8 +48,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private TextView opponScoreText;
     private GameBoard gameBoard;
 
-    // empty card used to get width and height
+    // empty cards used to get width and height
     private Card card = new Card(1);
+    private Card backCard = new Card(0);
 
     // hand to hold selected cards to form groups
     private Hand selectHand = new Hand();
@@ -247,8 +248,26 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         int yLowerBound;
         int yUpperBound;
         int gridLocation = 0;
-        String string = "X: " + x + " Y: " + y;
-        Log.d("TTHumanPlayer", string);
+        // check if click on draw or discard pile
+        if (x < card.getHeight() + 128 && x > 128 && y < card.getWidth() + 74 && y > 74) {
+            Log.d("h", "clicked on draw");
+            // draw pile
+            // check if user hasn't already drawn this round
+            if (!state.getPlayer0Drawn()) {
+                state.playerDrawDeck();
+                state.setPlayer0Drawn(true);
+            }
+        }
+        if (x < backCard.getHeight() + 630 && x > 630 && y < backCard.getWidth() + 74 && y > 74) {
+            Log.d("H", "clicked on discard");
+            // discard pile
+            // check if user hasn't already drawn this round
+            if (!state.getPlayer0Drawn()) {
+                state.playerDrawDiscard();
+                state.setPlayer0Drawn(true);
+            }
+        }
+        // search for card based on grid location
         for (int row = 1; row < 5; row++) {
             for (int col = 0; col < 4; col++) {
                 //there is no card displayed in this position so skip it
@@ -266,16 +285,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 yLowerBound = (int) (row * gameBoard.sectionHeight + gameBoard.pady);
                 yUpperBound = yLowerBound + card.getHeight();
                 if (x < xUpperBound && x > xLowerBound && y < yUpperBound && y > yLowerBound) {
-                    // edit out log d once this completely works
-                    Log.d("TTHumanPlayer", "you clicked on a card");
-                    Log.d("TTHumanPlayer", "grid spot: " + gridLocation);
                     // click card to select it, click again to de-select
                     if (state.currentPlayerHand().getCard(gridLocation).getIsClick()) {
                         state.currentPlayerHand().getCard(gridLocation).setIsClick(false);
                     } else {
                         state.currentPlayerHand().getCard(gridLocation).setIsClick(true);
                     }
-                    Log.d("TTHumanPlayer", "Is clicked: " + state.currentPlayerHand().getCard(gridLocation).getIsClick());
                     break;
                 }
 

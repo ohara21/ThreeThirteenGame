@@ -37,6 +37,10 @@ public class TTGameState extends GameState {
     private int player0TurnsTaken;
     private int player1TurnsTaken;
 
+    //if the player has drawn a card for the current round
+    private boolean player0Drawn;
+    private boolean player1Drawn;
+
     //if the player has GoneOut for the current round
     private boolean player0GoneOut;
     private boolean player1GoneOut;
@@ -76,6 +80,8 @@ public class TTGameState extends GameState {
         player1Score = 0;
         player0TurnsTaken = 0;
         player1TurnsTaken = 0;
+        player0Drawn = false;
+        player1Drawn = false;
         player0GoneOut = false;
         player1GoneOut = false;
 
@@ -107,6 +113,8 @@ public class TTGameState extends GameState {
         this.player1Score = orig.getPlayer1Score();
         this.player0TurnsTaken = orig.getPlayer0TurnsTaken();
         this.player1TurnsTaken = orig.getPlayer1TurnsTaken();
+        this.player0Drawn = orig.getPlayer0Drawn();
+        this.player1Drawn = orig.getPlayer1Drawn();
         this.player0GoneOut = orig.player0GoneOut;
         this.player1GoneOut = orig.player1GoneOut;
         this.roundNum = orig.getRoundNum();
@@ -151,11 +159,15 @@ public class TTGameState extends GameState {
         return player1TurnsTaken;
     }
 
-    public boolean isPlayer0GoneOut() {
+    public boolean getPlayer0Drawn() { return player0Drawn; }
+
+    public boolean getPlayer1Drawn() { return player1Drawn; }
+
+    public boolean getIsPlayer0GoneOut() {
         return player0GoneOut;
     }
 
-    public boolean isPlayer1GoneOut() {
+    public boolean getIsPlayer1GoneOut() {
         return player1GoneOut;
     }
 
@@ -218,6 +230,10 @@ public class TTGameState extends GameState {
         this.wildCard = wildCard;
     }
 
+    public void setPlayer0Drawn(boolean isDrawn) {this.player0Drawn = isDrawn; }
+
+    public void setPlayer1Drawn(boolean isDrawn) {this.player1Drawn = isDrawn; }
+
     /**
      * changes which player can take actions
      */
@@ -267,9 +283,11 @@ public class TTGameState extends GameState {
         //update player's scores
         updateScores();
 
-        //it is a new round so reset that player's went out
+        //it is a new round so reset that player's went out and drew cards
         player0GoneOut = false;
         player1GoneOut = false;
+        player0Drawn = false;
+        player1Drawn = false;
     }
 
     /**
