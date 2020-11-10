@@ -287,7 +287,12 @@ public class Hand {
      */
     public void removeGrouping(Card cardToRemove){
         //TODO: implement error checks and finish method
-    }
+        if(isCardInGroup(cardToRemove)) {
+            for (ArrayList<Card> groups : this.groupings) {
+                groups.remove(cardToRemove);
+                }
+            }
+        }
 
 //    public void addToGroup(Card add, ArrayList<Card> group){
 //        group.add(add);
