@@ -301,7 +301,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     break;
                 }
 
-                //update gridlocation after so we don't get idex out of bounds accessing hand
+                //update gridlocation after so we don't get index out of bounds accessing hand
                 gridLocation++;
 
                 //account for the last space on the board

@@ -194,10 +194,10 @@ public class HandTest {
         group4.add(new Card(1, 's', 6));
         group4.add(new Card(1, 'c', 6));
 
-        assertFalse(hand.checkIfSet(group1));
-        assertFalse(hand.checkIfSet(group2));
-        assertTrue(hand.checkIfSet(group3));
-        assertFalse(hand.checkIfSet(group4));
+        assertFalse(hand.checkIfRun(group1));
+        assertFalse(hand.checkIfRun(group2));
+        assertTrue(hand.checkIfRun(group3));
+        assertFalse(hand.checkIfRun(group4));
 
     }
 
@@ -220,7 +220,7 @@ public class HandTest {
             System.out.print(check1[y] + " ");
         }
 
-        assertEquals(check1, actual);
+        assertArrayEquals(check1, actual);
 
 
     }

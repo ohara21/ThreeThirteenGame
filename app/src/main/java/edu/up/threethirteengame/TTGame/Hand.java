@@ -128,7 +128,6 @@ public class Hand {
      * @param set a given set
      * @return whether it's valid or not
      */
-    //TODO: Failed Unit Test
     public boolean checkIfSet(ArrayList<Card> set){
 
         //checks to make sure set isn't empty and is not null pointer
@@ -151,7 +150,6 @@ public class Hand {
      * @param run a given run
      * @return whether it's valid or not
      */
-    //TODO: Failed Unit Test
     public boolean checkIfRun(ArrayList<Card> run){
         //checks to make sure run isn't empty and is not null pointer
         if(run.isEmpty() || (run == null)){
@@ -261,7 +259,6 @@ public class Hand {
      * @param group a given group
      * @return groupDiff: an int array with calculated differences in rank
      */
-    //TODO: Failed Unit Test
     public int[] checkGroup(ArrayList<Card> group){
         int[] groupDiff = new int[group.size()-1];
         ArrayList<Card> sortedHand = sortByRank(group);
@@ -273,11 +270,36 @@ public class Hand {
 
     /**
      * puts a selected group of cards into the specified user's grouping ArrayList
-     * @param hand
+     * @param group
      */
-    public void createGrouping(ArrayList<Card> hand){
-        //TODO: implement some error checks
-        groupings.add(hand);
+    public boolean createGrouping(ArrayList<Card> group){
+        //checks to make sure group is not null and isn't empty
+        if((group == null) || group.isEmpty()){
+            return false;
+        }
+
+        //checks to make sure the groupings is not already full
+        boolean hasEmptyGroup = false;
+        for(ArrayList<Card> checkGroups : groupings){
+            if(checkGroups.isEmpty()){
+                hasEmptyGroup =true;
+                break;
+            }
+        }
+        if(!hasEmptyGroup){
+            return false;
+        }
+
+        //check to make sure each card is not in a current group
+        for(Card c : group){
+            if(isCardInGroup(c)){
+                return false;
+            }
+        }
+
+        //this group can be created
+        groupings.add(group);
+        return true;
     }
 
     /**
