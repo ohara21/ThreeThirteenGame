@@ -250,7 +250,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 if((row == 4) && (col ==0)){
                     continue;
                 }
-                gridLocation++;
                 xLowerBound = (int) (col * gameBoard.sectionWidth + gameBoard.padx);
                 xUpperBound = xLowerBound + card.getWidth();
                 yLowerBound = (int) (row * gameBoard.sectionHeight + gameBoard.pady);
@@ -266,6 +265,14 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         state.currentPlayerHand().getCard(gridLocation).setIsClick(true);
                     }
                     Log.d("TTHumanPlayer", "Is clicked: " + state.currentPlayerHand().getCard(gridLocation).getIsClick());
+                    break;
+                }
+
+                //update gridlocation after so we don't get idex out of bounds accessing hand
+                gridLocation++;
+
+                //account for the last space on the board
+                if(gridLocation == 14){
                     break;
                 }
             }
