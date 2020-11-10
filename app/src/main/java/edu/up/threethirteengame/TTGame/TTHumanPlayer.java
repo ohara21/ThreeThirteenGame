@@ -235,7 +235,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 yUpperBound = yLowerBound + card.getHeight();
                 if (x < xUpperBound && x > xLowerBound && y < yUpperBound && y > yLowerBound) {
                     Log.d("TTHumanPlayer", "you clicked on a card");
-                    
+                    int id = view.getId();
+                    gameBoard.findCardById(id).setIsClick(true);
+                    Log.d("id", String.valueOf(id));
+                    Log.d("TTHumanPlayer", "Clicked: " + gameBoard.findCardById(id).getIsClick());
                     break;
                 }
             }

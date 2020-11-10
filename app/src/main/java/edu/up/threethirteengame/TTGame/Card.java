@@ -73,6 +73,7 @@ public class Card {
         }
     }
 
+    public boolean getIsClick() {return isClick;}
     public void setIsClick(boolean isClick) {
         this.isClick = isClick;
     }
@@ -303,6 +304,5 @@ public class Card {
 
         return cardId;
     }
-
 
 }

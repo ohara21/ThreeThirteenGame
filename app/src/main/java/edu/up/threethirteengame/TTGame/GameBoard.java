@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.ArrayList;
 
+import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
 
 /**
@@ -42,6 +43,7 @@ public class GameBoard extends SurfaceView {
     Paint orange = new Paint();
     Paint purple = new Paint();
     Paint black = new Paint();
+    Paint red = new Paint();
 
     //used to rotate the card images
     Matrix rotate = new Matrix();
@@ -117,6 +119,9 @@ public class GameBoard extends SurfaceView {
         black.setColor(Color.BLACK);
         black.setStrokeWidth(5.0f);
         black.setStyle(Paint.Style.STROKE);
+        red.setColor(Color.RED);
+        red.setStrokeWidth(5.0f);
+        red.setStyle(Paint.Style.STROKE);
 
         if(ttGameState.getPlayer0Hand().getHand() == null){
             //do nothing if player hand doesn't exist
@@ -127,7 +132,9 @@ public class GameBoard extends SurfaceView {
             return;
         }
 
-        if(!ttGameState.isCardInGroup(card)){
+        if (card.getIsClick()) {
+            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),red);
+        } else if(!ttGameState.isCardInGroup(card)){
             //draw a black border if it isn't in a group
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
         }
@@ -203,6 +210,23 @@ public class GameBoard extends SurfaceView {
             canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), black);
         }
 
+    }
+
+    /**
+     * returns card corresponding to ID
+     * @param idNum
+     * @return Card
+     */
+    public Card findCardById(int idNum) {
+        ArrayList<Card> userHand = ttGameState.getPlayer0Hand().getHand();
+        for (Card card: userHand) {
+            int currId = card.getCardId();
+            if (idNum == currId) {
+                return card;
+            }
+        }
+        // this should never happen
+        return new Card(1);
     }
 
     /**
