@@ -34,12 +34,14 @@ public class GameBoard extends SurfaceView {
     //instance variables that will define locations on the GameBoard
     float sectionWidth;
     float sectionHeight;
+
+    //padding for displaying cards
     float padx = 35;
     float pady = 4;
 
     //paints for drawing the card borders depending on group
     Paint blue = new Paint();
-    Paint yellow = new Paint();
+    Paint magenta = new Paint();
     Paint orange = new Paint();
     Paint purple = new Paint();
     Paint black = new Paint();
@@ -107,10 +109,10 @@ public class GameBoard extends SurfaceView {
         blue.setColor(Color.BLUE);
         blue.setStrokeWidth(5.0f);
         blue.setStyle(Paint.Style.STROKE);
-        yellow.setColor(Color.YELLOW);
-        yellow.setStrokeWidth(5.0f);
-        yellow.setStyle(Paint.Style.STROKE);
-        orange.setColor(Color.rgb(255, 165, 0));
+        magenta.setColor(Color.MAGENTA);
+        magenta.setStrokeWidth(5.0f);
+        magenta.setStyle(Paint.Style.STROKE);
+        orange.setColor(Color.rgb(255, 125, 0));
         orange.setStrokeWidth(5.0f);
         orange.setStyle(Paint.Style.STROKE);
         purple.setColor(Color.rgb(106,13,173));
@@ -136,7 +138,7 @@ public class GameBoard extends SurfaceView {
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),red);
         } else if(!ttGameState.isCardInGroup(card)){
             //draw a black border if it isn't in a group
-            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
+            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),magenta);
         }
         else{
             //find which group it's in
@@ -165,7 +167,7 @@ public class GameBoard extends SurfaceView {
                     canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),blue);
                     break;
                 case 1:
-                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),yellow);
+                    canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),magenta);
                     break;
                 case 2:
                     canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),orange);
@@ -186,14 +188,15 @@ public class GameBoard extends SurfaceView {
      * @param y the y location of the card
      * @param card the card to be drawn
      */
-    /**
-     * External Citation:
-     * Date: 9/18/20
-     * Problem: Didn't know how to rotate Bitmap image
-     * Resource: https://stackoverflow.com/questions/9015372/how-to-rotate-a-bitmap-90-degrees
-     * Solution: used the method suggested
-     */
     public void drawRotCard(Canvas canvas, float x, float y, Card card){
+        /**
+         * External Citation:
+         * Date: 9/18/20
+         * Problem: Didn't know how to rotate Bitmap image
+         * Resource: https://stackoverflow.com/questions/9015372/how-to-rotate-a-bitmap-90-degrees
+         * Solution: used the method suggested
+         */
+
         //black border for discarded card
         black.setColor(Color.BLACK);
         black.setStrokeWidth(5.0f);
@@ -259,6 +262,12 @@ public class GameBoard extends SurfaceView {
             //Grid system used to showcase hand of user
             for (int row = 1; row < 5; row++) {
                 for (int col = 0; col < 4; col++) {
+                    //skip drawing the first card on the last row
+                    if((row == 4) && (col ==0)){
+                        continue;
+                    }
+
+                    //draw the card
                     if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
                         numCards++;
@@ -266,7 +275,6 @@ public class GameBoard extends SurfaceView {
                 }
             }
         }
-
-    }
+    }//onDraw
 
 }

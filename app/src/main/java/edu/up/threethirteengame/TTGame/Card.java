@@ -9,6 +9,14 @@ import edu.up.threethirteengame.R;
  */
 public class Card {
 
+    /**
+     * External Citation
+     * Date: 11/9/20
+     * Problem: needed card images
+     * Source: https://github.com/hayeah/playing-cards-assets.git
+     * Solution: used the card images from the link
+     */
+
     // cardType designates if the card is:
     // front(1), back (2)
     private int cardType;
