@@ -254,13 +254,13 @@ public class GameBoard extends SurfaceView {
         if(userHand != null && !userHand.isEmpty()) {
             int numCards = 0;
 
-            //TODO: used for displaying the final board screen, remove later
-            if(ttGameState.currentPlayerHand().getHand().size() <=3) {
-                for (int i = 0; i < 11; i++) {
-                    ttGameState.currentPlayerHand().addToHand(ttGameState.getDeck().get(0));
-                    ttGameState.getDeck().remove(0);
-                }
-            }
+//            //TODO: used for displaying the final board screen, remove later
+//            if(ttGameState.currentPlayerHand().getHand().size() <=3) {
+//                for (int i = 0; i < 11; i++) {
+//                    ttGameState.currentPlayerHand().addToHand(ttGameState.getDeck().get(0));
+//                    ttGameState.getDeck().remove(0);
+//                }
+//            }
 
             //Grid system used to showcase hand of user
             for (int row = 1; row < 5; row++) {

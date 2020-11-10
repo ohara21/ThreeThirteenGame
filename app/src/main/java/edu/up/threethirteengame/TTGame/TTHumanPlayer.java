@@ -247,9 +247,16 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         Log.d("TTHumanPlayer", string);
         for (int row = 1; row < 5; row++) {
             for (int col = 0; col < 4; col++) {
+                //there is no card displayed in this position so skip it
                 if((row == 4) && (col ==0)){
                     continue;
                 }
+
+                //the least amount of cards a player should have is 3
+                if(gridLocation >= state.currentPlayerHand().getHand().size()){
+                    break;
+                }
+
                 xLowerBound = (int) (col * gameBoard.sectionWidth + gameBoard.padx);
                 xUpperBound = xLowerBound + card.getWidth();
                 yLowerBound = (int) (row * gameBoard.sectionHeight + gameBoard.pady);
@@ -275,6 +282,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 if(gridLocation == 14){
                     break;
                 }
+            }
+
+            //check in the outer loop as well
+            //the least amount of cards a player should have is 3
+            if(gridLocation > state.currentPlayerHand().getHand().size()){
+                break;
             }
         }
 
