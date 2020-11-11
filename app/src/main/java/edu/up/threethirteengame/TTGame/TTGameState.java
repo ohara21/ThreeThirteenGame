@@ -339,9 +339,28 @@ public class TTGameState extends GameState {
         String turn = "Player " + playerTurn + " turn";
         String playerScoreString = "Player 0 score: " + player0Score;
         String computerScoreString = "Player 1 score: " + player1Score;
+
+        int group0size =0;
+        int group1size=0;
+        if(!player0Hand.getGroupings().isEmpty()){
+            for(ArrayList<Card> group0 : player0Hand.getGroupings()){
+                if(!group0.isEmpty()) {
+                    group0size++;
+                }
+            }
+        }
+        if(!player1Hand.getGroupings().isEmpty()){
+            for(ArrayList<Card> group1 : player1Hand.getGroupings()){
+                if(!group1.isEmpty()) {
+                    group1size++;
+                }
+            }
+        }
+        String playerGroup = "Player 0 num groups: " + group0size;
+        String computerGroup = "Player 1 num groups: " + group1size;
         String toString = round + "\n" + deckSize + "\n" + discardSize + "\n" + playerCard + "\n"
                 + computerCard + "\n" + turn + "\n" + playerScoreString + "\n"
-                + computerScoreString;
+                + computerScoreString + "\n" + playerGroup + "\n" + computerGroup;
         return toString;
     }
 
@@ -492,6 +511,12 @@ public class TTGameState extends GameState {
                 Log.d("GameState","a card is being discarded "+discardCard.getCardRank()+discardCard.getCardSuit());
                 discardPile.add(c);
                 Log.d("GameState","the top of discard pile "+discardPile.get(discardPile.size()-1).getCardRank()+discardPile.get(discardPile.size()-1).getCardSuit());
+
+                //check if this card is in a group before discarding
+                if(isCardInGroup(discardCard)){
+                    //remove it from its group
+                    removeGrouping(discardCard);
+                }
                 currentPlayerHand().getHand().remove(c);
                 break;
             }
@@ -640,19 +665,23 @@ public class TTGameState extends GameState {
 
         //check to make sure there are groups in the current player's hand
         if(currentPlayerHand().getGroupings().isEmpty()){
+            Log.d("isCardInGroup()", "current player's groupings is empty");
             return false;
         }
 
-        //check to make sure there are groups in the current player's hand
-        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
-            return false;
-        }
+//        //check to make sure there are groups in the current player's hand
+//        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
+//            Log.d("isCardInGroup()", "the first element in player's groupings is empty");
+//            return false;
+//        }
 
         //iterate through the current player's groupings for the given card
+        Log.d("isCardInGroup()", "trying to find the card in player's groups");
         for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
             for(Card c : groups){
                 //if the given card has the same rank and suit as the card in groups, they have the card
                 if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
+                    Log.d("isCardInGroup()", "found the card in player's groups");
                     return true;
                 }
             }

@@ -136,22 +136,29 @@ public class GameBoard extends SurfaceView {
         }
 
         if (card.getIsClick()) {
+            Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" card is clicked");
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),red);
         } else if(!ttGameState.isCardInGroup(card)){
             //draw a black border if it isn't in a group
+            Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" is not in group yet");
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
             return;
         }
         else{
+            Log.d("GameBoard","should be able to find a card in a group");
+
             //find which group it's in
-            int grpIdx = 0;
+            int grpIdx = 1;
             boolean flag = false;
 
+            Log.d("GameBoard","num groups in player hand: "+ttGameState.currentPlayerHand().getGroupingSize());
             //iterate through the current player's groupings for the given card
             for(ArrayList<Card> groups : ttGameState.currentPlayerHand().getGroupings()){
+                Log.d("GameBoard","the group index at this point: "+grpIdx);
                 for(Card c : groups){
                     //if the given card has the same rank and suit as the card in groups, they have the card
                     if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
+                        Log.d("GameBoard","found "+card.getCardRank()+card.getCardSuit()+" in a group");
                         flag = true;
                     }
                 }
@@ -163,7 +170,7 @@ public class GameBoard extends SurfaceView {
                 //increment grpIdx every time we check the next group
                 grpIdx++;
             }
-
+            grpIdx = ttGameState.currentPlayerHand().getGroupingSize() - grpIdx;
             switch (grpIdx){
                 case 0:
                     canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),blue);
@@ -178,6 +185,7 @@ public class GameBoard extends SurfaceView {
                     canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),purple);
                     break;
                 default:
+                    Log.d("GameBoard","the group Index is off: "+grpIdx);
                     break;
             }
         }

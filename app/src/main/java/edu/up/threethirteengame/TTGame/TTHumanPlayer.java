@@ -229,15 +229,23 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 //2:place selected cards in an ArrayList<Card> group
                 //3:use createGrouping() to add the selected cards to 2D groupings in Hand
 
+                Log.d("Human Player","addGroupButton was pressed");
                 ArrayList<Card> group = new ArrayList<>();
-                for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
+                int numCardsClicked =0;
+                for (Card cardInHand : state.currentPlayerHand().getHand()) {
                     // if card is selected, add it to group
-                    if (state.currentPlayerHand().getCard(i).getIsClick() &&
-                            !state.isCardInGroup(state.currentPlayerHand().getCard(i))) {
-                        group.add(state.currentPlayerHand().getCard(i));
+                    if (cardInHand.getIsClick() && !state.isCardInGroup(cardInHand)) {
+                        Log.d("Human Player","adding card to temporary group");
+                        group.add(cardInHand);
+                        numCardsClicked++;
                     }
                 }
-                game.sendAction(new TTAddGroupAction(this, group));
+                if(numCardsClicked >= 3){
+                    Log.d("Human Player","enough cards were clicked to add a group");
+                    game.sendAction(new TTAddGroupAction(this, group));
+                    gameBoard.invalidate();
+                }
+                gameBoard.invalidate();
                 break;
             case (R.id.removeGroupButton):
                 // if card is selected, remove from group
@@ -248,6 +256,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         break;
                     }
                 }
+                gameBoard.invalidate();
                 break;
             case (R.id.endTurnButton):
                 // check if player has drawn and and discarded
@@ -299,6 +308,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             game.sendAction(new TTDrawDeckAction(this));
         }
         // search for card based on grid location
+        boolean completeBreak = false;
         for (int row = 1; row < 5; row++) {
             for (int col = 0; col < 4; col++) {
                 //there is no card displayed in this position so skip it
@@ -308,6 +318,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
                 //the least amount of cards a player should have is 3
                 if(gridLocation >= state.currentPlayerHand().getHand().size()){
+                    completeBreak = true;
                     break;
                 }
 
@@ -322,7 +333,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     } else {
                         state.currentPlayerHand().getCard(gridLocation).setIsClick(true);
                     }
-                    break;
+                    completeBreak = true;
                 }
 
                 //update gridlocation after so we don't get index out of bounds accessing hand
@@ -330,13 +341,13 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
                 //account for the last space on the board
                 if(gridLocation == 14){
-                    break;
+                    completeBreak =true;
                 }
             }
 
             //check in the outer loop as well
             //the least amount of cards a player should have is 3
-            if(gridLocation > state.currentPlayerHand().getHand().size()){
+            if(completeBreak){
                 break;
             }
         }

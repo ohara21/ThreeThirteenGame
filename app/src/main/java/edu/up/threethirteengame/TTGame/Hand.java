@@ -25,7 +25,7 @@ public class Hand {
     public Hand(){
         this.userHand = new ArrayList<Card>();
         this.groupings = new ArrayList<ArrayList<Card>>(MAX_NUM_GROUPS);
-        for(int i=1; i<MAX_NUM_GROUPS; i++){
+        for(int i=0; i<MAX_NUM_GROUPS; i++){
             groupings.add(new ArrayList<Card>());
         }
     }
@@ -33,7 +33,7 @@ public class Hand {
     /**
      * copy constructor
      * copies the hand and groupings ArrayLists
-     * @param orig
+     * @param orig the original hand
      */
     public Hand(Hand orig){
         //copy the user hand
@@ -42,16 +42,23 @@ public class Hand {
             this.userHand.add(new Card(c));
         }
 
-        //copy the groupings
-        int count = 0;
-        this.groupings = new ArrayList<ArrayList<Card>>(MAX_NUM_GROUPS);
-        for(ArrayList<Card> group: orig.groupings){
-            for(Card c : group){
-                this.groupings.get(count).add(new Card(c));
-            }
-            count++;
+        //copy the groupings if the original groupings isn't empty
+        if(orig.groupings.isEmpty()) {
+            //if the original groupings is empty, make a new one
+            this.groupings = new ArrayList<ArrayList<Card>>(orig.groupings);
         }
+        else {
+            //if the original groupings is NOT empty, make a new one
+            this.groupings = new ArrayList<ArrayList<Card>>(MAX_NUM_GROUPS);
+            for(int i=0; i<MAX_NUM_GROUPS; i++){
+                this.groupings.add(new ArrayList<Card>());
+            }
 
+            //iterate through the original groupings
+            for (ArrayList<Card> origGroup : orig.groupings) {
+                this.groupings.add(new ArrayList<Card>(origGroup));
+            }
+        }
     }
 
     public void addToHand(Card c){userHand.add(c);}
@@ -317,9 +324,9 @@ public class Hand {
         //find the card in the 2D groupings
         for (ArrayList<Card> groups : this.groupings) {
             for (Card c : groups) {
-                if (c == cardToRemove) {
+                if ((cardToRemove.getCardRank() == c.getCardRank() && (cardToRemove.getCardSuit() == c.getCardSuit()))) {
                     //found the card to remove from 2D groupings
-                    groups.remove(cardToRemove);
+                    groups.remove(c);
                     breakLoop = true;
                     break;
                 }

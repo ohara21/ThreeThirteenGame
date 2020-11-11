@@ -72,9 +72,23 @@ public class TTLocalGame extends LocalGame {
      */
     @Override
     protected String checkIfGameOver() {
+        //the game ends on round 11
         if(state.getRoundNum() == 11){
+            //round 11 must be over
+            if(!state.isRoundOver()){
+                return null;
+            }
+
+            //both players must have 13 cards in their hand
             if((state.getNumCards(0) == 13) && (state.getNumCards(1) == 13)){
-                return "The game is over";
+                if (state.getPlayer0Score() == state.getPlayer1Score()) {
+                    return "It was a tie!  ";
+                }
+                else if(state.getPlayer0Score() > state.getPlayer1Score()){
+                    return "Human Player has won!  ";
+                }else{
+                    return "Computer Player has won!  ";
+                }
             }
         }
         return null;
@@ -122,7 +136,9 @@ public class TTLocalGame extends LocalGame {
         }
         else if(ttma.isAddGroup()){
             //ArrayList<Card> is passed in to create a group
+            Log.d("Local Game","received group, will now call GameState method");
             state.createGrouping(ttma.getAddGroup());
+            Log.d("Local Game",state.toString());
         }
         else if(ttma.isRemoveGroup()){
             //Card is passed in to remove from a group
