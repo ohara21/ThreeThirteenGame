@@ -252,16 +252,9 @@ public class GameBoard extends SurfaceView {
 
         //draw the discard pile
         if(!ttGameState.getDiscardPile().isEmpty()) {
-            Log.d("GameBoard","the discard pile isn't empty");
-            Log.d("discardPile size",String.valueOf(ttGameState.getDiscardPile().size()));
-            Log.d("discardPile top card",String.valueOf(ttGameState.getDiscardPile().get(0).getCardRank()));
-            drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(0));
+            drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
         }
-        else{
-            Log.d("GameBoard","the discard pile isn't empty");
-            Log.d("discardPile size",String.valueOf(ttGameState.getDiscardPile().size()));
-        }
-        //drawRotCard(canvas, 128, 74, ttGameState.getDiscardPile().get(ttGameState.getDiscardPile().size()-1));
+
         drawRotCard(canvas, 630, 74, new Card(0));
 
         if(userHand != null && !userHand.isEmpty()) {
