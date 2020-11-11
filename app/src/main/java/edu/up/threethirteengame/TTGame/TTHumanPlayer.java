@@ -93,8 +93,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 Log.d("Human Player",this.state.toString());
                 return;
             }
-            Log.d("Human Player",this.state.toString());
-
             //don't do anything if the gameBoard hasn't been initialized
             if(gameBoard == null){
                 return;
@@ -219,9 +217,8 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 // Loop through all player cards until reaches clicked card, then discard
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
-                        Log.d("HP Before Discard",String.valueOf(state.currentPlayerHand().getCard(i).getCardRank()));
+                        Log.d("HP Before Discard","card being discarded: "+state.currentPlayerHand().getCard(i).getCardRank()+state.currentPlayerHand().getCard(i).getCardSuit());
                         game.sendAction(new TTDiscardAction(this,state.currentPlayerHand().getCard(i)));
-                        Log.d("HP After Discard",state.toString());
                         gameBoard.invalidate();
                         break;
                     }

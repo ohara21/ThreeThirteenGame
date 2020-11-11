@@ -12,7 +12,6 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  */
 public class TTMoveAction extends GameAction {
 
-    //TODO: figure out how to remove a group without conflicting card with discard action
     private Card discard;
     private ArrayList<Card> addGroup;
     private Card removeGroup;

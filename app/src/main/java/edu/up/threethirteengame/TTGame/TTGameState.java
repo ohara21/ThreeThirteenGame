@@ -304,6 +304,9 @@ public class TTGameState extends GameState {
         player1GoneOut = false;
         player0Drawn = false;
         player1Drawn = false;
+
+        //deal a new set of cards
+        dealHand();
     }
 
     /**
@@ -466,25 +469,30 @@ public class TTGameState extends GameState {
     /**
      * action method that discards card
      * looks through current player's hand and removes card to discard pile
-     * @param card the card to be discarded from user's hand
+     * @param discardCard the card to be discarded from user's hand
      */
-    public void discardCard(Card card){
+    public void discardCard(Card discardCard){
         //checks if the card exists
-        if(card == null){
+        if(discardCard == null){
             Log.d("discardCard()","card to remove wasn't found");
             return;
         }
         //checks if the player can discard
-        if(!playerDiscard(card)){
+//        Log.d("GameState"," Before playerDiscard() a card is being discarded "+discardCard.getCardRank()+discardCard.getCardSuit());
+//        Log.d("GameState discardCard()", "memory address "+discardCard);
+        if(!playerDiscard(discardCard)){
             return;
         }
+
 
         //iterates through current player's hand for the card to discard
         //removes the card from the players hand and adds it to the discard pile
         for(Card c : currentPlayerHand().getHand()){
-            if(card == c){
-                discardPile.add(card);
-                currentPlayerHand().getHand().remove(card);
+            if((discardCard.getCardRank() == c.getCardRank() && (discardCard.getCardSuit() == c.getCardSuit()))){
+                Log.d("GameState","a card is being discarded "+discardCard.getCardRank()+discardCard.getCardSuit());
+                discardPile.add(c);
+                Log.d("GameState","the top of discard pile "+discardPile.get(discardPile.size()-1).getCardRank()+discardPile.get(discardPile.size()-1).getCardSuit());
+                currentPlayerHand().getHand().remove(c);
                 break;
             }
         }

@@ -104,9 +104,12 @@ public class TTLocalGame extends LocalGame {
 
         //game logic for these actions are located in the TTGameState
         if(ttma.isDiscard()){
-            Log.d("Local Game",String.valueOf(ttma.getDiscard().getCardRank()));
+            Log.d("Local Game","discard card in TTMoveAction "+ttma.getDiscard().getCardRank()+ttma.getDiscard().getCardSuit());
             //Card is passed in to discard from player's hand
+            Log.d("Local Game","can the player discard: "+String.valueOf(state.playerDiscard(ttma.getDiscard())));
             state.discardCard(ttma.getDiscard());
+            Log.d("Local Game","top discard pile "+state.getDiscardPile().get(state.getDiscardPile().size()-1).getCardRank()+state.getDiscardPile().get(state.getDiscardPile().size()-1).getCardSuit());
+
         }
         else if(ttma.isDrawDiscard()){
             state.playerDrawDiscard();

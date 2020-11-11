@@ -51,24 +51,23 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         if(newState.playerDrawDeck()){
-            Log.d("Top of discard",String.valueOf(newState.getDiscardPile().get(0)));
-            Log.d("Computer Player"," is drawing from deck");
+            Log.d("Computer Player","Top of discard "+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardRank()+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardSuit());
+            Log.d("Computer Player"," is drawing from deck: "+newState.getDeck().get(newState.getDeck().size()-1).getCardRank()+newState.getDeck().get(newState.getDeck().size()-1).getCardSuit());
             game.sendAction(new TTDrawDeckAction(this));
             return;
         }
-
-        if(newState.canPlayerGoOut()){
+        else if(newState.canPlayerGoOut()){
             Log.d("Computer PLayer", " was able to and got out");
             game.sendAction(new TTGoOutAction(this));
+            return;
         }
-
         else {
             Card discard;
             int handSize = newState.getPlayer1Hand().getSize();
             int randomIndex = rand.nextInt(handSize-1);
             discard = newState.getPlayer1Hand().getCard(randomIndex);
             Log.d("Computer Player"," is discarding a random card");
-            Log.d("discarding",String.valueOf(discard.getCardRank()));
+            Log.d("Computer Player","discarding "+discard.getCardRank()+discard.getCardSuit());
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
