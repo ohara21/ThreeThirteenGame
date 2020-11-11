@@ -25,6 +25,7 @@ public class TTLocalGame extends LocalGame {
      * Constructor for LocalGame creates a new GameState for the beginning of the game
      */
     public TTLocalGame(){
+        super();
         state = new TTGameState();
     }//TTLocalGame
 

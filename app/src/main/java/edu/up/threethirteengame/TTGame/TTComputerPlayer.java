@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Random;
@@ -10,6 +12,8 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
 public class TTComputerPlayer extends GameComputerPlayer {
 
+    //the local game state
+    private TTGameState newState = null;
 
     /**
      * constructor
@@ -25,12 +29,29 @@ public class TTComputerPlayer extends GameComputerPlayer {
 
         Random rand = new Random();
 
+        //ignore if instance of NotYourTurnInfo
         if(info instanceof NotYourTurnInfo){
             return;
         }
-        TTGameState newState = (TTGameState)info;
+
+        //ignore if not an instance of TTGameState
+        if(!(info instanceof TTGameState)){
+            return;
+        }
+
+
+        //initialize the game state
+        newState = (TTGameState)info;
+
+        //return if it's not the Computer Player's turn
+        if (newState.getPlayerTurn() != playerNum){
+            Log.d("Computer Player","it is not your turn AI!");
+            Log.d("Computer Player",newState.toString());
+            return;
+        }
 
         if(newState.playerDrawDeck()){
+            Log.d("Computer Player"," is drawing from deck");
             game.sendAction(new TTDrawDeckAction(this));
         }
 
@@ -43,6 +64,8 @@ public class TTComputerPlayer extends GameComputerPlayer {
             int handSize = newState.getPlayer1Hand().getSize();
             int randomIndex = rand.nextInt(handSize-1);
             discard = newState.getPlayer1Hand().getCard(randomIndex);
+            Log.d("Computer Player"," is discarding a random card");
+            Log.d("discarding",String.valueOf(discard.getCardRank()));
             game.sendAction(new TTDiscardAction(this, discard));
         }
 

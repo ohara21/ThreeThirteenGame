@@ -2,19 +2,15 @@ package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.icu.util.LocaleData;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.PopupWindow;
-import android.content.Intent;
 
 import java.util.ArrayList;
 
@@ -92,6 +88,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         else{
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
+            Log.d("Human Player",this.state.toString());
 
             //don't do anything if the gameBoard hasn't been initialized
             if(gameBoard == null){
