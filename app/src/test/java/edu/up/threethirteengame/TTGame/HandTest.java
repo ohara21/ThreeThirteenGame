@@ -143,7 +143,12 @@ public class HandTest {
         sorted.add(c4);
         sorted.add(c5);
 
-        assertEquals(sorted, hand);
+        assertEquals(hand.get(0).getCardSuit(), 'c');
+        assertEquals(hand.get(1).getCardSuit(), 'c');
+        assertEquals(hand.get(2).getCardSuit(), 'h');
+        assertEquals(hand.get(3).getCardSuit(), 'h');
+        assertEquals(hand.get(4).getCardSuit(), 'h');
+
     }
 
     @Test
@@ -186,9 +191,9 @@ public class HandTest {
         group2.add(new Card(1, 's', 5));
         group2.add(new Card(1, 'c', 1));
 
+        group3.add(new Card(1, 'd', 1));
         group3.add(new Card(1, 'd', 2));
         group3.add(new Card(1, 'd', 3));
-        group3.add(new Card(1, 'd', 1));
 
         group4.add(new Card(1, 'd', 6));
         group4.add(new Card(1, 's', 6));

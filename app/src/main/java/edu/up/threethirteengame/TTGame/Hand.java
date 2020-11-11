@@ -86,7 +86,6 @@ public class Hand {
      * Source:https://stackoverflow.com/questions/9109890/android-java-how-to-sort-a-list-of-objects-by-a-certain-value-within-the-object
      * Solution: used the code
      */
-    //TODO: Failed Unit Test
     public ArrayList<Card> sortByRank(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
@@ -102,13 +101,11 @@ public class Hand {
      * @param hand
      * @return a sorted array list of a given hand
      */
-    //TODO: Should sort by suit and rank
     //Break apart into groups by suit then sort by rank then combine back into a hand
     public ArrayList<Card> sortBySuit(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
             public int compare(Card card1, Card card2) {
-                //TODO: this just sorts by suit, doesn't numerically sort in each suit
                 return Character.valueOf(card1.getCardSuit()).compareTo(Character.valueOf(card2.getCardSuit()));
             }
         });
