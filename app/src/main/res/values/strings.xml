@@ -3,4 +3,21 @@
     <string name="round_num">Round 1</string>
     <string name="human_score">You: 0</string>
     <string name="computer_score">Opponent: 0</string>
+    <string name="instructions">How to Play:
+    \nAt the start of each round, the players are dealt an incrementing number of cards, starting with
+    3.  The player who goes first(that\'s you!), draws a card from the draw pile or the discard pile.
+    \nYour next objective is to make sets or runs from your hand.
+    \nA set is a group of 3 or more cards of the same rank.
+    \nExample: 5 of hearts, 5 of clubs, and 5 of spades.
+    \nA run is a group of 3 or more cards of incrementing ranks and same suit.
+    \nExample: 6 of diamonds, 7 of diamonds, and 8 of diamonds.
+    \nClick a card to select and add to a group.  Deselect a card by clicking it again and remove a
+    card from your group with the remove from group button.
+    \nOnce you have a playable group, click go out to play it!  If you have no playable groups or
+    you\'ve played your group(s) already, discard a card and end your turn.
+    \nYour AI opponent will do the same on its turn.
+    \nYour goal is to have less cards in your hand than the AI does each round, resulting in the
+    lowest score.
+    \nA card of higher rank, like a queen, will have a higher penalty if it stays in your hand.
+    \nGood luck!</string>
 </resources>
