@@ -724,4 +724,20 @@ public class TTGameState extends GameState {
         }
     }//currentPlayerHand
 
+    /**
+     * creates a group in the current player's hand
+     * @param group the group to be added to user's hand
+     */
+    public void createGrouping(ArrayList<Card> group){
+        currentPlayerHand().createGrouping(group);
+    }
+
+    /**
+     * user chooses a card in a group and removes the card from its group
+     * @param cardToRemove the card to remove from the player's group
+     */
+    public void removeGrouping(Card cardToRemove) {
+        currentPlayerHand().removeGrouping(cardToRemove);
+    }
+
 }

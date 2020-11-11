@@ -17,8 +17,13 @@ public class TTDiscardAction extends TTMoveAction{
      */
     public TTDiscardAction(GamePlayer player) { super(player); }
 
+    /**
+     * constructor for TTDiscardAction
+     * @param player the player who created the action
+     * @param c the card to be discarded
+     */
     public TTDiscardAction(GamePlayer player, Card c){
-        super(player, c);
+        super(player, c, true);
     }
 
 

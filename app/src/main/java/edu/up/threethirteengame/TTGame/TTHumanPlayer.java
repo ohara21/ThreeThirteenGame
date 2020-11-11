@@ -88,6 +88,11 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         else{
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
+            if(this.state.getPlayerTurn() != playerNum){
+                Log.d("Human Player","not this player's turn!!");
+                Log.d("Human Player",this.state.toString());
+                return;
+            }
             Log.d("Human Player",this.state.toString());
 
             //don't do anything if the gameBoard hasn't been initialized
@@ -208,13 +213,15 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 myActivity.recreate();
                 break;
             case (R.id.goOutButton):
-                state.goOut();
+                game.sendAction(new TTGoOutAction(this));
                 break;
             case (R.id.discardButton):
                 // Loop through all player cards until reaches clicked card, then discard
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
-                        state.discardCard(state.currentPlayerHand().getCard(i));
+                        Log.d("HP Before Discard",String.valueOf(state.currentPlayerHand().getCard(i).getCardRank()));
+                        game.sendAction(new TTDiscardAction(this,state.currentPlayerHand().getCard(i)));
+                        Log.d("HP After Discard",state.toString());
                         gameBoard.invalidate();
                         break;
                     }
@@ -224,23 +231,23 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 //1:check to make selected cards are not in a group
                 //2:place selected cards in an ArrayList<Card> group
                 //3:use createGrouping() to add the selected cards to 2D groupings in Hand
-                
-                // if card is selected, add it to group
+
                 ArrayList<Card> group = new ArrayList<>();
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
+                    // if card is selected, add it to group
                     if (state.currentPlayerHand().getCard(i).getIsClick() &&
                             !state.isCardInGroup(state.currentPlayerHand().getCard(i))) {
                         group.add(state.currentPlayerHand().getCard(i));
-                        state.currentPlayerHand().createGrouping(group);
-                        break;
                     }
                 }
+                game.sendAction(new TTAddGroupAction(this, group));
                 break;
             case (R.id.removeGroupButton):
                 // if card is selected, remove from group
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
-                        state.currentPlayerHand().removeGrouping(state.currentPlayerHand().getCard(i));
+                        //the first card found is to be removed from its group
+                        game.sendAction(new TTRemoveGroupAction(this, state.currentPlayerHand().getCard(i)));
                         break;
                     }
                 }

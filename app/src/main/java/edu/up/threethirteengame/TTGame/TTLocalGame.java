@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import android.util.Log;
+
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.LocalGame;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
@@ -102,7 +104,8 @@ public class TTLocalGame extends LocalGame {
 
         //game logic for these actions are located in the TTGameState
         if(ttma.isDiscard()){
-            //TODO: need to finish after player's can select card
+            Log.d("Local Game",String.valueOf(ttma.getDiscard().getCardRank()));
+            //Card is passed in to discard from player's hand
             state.discardCard(ttma.getDiscard());
         }
         else if(ttma.isDrawDiscard()){
@@ -115,7 +118,12 @@ public class TTLocalGame extends LocalGame {
             state.goOut();
         }
         else if(ttma.isAddGroup()){
-            //TODO: need to finish after player's can select multiple cards
+            //ArrayList<Card> is passed in to create a group
+            state.createGrouping(ttma.getAddGroup());
+        }
+        else if(ttma.isRemoveGroup()){
+            //Card is passed in to remove from a group
+            state.removeGrouping(ttma.getRemoveGroup());
         }
         else {
             //unexpected action

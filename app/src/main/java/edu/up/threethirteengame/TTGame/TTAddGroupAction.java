@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.util.ArrayList;
+
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
@@ -9,14 +11,15 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/3/2020
  */
-public abstract class TTAddGroupAction extends TTMoveAction {
+public class TTAddGroupAction extends TTMoveAction {
     /**
      * constructor for TTAddGroupAction
      *
      * @param player the player who created the action
+     * @param group the group to be added
      */
-    public TTAddGroupAction(GamePlayer player) {
-        super(player);
+    public TTAddGroupAction(GamePlayer player, ArrayList<Card> group) {
+        super(player, group);
     }
 
     /**

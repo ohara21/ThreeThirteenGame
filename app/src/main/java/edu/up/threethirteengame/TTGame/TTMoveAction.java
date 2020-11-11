@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.util.ArrayList;
+
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
@@ -10,7 +12,10 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  */
 public class TTMoveAction extends GameAction {
 
+    //TODO: figure out how to remove a group without conflicting card with discard action
     private Card discard;
+    private ArrayList<Card> addGroup;
+    private Card removeGroup;
 
     /**
      * constructor for TTMoveAction
@@ -24,11 +29,27 @@ public class TTMoveAction extends GameAction {
     /**
      * constructor for TTMoveAction if there's a card to be discarded
      * @param player the player who created the action
-     * @param card the card to be discarded
+     * @param card the card to be changed
+     * @param ifDiscard whether the card to be changed is to be discarded or removed from group
      */
-    public TTMoveAction(GamePlayer player, Card card){
+    public TTMoveAction(GamePlayer player, Card card, boolean ifDiscard){
         super(player);
-        discard = card;
+        if(ifDiscard) {
+            discard = card;
+        }
+        else{
+            removeGroup = card;
+        }
+    }
+
+    /**
+     * constructor for TTMoveAction if there's a group to add to player
+     * @param player the player who created the action
+     * @param group the group to be added
+     */
+    public TTMoveAction(GamePlayer player, ArrayList<Card> group){
+        super(player);
+        addGroup = group;
     }
 
 
@@ -36,6 +57,11 @@ public class TTMoveAction extends GameAction {
      * @return whether this is a "add group" move
      */
     public boolean isAddGroup(){return false;}
+
+    /**
+     * @return whether this is a "remove group" move
+     */
+    public boolean isRemoveGroup(){return false;}
 
     /**
      * @return whether this is a "discard" move
@@ -57,5 +83,18 @@ public class TTMoveAction extends GameAction {
      */
     public boolean isGoOut(){return false;}
 
+    /**
+     * @return the card to be discarded
+     */
     public Card getDiscard(){return discard;}
+
+    /**
+     * @return the card to be removed from it's group
+     */
+    public Card getRemoveGroup(){return removeGroup;}
+
+    /**
+     * @return the group to be added to a player's Hand
+     */
+    public ArrayList<Card> getAddGroup(){return addGroup;}
 }

@@ -304,16 +304,39 @@ public class Hand {
      * their grouping ArrayList
      * @param cardToRemove
      */
-    public void removeGrouping(Card cardToRemove){
-        //TODO: implement error checks and finish method
-        if(isCardInGroup(cardToRemove)) {
-            for(ArrayList<Card> groups : this.groupings){
-                for(Card c : groups) {
-                    if (c == cardToRemove) {
-                        groups.remove(cardToRemove);
-                    }
+    public boolean removeGrouping(Card cardToRemove){
+        //counter for group
+        int groupNum = 0;
+        boolean breakLoop = false;
+
+        //check if the card is in a group
+        if(!isCardInGroup(cardToRemove)){
+            return false;
+        }
+
+        //find the card in the 2D groupings
+        for (ArrayList<Card> groups : this.groupings) {
+            for (Card c : groups) {
+                if (c == cardToRemove) {
+                    //found the card to remove from 2D groupings
+                    groups.remove(cardToRemove);
+                    breakLoop = true;
+                    break;
                 }
             }
+            if (breakLoop) {
+                break;
+            }
+
+            //count the group number that was checked
+            groupNum++;
         }
+
+        //remove the whole group if the group is too small
+        if (this.groupings.get(groupNum).size() < 3) {
+            this.groupings.remove(this.groupings.get(groupNum));
+        }
+
+        return true;
     }
 }

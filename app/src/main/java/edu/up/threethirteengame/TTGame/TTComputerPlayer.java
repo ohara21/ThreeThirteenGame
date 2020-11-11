@@ -51,8 +51,10 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         if(newState.playerDrawDeck()){
+            Log.d("Top of discard",String.valueOf(newState.getDiscardPile().get(0)));
             Log.d("Computer Player"," is drawing from deck");
             game.sendAction(new TTDrawDeckAction(this));
+            return;
         }
 
         if(newState.canPlayerGoOut()){
