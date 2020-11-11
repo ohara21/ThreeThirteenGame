@@ -227,12 +227,14 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 //1:check to make selected cards are not in a group
                 //2:place selected cards in an ArrayList<Card> group
                 //3:use createGrouping() to add the selected cards to 2D groupings in Hand
-
+                
                 // if card is selected, add it to group
                 ArrayList<Card> group = new ArrayList<>();
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
-                    if (state.currentPlayerHand().getCard(i).getIsClick()) {
-
+                    if (state.currentPlayerHand().getCard(i).getIsClick() &&
+                            !state.isCardInGroup(state.currentPlayerHand().getCard(i))) {
+                        group.add(state.currentPlayerHand().getCard(i));
+                        state.currentPlayerHand().createGrouping(group);
                         break;
                     }
                 }
