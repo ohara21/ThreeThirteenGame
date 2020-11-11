@@ -41,6 +41,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private Button discardButton;
     private Button removeGroupButton;
     private Button addGroupButton;
+    private Button endTurnButton;
 
     //text views
     private TextView roundText;
@@ -140,6 +141,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         discardButton = myActivity.findViewById(R.id.discardButton);
         addGroupButton = myActivity.findViewById(R.id.addGroupButton);
         removeGroupButton = myActivity.findViewById(R.id.removeGroupButton);
+        endTurnButton = myActivity.findViewById(R.id.endTurnButton);
 
         //set onTouch listener
         gameBoard.setOnTouchListener(this);
@@ -152,6 +154,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         discardButton.setOnClickListener(this);
         addGroupButton.setOnClickListener(this);
         removeGroupButton.setOnClickListener(this);
+        endTurnButton.setOnClickListener(this);
 
         // if the state is not null, simulate having just received the state so that
         // any state-related processing is done
@@ -241,6 +244,15 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         state.currentPlayerHand().removeGrouping(state.currentPlayerHand().getCard(i));
                         break;
                     }
+                }
+                break;
+            case (R.id.endTurnButton):
+                // check if player has drawn and and discarded
+                if (state.getPlayer0Drawn() && state.getPlayer0Discard()) {
+                    state.nextTurn();
+                    gameBoard.invalidate();
+                } else {
+                    Log.d("End turn", "user cannot end turn at this time");
                 }
                 break;
             default:

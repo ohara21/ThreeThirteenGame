@@ -45,6 +45,10 @@ public class TTGameState extends GameState {
     private boolean player0GoneOut;
     private boolean player1GoneOut;
 
+    // if the player has discarded for the current round
+    private boolean player0Discard;
+    private boolean player1Discard;
+
     //the current player's turn
     private int playerTurn;
 
@@ -84,6 +88,8 @@ public class TTGameState extends GameState {
         player1Drawn = false;
         player0GoneOut = false;
         player1GoneOut = false;
+        player0Discard = false;
+        player1Discard = false;
 
         //player 0 goes first
         playerTurn = 0;
@@ -117,6 +123,8 @@ public class TTGameState extends GameState {
         this.player1Drawn = orig.getPlayer1Drawn();
         this.player0GoneOut = orig.player0GoneOut;
         this.player1GoneOut = orig.player1GoneOut;
+        this.player0Discard = orig.player0Discard;
+        this.player1Discard = orig.player1Discard;
         this.roundNum = orig.getRoundNum();
         this.roundOver = orig.getRoundOver();
         this.playerTurn = orig.getPlayerTurn();
@@ -170,6 +178,10 @@ public class TTGameState extends GameState {
     public boolean getIsPlayer1GoneOut() {
         return player1GoneOut;
     }
+
+    public boolean getPlayer0Discard() { return player0Discard; }
+
+    public boolean getPlayer1Discard() { return player1Discard; }
 
     public int getRoundNum() {
         return roundNum;
@@ -233,6 +245,10 @@ public class TTGameState extends GameState {
     public void setPlayer0Drawn(boolean isDrawn) {this.player0Drawn = isDrawn; }
 
     public void setPlayer1Drawn(boolean isDrawn) {this.player1Drawn = isDrawn; }
+
+    public void setPlayer0Discard(boolean isDiscard) {this.player0Discard = isDiscard; }
+
+    public void setPlayer1Discard(boolean isDiscard) {this.player1Discard = isDiscard; }
 
     /**
      * changes which player can take actions
