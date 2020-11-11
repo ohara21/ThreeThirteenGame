@@ -497,8 +497,6 @@ public class TTGameState extends GameState {
             return;
         }
         //checks if the player can discard
-//        Log.d("GameState"," Before playerDiscard() a card is being discarded "+discardCard.getCardRank()+discardCard.getCardSuit());
-//        Log.d("GameState discardCard()", "memory address "+discardCard);
         if(!playerDiscard(discardCard)){
             return;
         }

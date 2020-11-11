@@ -322,21 +322,29 @@ public class Hand {
         }
 
         //find the card in the 2D groupings
+        ArrayList<Card> groupToRemove = null;
         for (ArrayList<Card> groups : this.groupings) {
+            groupToRemove = groups;
             for (Card c : groups) {
                 if ((cardToRemove.getCardRank() == c.getCardRank() && (cardToRemove.getCardSuit() == c.getCardSuit()))) {
                     //found the card to remove from 2D groupings
-                    groups.remove(c);
-                    breakLoop = true;
-                    break;
+                    Log.d("Hand","the size of the group to remove: "+groupToRemove.size());
+                    if(groupToRemove.size() <= 3){
+                        //we need to remove the whole group because it's too small
+                        breakLoop =true;
+                        break;
+                    }
+                    else {
+                        //not necessary to remove whole group because its greater than 3
+                        groups.remove(c);
+                        breakLoop = true;
+                        break;
+                    }
                 }
             }
             if (breakLoop) {
                 break;
             }
-
-            //count the group number that was checked
-            groupNum++;
         }
 
         //remove the whole group if the group is too small

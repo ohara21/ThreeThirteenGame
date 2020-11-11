@@ -145,20 +145,15 @@ public class GameBoard extends SurfaceView {
             return;
         }
         else{
-            Log.d("GameBoard","should be able to find a card in a group");
-
             //find which group it's in
             int grpIdx = 1;
             boolean flag = false;
 
-            Log.d("GameBoard","num groups in player hand: "+ttGameState.currentPlayerHand().getGroupingSize());
             //iterate through the current player's groupings for the given card
             for(ArrayList<Card> groups : ttGameState.currentPlayerHand().getGroupings()){
-                Log.d("GameBoard","the group index at this point: "+grpIdx);
                 for(Card c : groups){
                     //if the given card has the same rank and suit as the card in groups, they have the card
                     if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
-                        Log.d("GameBoard","found "+card.getCardRank()+card.getCardSuit()+" in a group");
                         flag = true;
                     }
                 }
