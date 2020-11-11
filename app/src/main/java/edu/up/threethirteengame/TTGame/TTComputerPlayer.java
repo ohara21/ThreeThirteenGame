@@ -56,6 +56,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
 
         if(newState.canPlayerGoOut()){
+            Log.d("Computer PLayer", " was able to and got out");
             game.sendAction(new TTGoOutAction(this));
         }
 
