@@ -268,17 +268,22 @@ public class TTGameState extends GameState {
 
         //both players need to have the same amount of turns
         if(player0TurnsTaken != player1TurnsTaken){
+            Log.d("isRoundOver()", "different amount of turns");
+            Log.d("TTGameState", "player zero " + player0TurnsTaken);
+            Log.d("TTGameState", "player one " + player1TurnsTaken);
             return false;
         }
 
         //the amount of turns should be equal to the current round number
         if(player0TurnsTaken != roundNum){
+            Log.d("isRoundOver()", "player 0's turns arent equal to round");
             return false;
         }
         else if(player1TurnsTaken != roundNum){
+            Log.d("isRoundOver()", "player 1's turns arent equal to round");
             return false;
         }
-
+        Log.d("TTGameState", "round is over");
         //the round is over if the previous statements weren't caught
         return true;
     }
@@ -294,7 +299,11 @@ public class TTGameState extends GameState {
         }
 
         //update round num
-        roundNum++;
+        if (roundNum != 11) {
+            roundNum++;
+            //deal a new set of cards
+            dealHand();
+        }
 
         //update player's scores
         updateScores();
@@ -305,8 +314,7 @@ public class TTGameState extends GameState {
         player0Drawn = false;
         player1Drawn = false;
 
-        //deal a new set of cards
-        dealHand();
+
     }
 
     /**
@@ -533,14 +541,16 @@ public class TTGameState extends GameState {
      */
     //TODO: doesn't account for wild card yet
     public boolean canPlayerGoOut(){
+        Log.d("canPlayerGoOut()", "testing if possible");
         //check to make sure there is at least one group in 2D groupings
         if(currentPlayerHand().getGroupings().isEmpty()){
+            Log.d("canPlayerGoOut()", "no groupings");
             return false;
         }
-        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
-            Log.d("canPlayerGoOut()","last group is empty");
-            return false;
-        }
+        //if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
+            //Log.d("canPlayerGoOut()","last group is empty");
+            //return false;
+        //}
 
         //checks to make sure they haven't already Gone Out this round
         if(playerTurn == 0){
@@ -596,9 +606,11 @@ public class TTGameState extends GameState {
 
             //check that all the groups are valid
             if(numValidGroups==numGroups){
+                Log.d("canPlayerGoOut()", "go out possible");
                 return true;
             }
         }
+        Log.d("canPlayerGoOut()", "go out not possible");
         return false;
     }
 
@@ -657,13 +669,13 @@ public class TTGameState extends GameState {
 
         //checks to make sure card exists
         if(card == null){
-            Log.d("isCardInGroup()", "passed card was null");
+            //Log.d("isCardInGroup()", "passed card was null");
             return false;
         }
 
         //check to make sure there are groups in the current player's hand
         if(currentPlayerHand().getGroupings().isEmpty()){
-            Log.d("isCardInGroup()", "current player's groupings is empty");
+            //Log.d("isCardInGroup()", "current player's groupings is empty");
             return false;
         }
 
@@ -674,12 +686,12 @@ public class TTGameState extends GameState {
 //        }
 
         //iterate through the current player's groupings for the given card
-        Log.d("isCardInGroup()", "trying to find the card in player's groups");
+        //Log.d("isCardInGroup()", "trying to find the card in player's groups");
         for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
             for(Card c : groups){
                 //if the given card has the same rank and suit as the card in groups, they have the card
                 if((card.getCardRank() == c.getCardRank() && (card.getCardSuit() == c.getCardSuit()))){
-                    Log.d("isCardInGroup()", "found the card in player's groups");
+                   // Log.d("isCardInGroup()", "found the card in player's groups");
                     return true;
                 }
             }

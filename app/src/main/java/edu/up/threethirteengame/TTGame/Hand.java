@@ -337,8 +337,7 @@ public class Hand {
                     else {
                         //not necessary to remove whole group because its greater than 3
                         groups.remove(c);
-                        breakLoop = true;
-                        break;
+                        return true;
                     }
                 }
             }
@@ -347,13 +346,18 @@ public class Hand {
             }
         }
 
-        //remove the whole group if the group is too small
-        if (this.groupings.get(groupNum).size() < 3) {
-            //this.groupings.remove(this.groupings.get(groupNum)); // doesn't do anything
-            for (int i = 0; i < groupToRemove.size() + 1; i++) {
-                groupToRemove.remove(i);
-            }
+        if (groupToRemove != null) {
+            this.groupings.remove(groupToRemove);
         }
+
+
+        //remove the whole group if the group is too small
+        //if (this.groupings.get(groupNum).size() < 3) {
+
+            //for (int i = 0; i < groupToRemove.size() + 1; i++) {
+                //groupToRemove.remove(0);
+            //}
+       // }
 
         return true;
     }

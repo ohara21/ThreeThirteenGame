@@ -136,11 +136,11 @@ public class GameBoard extends SurfaceView {
         }
 
         if (card.getIsClick()) {
-            Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" card is clicked");
+            //Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" card is clicked");
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),red);
         } else if(!ttGameState.isCardInGroup(card)){
             //draw a black border if it isn't in a group
-            Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" is not in group yet");
+            //Log.d("GameBoard","card "+card.getCardRank()+card.getCardSuit()+" is not in group yet");
             canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),black);
             return;
         }

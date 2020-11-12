@@ -212,6 +212,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.goOutButton):
                 game.sendAction(new TTGoOutAction(this));
+                gameBoard.invalidate();
                 break;
             case (R.id.discardButton):
                 // Loop through all player cards until reaches clicked card, then discard

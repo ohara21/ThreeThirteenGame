@@ -75,7 +75,9 @@ public class TTLocalGame extends LocalGame {
         //the game ends on round 11
         if(state.getRoundNum() == 11){
             //round 11 must be over
+            Log.d("TTLocalGame", state.toString());
             if(!state.isRoundOver()){
+                Log.d("checkIfGameOver()", "round isnt over");
                 return null;
             }
 
@@ -84,7 +86,7 @@ public class TTLocalGame extends LocalGame {
                 if (state.getPlayer0Score() == state.getPlayer1Score()) {
                     return "It was a tie!  ";
                 }
-                else if(state.getPlayer0Score() > state.getPlayer1Score()){
+                else if(state.getPlayer0Score() < state.getPlayer1Score()){
                     return "Human Player has won!  ";
                 }else{
                     return "Computer Player has won!  ";
