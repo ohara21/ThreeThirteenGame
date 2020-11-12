@@ -213,9 +213,9 @@ public class Hand {
         }
 
         //check to make sure there are groups in the current player's hand
-        if(this.groupings.get(MAX_NUM_GROUPS-1).isEmpty()){
-            return false;
-        }
+        //if(this.groupings.get(MAX_NUM_GROUPS-1).isEmpty()){
+            //return false;
+        //}
 
         //iterate through the current player's groupings for the given card
         for(ArrayList<Card> groups : this.groupings){
@@ -349,7 +349,10 @@ public class Hand {
 
         //remove the whole group if the group is too small
         if (this.groupings.get(groupNum).size() < 3) {
-            this.groupings.remove(this.groupings.get(groupNum));
+            //this.groupings.remove(this.groupings.get(groupNum)); // doesn't do anything
+            for (int i = 0; i < groupToRemove.size() + 1; i++) {
+                groupToRemove.remove(i);
+            }
         }
 
         return true;
