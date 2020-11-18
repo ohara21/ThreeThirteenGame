@@ -1,15 +1,10 @@
 package edu.up.threethirteengame.TTGame;
 
-import androidx.appcompat.app.AppCompatActivity;
-import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.LocalGame;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GameConfig;
 import edu.up.threethirteengame.game.GameFramework.gameConfiguration.GamePlayerType;
-
-import android.graphics.Color;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 
@@ -45,7 +40,7 @@ public class TTMainActivity extends GameMainActivity {
         // a computer player type (player type 1)
         playerTypes.add(new GamePlayerType("Computer Player") {
             public GamePlayer createPlayer(String name) {
-                return new TTComputerPlayer(name);
+                return new TTComputerPlayerDumb(name);
             }});
 
 //        // a computer player type (player type 2)

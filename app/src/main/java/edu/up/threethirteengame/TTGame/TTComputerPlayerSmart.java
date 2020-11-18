@@ -1,18 +1,13 @@
 package edu.up.threethirteengame.TTGame;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Random;
 
 import edu.up.threethirteengame.game.GameFramework.GameComputerPlayer;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
-public class TTComputerPlayer extends GameComputerPlayer {
+public class TTComputerPlayerSmart extends GameComputerPlayer {
 
-    //the local game state
     private TTGameState newState = null;
 
     /**
@@ -20,17 +15,15 @@ public class TTComputerPlayer extends GameComputerPlayer {
      *
      * @param name the player's name (e.g., "John")
      */
-    public TTComputerPlayer(String name) { super(name); }
+    public TTComputerPlayerSmart(String name) {
+        super(name);
+    }
 
     @Override
     protected void receiveInfo(GameInfo info) {
 
-        //dumb ai could also just discard randomly from hand
-
-        Random rand = new Random();
-
         //ignore if instance of NotYourTurnInfo
-        if(info instanceof NotYourTurnInfo){
+        if (info instanceof NotYourTurnInfo){
             return;
         }
 
@@ -39,37 +32,8 @@ public class TTComputerPlayer extends GameComputerPlayer {
             return;
         }
 
-
         //initialize the game state
         newState = (TTGameState)info;
-
-        //return if it's not the Computer Player's turn
-        if (newState.getPlayerTurn() != playerNum){
-            Log.d("Computer Player","it is not your turn AI!");
-            Log.d("Computer Player",newState.toString());
-            return;
-        }
-
-        if(newState.playerDrawDeck()){
-            Log.d("Computer Player","Top of discard "+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardRank()+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardSuit());
-            Log.d("Computer Player"," is drawing from deck: "+newState.getDeck().get(newState.getDeck().size()-1).getCardRank()+newState.getDeck().get(newState.getDeck().size()-1).getCardSuit());
-            game.sendAction(new TTDrawDeckAction(this));
-            return;
-        }
-        else if(newState.canPlayerGoOut()){
-            Log.d("Computer PLayer", " was able to and got out");
-            game.sendAction(new TTGoOutAction(this));
-            return;
-        }
-        else {
-            Card discard;
-            int handSize = newState.getPlayer1Hand().getSize();
-            int randomIndex = rand.nextInt(handSize-1);
-            discard = newState.getPlayer1Hand().getCard(randomIndex);
-            Log.d("Computer Player"," is discarding a random card");
-            Log.d("Computer Player","discarding "+discard.getCardRank()+discard.getCardSuit());
-            game.sendAction(new TTDiscardAction(this, discard));
-        }
 
     }
 
@@ -96,7 +60,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
         // Create temp group for set
         tempGrouping.add(checkForSet(computerHand));
         //TODO: Look for runs (disregarding common cards) -> create grouping per run
-            // Need sorting based on suit and rank to complete
+        // Need sorting based on suit and rank to complete
 
         // Check set and runs for similar cards
         ArrayList<Card> similar = checkForSimilar(tempGrouping);
@@ -273,7 +237,4 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
         return -1; //if there is no card then returns -1
     }
-
-
-
 }
