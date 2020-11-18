@@ -144,6 +144,10 @@ public class TTLocalGame extends LocalGame {
         }
         else if(ttma.isRemoveGroup()){
             //Card is passed in to remove from a group
+            Log.d("Local Game","trying to remove group");
+            if(ttma.getRemoveGroup() != null) {
+                Log.d("Local Game", "trying to remove card: "+ttma.getRemoveGroup().getCardRank()+ttma.getRemoveGroup().getCardSuit());
+            }
             state.removeGrouping(ttma.getRemoveGroup());
         }
         else {

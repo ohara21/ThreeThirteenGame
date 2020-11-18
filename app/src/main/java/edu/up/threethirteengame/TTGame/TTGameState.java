@@ -66,6 +66,7 @@ public class TTGameState extends GameState {
             }
         }
         Collections.shuffle(deck);
+        Collections.shuffle(deck);
 
         //start the discard pile from top of deck
         discardPile.add(deck.get(deck.size()-1));
@@ -301,8 +302,6 @@ public class TTGameState extends GameState {
         //update round num
         if (roundNum != 11) {
             roundNum++;
-            //deal a new set of cards
-            dealHand();
         }
 
         //update player's scores
@@ -314,6 +313,9 @@ public class TTGameState extends GameState {
         player0Drawn = false;
         player1Drawn = false;
 
+        if (roundNum != 11) {
+            dealHand();
+        }
 
     }
 

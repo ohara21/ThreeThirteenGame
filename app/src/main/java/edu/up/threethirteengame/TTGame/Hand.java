@@ -318,6 +318,7 @@ public class Hand {
 
         //check if the card is in a group
         if(!isCardInGroup(cardToRemove)){
+            Log.d("Hand","the card was not found in a group");
             return false;
         }
 

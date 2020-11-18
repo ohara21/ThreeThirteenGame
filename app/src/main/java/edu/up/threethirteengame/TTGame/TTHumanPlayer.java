@@ -253,6 +253,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
                         //the first card found is to be removed from its group
+                        Log.d("HumanPlayer","sending remove group action");
                         game.sendAction(new TTRemoveGroupAction(this, state.currentPlayerHand().getCard(i)));
                         break;
                     }
