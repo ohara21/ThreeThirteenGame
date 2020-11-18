@@ -128,9 +128,46 @@ public class TTComputerPlayer extends GameComputerPlayer {
 
         }
         //TODO: check for incomplete run
-        //TODO: check for incomplete set
-        //TODO: Check for use of wild cards
+        //Check for incomplete set
+
+        ArrayList<Card> tempHand = computerHand.getHand();
+
+        //gets rid of cards that are apart of a set or run
+        for(Card c: computerHand.getHand()){
+            for(ArrayList<Card> groups: finalGrouping){
+                if(groups.contains(c)){
+                    tempHand.remove(c);
+                }
+            }
+        }
+
+        //checks for cards that are the same rank and puts them incomplete temp set
+        ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
+        ArrayList<Card> tempGroup = new ArrayList<>();
+
+        for(Card c: tempHand){
+            if((findCardByRank(tempHand, c.getCardRank()) != -1) && !incompleteTemp.contains(c)){
+                tempGroup.add(c);
+                tempGroup.add(tempHand.get(findCardByRank(tempHand, c.getCardRank())));
+                incompleteTemp.add(tempGroup);
+                tempGroup.clear();
+
+            }
+        }
+
+        //Implements use of wild cards to incomplete sets and runs
         if(computerHand.hasWildCard(wildValue)){
+            int wildCardCount = computerHand.wildCount(wildValue);
+            for(ArrayList<Card> group: incompleteTemp){
+                if(wildCardCount != 0) {
+                    group.add(computerHand.getHand().get(findCardByRank(computerHand.getHand(), wildValue)));
+                    wildCardCount--;
+                }
+                if(group.size() == 3){
+                    finalGrouping.add(group);
+                    tempGroup.remove(group);
+                }
+            }
 
         }
         // return cards not in group
@@ -183,6 +220,7 @@ public class TTComputerPlayer extends GameComputerPlayer {
     private ArrayList<Card> checkForRun(Hand hand){
         ArrayList<Card> run = new ArrayList<>();
 
+
         return run;
     }
 
@@ -220,5 +258,22 @@ public class TTComputerPlayer extends GameComputerPlayer {
         }
         return sum.indexOf(smallest);
     }
+
+    /**
+     * finds a specific card based on the rank
+     * @param hand
+     * @param rank
+     * @return
+     */
+    private int findCardByRank(ArrayList<Card> hand, int rank){
+        for(Card c: hand){
+            if(c.getCardRank() == rank){
+                return hand.indexOf(c);
+            }
+        }
+        return -1; //if there is no card then returns -1
+    }
+
+
 
 }
