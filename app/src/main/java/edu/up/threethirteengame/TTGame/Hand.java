@@ -242,6 +242,21 @@ public class Hand {
     }
 
     /**
+     * Finds number of wild cards in a given hand
+     * @param wildCard
+     * @return
+     */
+    public int wildCount(int wildCard){
+        int count = 0;
+        for(Card c: userHand){
+            if(c.getCardRank() == wildCard){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
      * determines if the given card is in the user's groupings
      * used in Go Out
      * @param card the card in question
