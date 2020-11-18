@@ -279,9 +279,11 @@ public class Hand {
     public boolean createGrouping(ArrayList<Card> group){
         //checks to make sure group is not null and isn't empty
         if((group == null) || group.isEmpty()){
+            Log.d("Hand","the group passed in was null or empty");
             return false;
         }
 
+        Log.d("Hand","the size of groupings"+groupings.size());
         //checks to make sure the groupings is not already full
         boolean hasEmptyGroup = false;
         for(ArrayList<Card> checkGroups : groupings){
@@ -291,17 +293,20 @@ public class Hand {
             }
         }
         if(!hasEmptyGroup){
+            Log.d("Hand","the groupings is already full");
             return false;
         }
 
         //check to make sure each card is not in a current group
         for(Card c : group){
             if(isCardInGroup(c)){
+                Log.d("Hand","there is an intersecting grouping");
                 return false;
             }
         }
 
         //this group can be created
+        Log.d("Hand","the group was successfully made");
         groupings.add(group);
         return true;
     }

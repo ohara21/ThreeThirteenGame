@@ -38,6 +38,9 @@ public class Card {
     //if the card is currently selected
     private boolean isClick;
 
+    //if the card is in a valid group
+    private boolean inValidGroup;
+
     //the card's location on the GameBoard's grid
     private int boardLocation = 0;
 
@@ -53,6 +56,7 @@ public class Card {
             cardId = getId(suit, value);
         }
         this.isClick = false;
+        this.inValidGroup = false;
     }
 
     //base constructor for the card object
@@ -70,6 +74,7 @@ public class Card {
         scaleCard(this.cardType);
         this.cardId = orig.cardId;
         this.isClick = false;
+        this.inValidGroup = orig.inValidGroup;
     }
 
 
@@ -92,6 +97,10 @@ public class Card {
     public void setIsClick(boolean isClick) {
         this.isClick = isClick;
     }
+
+    public void setInValidGroup(boolean inValidGroup){this.inValidGroup = inValidGroup;}
+
+    public boolean getInValidGroup(){return this.inValidGroup;}
 
     // returns and sets the spot of the card on the board, if any
     public int getBoardLocation() {return boardLocation;}

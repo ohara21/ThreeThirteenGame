@@ -56,11 +56,11 @@ public class TTComputerPlayer extends GameComputerPlayer {
             game.sendAction(new TTDrawDeckAction(this));
             return;
         }
-        else if(newState.canPlayerGoOut()){
-            Log.d("Computer PLayer", " was able to and got out");
-            game.sendAction(new TTGoOutAction(this));
-            return;
-        }
+//        else if(newState.canPlayerGoOut()){
+//            Log.d("Computer PLayer", " was able to and got out");
+//            game.sendAction(new TTGoOutAction(this));
+//            return;
+//        }
         else {
             Card discard;
             int handSize = newState.getPlayer1Hand().getSize();
