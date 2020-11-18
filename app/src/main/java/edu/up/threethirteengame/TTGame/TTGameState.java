@@ -659,6 +659,9 @@ public class TTGameState extends GameState {
             }
         }
 
+        //set the wild card in the current player's hand
+        currentPlayerHand().setWildCard(this.wildCard);
+
         //checks the groupings and sees if the card can be discarded
         if(playerDiscard(discardGoOut)){
             int numValidGroups = 0;
@@ -812,8 +815,6 @@ public class TTGameState extends GameState {
      * in remaining rounds, player receives 1 card per round
      */
     public void dealHand(){
-        setWild();
-
         //TODO: remove later
 //        if(roundNum == 1) {
 //            for (int i = 0; i <= roundNum + 1; i++) {
@@ -878,6 +879,9 @@ public class TTGameState extends GameState {
             player1Hand.addToHand(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
         }
+
+        //set the wild card
+        setWild();
     }//dealHand
 
     /**
