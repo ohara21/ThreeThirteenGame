@@ -4,20 +4,35 @@
     <string name="human_score">You: 0</string>
     <string name="computer_score">Opponent: 0</string>
     <string name="instructions">How to Play:
-    \nAt the start of each round, the players are dealt an incrementing number of cards, starting with
-    3.  The player who goes first(that\'s you!), draws a card from the draw pile or the discard pile.
-    \nYour next objective is to make sets or runs from your hand.
-    \nA set is a group of 3 or more cards of the same rank.
-    \nExample: 5 of hearts, 5 of clubs, and 5 of spades.
-    \nA run is a group of 3 or more cards of incrementing ranks and same suit.
-    \nExample: 6 of diamonds, 7 of diamonds, and 8 of diamonds.
-    \nClick a card to select and add to a group.  Deselect a card by clicking it again and remove a
-    card from your group with the remove from group button.
-    \nOnce you have a playable group, click go out to play it!  If you have no playable groups or
-    you\'ve played your group(s) already, discard a card and end your turn.
-    \nYour AI opponent will do the same on its turn.
-    \nYour goal is to have less cards in your hand than the AI does each round, resulting in the
-    lowest score.
-    \nA card of higher rank, like a queen, will have a higher penalty if it stays in your hand.
-    \nGood luck!</string>
+    \nWhen the first round begins, players are dealt 3 cards. This number increments:
+    4 cards are dealt in round 2, 5 in round 3, and so on, up to 13 in the last one, round 11.
+
+    \nThe player who goes first (that\'s you!) draws a card from either the draw or discard pile.
+
+    \nYour objective is to make sets or runs from your hand.
+
+    \nA set is a group with 3 or more cards of the same rank.
+    \nExample: the 5 of hearts, clubs, and spades.
+
+    \nA run is a group with 3 or more cards of incrementing ranks and same suit.
+    \nExample: a 6, 7, and 8 of diamonds.
+    \nThe add to and remove group buttons are useful for organizing cards.
+
+    \nYou can put any cards you want into a group together. It is meant to help you keep track of
+    possible runs or sets. Simply select the cards you want together, and then click the button.
+    You must discard a card each turn. Select the card you want to get rid of and then click the
+    discard button.
+
+    \nOnce all of the cards in your hand, except for one, which would theoretically be discarded,
+    have been put into groups, each with a complete run or set, click
+    the go out button. This will give your opponent one last turn before ending the round.
+
+    \nThe goal is to end each round with the lowest score possible. Each kind of card is associated
+    with a certain point value: 1 point for an ace, 2 for a 2, 3 for a 3, and so on, up to
+    13 for a king. The points associated with any cards in your hand at the end of the round that are
+    not a part of complete sets or runs are added to your total score. When you go out, 0 is added to
+    your score for that round.
+
+    \nThe player with the lowest score at the end of the 11 rounds wins.
+    Good luck!</string>
 </resources>
