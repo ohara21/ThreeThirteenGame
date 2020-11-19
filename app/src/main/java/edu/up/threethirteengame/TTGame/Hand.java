@@ -187,18 +187,15 @@ public class Hand {
         char checkSuit = 'e';
         int numWildCards = 0;
 
-        System.out.println("Starting checkIfRun()");
         //iterate through the run to check if they all have the same suit
         for(Card c : run){
             //if the card is wild, ignore it
             if(c.getCardRank() == this.wildCard){
-                System.out.println("found a wild card, current wild card "+this.wildCard);
                 numWildCards++;
                 continue;
             }
             else if(checkSuit == 'e'){
                 //initialize the first non wild card
-                System.out.println("initializing the first non wild card "+c.getCardSuit());
                 checkSuit = c.getCardSuit();
             }
 
@@ -208,18 +205,19 @@ public class Hand {
             }
         }
 
-        System.out.println("numWildCard "+numWildCards);
         //check to make sure the difference between consecutive cards is 1 without wild cards
         ArrayList<Integer> checkRun = checkGroupNoWild(run);
         for(Integer diff : checkRun){
-            System.out.println("checking the differences: "+diff);
+            //if the diff != 1, a wild card can be used or the run is invalid
             if(diff != 1){
+                //the run is invalid if the player doesn't have any wilds in this group
                 if(numWildCards == 0){
                     //Log.d("Hand","checkRun(): don't have any wild cards to use");
-                    System.out.println("don't have any wild cards to use");
                     return false;
                 }
 
+                //there isn't enough wild cards in this group to account
+                //for the difference between cards
                 if(diff > numWildCards+1){
                     //Log.d("Hand","checkRun(): not enough wild cards");
                     //Log.d("Hand","checkRun(): diff "+diff+" numWildCards "+numWildCards);
@@ -230,7 +228,6 @@ public class Hand {
                 numWildCards = diff-1;
             }
         }
-        System.out.println("End of checkIfRun() return true");
         return true;
     }
 
@@ -351,15 +348,12 @@ public class Hand {
      * @return the difference array not including wilds
      */
     public ArrayList<Integer> checkGroupNoWild(ArrayList<Card> group){
-        int numWildCards = 0;
-        for(Card c : this.userHand){
-            if(c.getCardRank() ==  this.wildCard){
-                numWildCards++;
-            }
-        }
 
+        //sort the given hand by rank
         ArrayList<Card> sortedHand = sortByRank(group);
         ArrayList<Integer> groupDiff = new ArrayList<>();
+
+        //iterate through the sorted group
         int previousCardRank = 0;
         for(Card c : sortedHand){
             if(c.getCardRank() == this.wildCard) {
@@ -367,9 +361,13 @@ public class Hand {
                 continue;
             }
             else if(previousCardRank == 0){
+                //initialize the standard card rank with the first non wild card encountered
                 previousCardRank = c.getCardRank();
                 continue;
             }
+
+            //this is not a wild card and the difference between the current card
+            //and this on will be added to the array list
             groupDiff.add(c.getCardRank() - previousCardRank);
             previousCardRank = c.getCardRank();
         }
