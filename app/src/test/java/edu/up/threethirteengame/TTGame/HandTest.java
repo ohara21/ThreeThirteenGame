@@ -186,24 +186,48 @@ public class HandTest {
         ArrayList<Card> group2 = new ArrayList<>();
         ArrayList<Card> group3 = new ArrayList<>();
         ArrayList<Card> group4 = new ArrayList<>();
+        ArrayList<Card> group5 = new ArrayList<>();
+        ArrayList<Card> group6 = new ArrayList<>();
+        ArrayList<Card> group7 = new ArrayList<>();
 
-        group2.add(new Card(1, 'd', 7));
-        group2.add(new Card(1, 's', 5));
-        group2.add(new Card(1, 'c', 1));
-
-        group3.add(new Card(1, 'd', 1));
-        group3.add(new Card(1, 'd', 2));
-        group3.add(new Card(1, 'd', 3));
-
-        group4.add(new Card(1, 'd', 6));
-        group4.add(new Card(1, 's', 6));
-        group4.add(new Card(1, 'c', 6));
-
+        //pass in an empty group
         assertFalse(hand.checkIfRun(group1));
-        assertFalse(hand.checkIfRun(group2));
-        assertTrue(hand.checkIfRun(group3));
-        assertFalse(hand.checkIfRun(group4));
 
+        //test the wild card
+        group2.add(new Card(1, 's', 5));
+        group2.add(new Card(1, 's', 4));
+        group2.add(new Card(1, 'c', 3));
+        assertTrue(hand.checkIfRun(group2));
+
+        //test a standard run
+        group3.add(new Card(1, 'd', 5));
+        group3.add(new Card(1, 'd', 6));
+        group3.add(new Card(1, 'd', 7));
+        assertTrue(hand.checkIfRun(group3));
+
+        //test with wild card
+        group4.add(new Card(1, 'd', 4));
+        group4.add(new Card(1, 's', 3));
+        group4.add(new Card(1, 'c', 3));
+        group4.add(new Card(1, 'd', 7));
+        assertTrue(hand.checkIfRun(group4));
+
+        //test with one wild card at the end
+        group5.add(new Card(1, 'd', 1));
+        group5.add(new Card(1, 'd', 2));
+        group5.add(new Card(1, 's', 3));
+        assertTrue(hand.checkIfRun(group5));
+
+        //test some false cases
+        group6.add(new Card(1, 'd', 4));
+        group6.add(new Card(1, 's', 3));
+        group6.add(new Card(1, 'd', 7));
+        assertFalse(hand.checkIfRun(group6));
+
+        group7.add(new Card(1, 'd', 8));
+        group7.add(new Card(1, 's', 9));
+        group7.add(new Card(1, 'd', 3));
+        assertFalse(hand.checkIfRun(group7));
     }
 
     @Test
@@ -217,13 +241,6 @@ public class HandTest {
 
         int[] check1 = hand.checkGroup(group1);
         int[] actual = {1,1};
-        for(int x : actual){
-            System.out.print(actual[x] + " ");
-        }
-        System.out.println();
-        for(int y : check1){
-            System.out.print(check1[y] + " ");
-        }
 
         assertArrayEquals(check1, actual);
 

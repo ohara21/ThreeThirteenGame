@@ -151,15 +151,15 @@ public class Hand {
 
         //the difference between each consecutive card should be 0 in a set
         int[] checkSet = checkGroup(set);
-        Log.d("Hand","checkIfSet(): starting the check");
-        Log.d("Hand","checkIfSet(): current wild card "+this.wildCard);
+        //Log.d("Hand","checkIfSet(): starting the check");
+        //Log.d("Hand","checkIfSet(): current wild card "+this.wildCard);
         for(int i=0; i<checkSet.length;i++){
             if(checkSet[i] != 0){
                 //check for the wild card
-                Log.d("Hand","checkIfSet(): checking for a wild card, checkSet[i]= "+checkSet[i]);
+                //Log.d("Hand","checkIfSet(): checking for a wild card, checkSet[i]= "+checkSet[i]);
                 if((set.get(i).getCardRank() == this.wildCard) || (set.get(i+1).getCardRank() == this.wildCard)){
                     //one of the cards was a wild
-                    Log.d("Hand","checkIfSet(): found a wild card");
+                    //Log.d("Hand","checkIfSet(): found a wild card");
                     continue;
                 }
 
@@ -183,19 +183,22 @@ public class Hand {
             return false;
         }
 
-        //initialize and "empty" suit
+        //initialize an "empty" suit
         char checkSuit = 'e';
         int numWildCards = 0;
 
+        System.out.println("Starting checkIfRun()");
         //iterate through the run to check if they all have the same suit
         for(Card c : run){
             //if the card is wild, ignore it
             if(c.getCardRank() == this.wildCard){
+                System.out.println("found a wild card, current wild card "+this.wildCard);
                 numWildCards++;
                 continue;
             }
             else if(checkSuit == 'e'){
-                //initialize the first none wild card
+                //initialize the first non wild card
+                System.out.println("initializing the first non wild card "+c.getCardSuit());
                 checkSuit = c.getCardSuit();
             }
 
@@ -205,18 +208,21 @@ public class Hand {
             }
         }
 
+        System.out.println("numWildCard "+numWildCards);
         //check to make sure the difference between consecutive cards is 1 without wild cards
         ArrayList<Integer> checkRun = checkGroupNoWild(run);
         for(Integer diff : checkRun){
+            System.out.println("checking the differences: "+diff);
             if(diff != 1){
                 if(numWildCards == 0){
-                    Log.d("Hand","checkRun(): don't have any wild cards to use");
+                    //Log.d("Hand","checkRun(): don't have any wild cards to use");
+                    System.out.println("don't have any wild cards to use");
                     return false;
                 }
 
                 if(diff > numWildCards+1){
-                    Log.d("Hand","checkRun(): not enough wild cards");
-                    Log.d("Hand","checkRun(): diff "+diff+" numWildCards "+numWildCards);
+                    //Log.d("Hand","checkRun(): not enough wild cards");
+                    //Log.d("Hand","checkRun(): diff "+diff+" numWildCards "+numWildCards);
                     return false;
                 }
 
@@ -224,6 +230,7 @@ public class Hand {
                 numWildCards = diff-1;
             }
         }
+        System.out.println("End of checkIfRun() return true");
         return true;
     }
 
@@ -364,6 +371,7 @@ public class Hand {
                 continue;
             }
             groupDiff.add(c.getCardRank() - previousCardRank);
+            previousCardRank = c.getCardRank();
         }
         return groupDiff;
     }
@@ -375,11 +383,11 @@ public class Hand {
     public boolean createGrouping(ArrayList<Card> group){
         //checks to make sure group is not null and isn't empty
         if((group == null) || group.isEmpty()){
-            Log.d("Hand","the group passed in was null or empty");
+            //Log.d("Hand","the group passed in was null or empty");
             return false;
         }
 
-        Log.d("Hand","the size of groupings"+groupings.size());
+        //Log.d("Hand","the size of groupings"+groupings.size());
         //checks to make sure the groupings is not already full
         boolean hasEmptyGroup = false;
         for(ArrayList<Card> checkGroups : groupings){
@@ -389,20 +397,20 @@ public class Hand {
             }
         }
         if(!hasEmptyGroup){
-            Log.d("Hand","the groupings is already full");
+            //Log.d("Hand","the groupings is already full");
             return false;
         }
 
         //check to make sure each card is not in a current group
         for(Card c : group){
             if(isCardInGroup(c)){
-                Log.d("Hand","there is an intersecting grouping");
+                //Log.d("Hand","there is an intersecting grouping");
                 return false;
             }
         }
 
         //this group can be created
-        Log.d("Hand","the group was successfully made");
+        //Log.d("Hand","the group was successfully made");
         groupings.add(group);
         return true;
     }
