@@ -16,6 +16,8 @@ public class Hand {
     private ArrayList<ArrayList<Card>> groupings = null;
     public static final int MAX_NUM_GROUPS = 4;
 
+    private int wildCard;
+
     /**
      * Hand Class default constructor
      * new instance of a hand
@@ -28,6 +30,9 @@ public class Hand {
         for(int i=0; i<MAX_NUM_GROUPS; i++){
             groupings.add(new ArrayList<Card>());
         }
+
+        //wild card is 3 upon game initialization
+        this.wildCard = 3;
     }
 
     /**
@@ -64,6 +69,10 @@ public class Hand {
     public void addToHand(Card c){userHand.add(c);}
 
     public void setHand(ArrayList<Card> hand){this.userHand = hand;}
+
+    public void setWildCard(int wildCard){
+        this.wildCard = wildCard;
+    }
 
     public ArrayList<Card> getHand(){
         if(this.userHand != null) {
@@ -133,6 +142,7 @@ public class Hand {
      * @return whether it's valid or not
      */
     public boolean checkIfSet(ArrayList<Card> set){
+        //wild card is set before this method is called in TTGameState canPlayerGoOut()
 
         //checks to make sure set isn't empty and is not null pointer
         if(set.isEmpty() || (set == null)){
@@ -141,8 +151,19 @@ public class Hand {
 
         //the difference between each consecutive card should be 0 in a set
         int[] checkSet = checkGroup(set);
+        //Log.d("Hand","checkIfSet(): starting the check");
+        //Log.d("Hand","checkIfSet(): current wild card "+this.wildCard);
         for(int i=0; i<checkSet.length;i++){
             if(checkSet[i] != 0){
+                //check for the wild card
+                //Log.d("Hand","checkIfSet(): checking for a wild card, checkSet[i]= "+checkSet[i]);
+                if((set.get(i).getCardRank() == this.wildCard) || (set.get(i+1).getCardRank() == this.wildCard)){
+                    //one of the cards was a wild
+                    //Log.d("Hand","checkIfSet(): found a wild card");
+                    continue;
+                }
+
+                //a wild card wasn't found
                 return false;
             }
         }
@@ -155,25 +176,56 @@ public class Hand {
      * @return whether it's valid or not
      */
     public boolean checkIfRun(ArrayList<Card> run){
+        //wild card is set before this method is called in TTGameState canPlayerGoOut()
+
         //checks to make sure run isn't empty and is not null pointer
         if(run.isEmpty() || (run == null)){
             return false;
         }
-        //get the first card's suit
-        char checkSuit = run.get(0).getCardSuit();
+
+        //initialize an "empty" suit
+        char checkSuit = 'e';
+        int numWildCards = 0;
 
         //iterate through the run to check if they all have the same suit
         for(Card c : run){
+            //if the card is wild, ignore it
+            if(c.getCardRank() == this.wildCard){
+                numWildCards++;
+                continue;
+            }
+            else if(checkSuit == 'e'){
+                //initialize the first non wild card
+                checkSuit = c.getCardSuit();
+            }
+
+            //all non wild cards should have the same suit
             if(c.getCardSuit() != checkSuit){
                 return false;
             }
         }
 
-        //check to make sure the difference between consecutive cards is 1
-        int[] checkRun = checkGroup(run);
-        for(int i=0; i<checkRun.length;i++){
-            if(checkRun[i] != 1){
-                return false;
+        //check to make sure the difference between consecutive cards is 1 without wild cards
+        ArrayList<Integer> checkRun = checkGroupNoWild(run);
+        for(Integer diff : checkRun){
+            //if the diff != 1, a wild card can be used or the run is invalid
+            if(diff != 1){
+                //the run is invalid if the player doesn't have any wilds in this group
+                if(numWildCards == 0){
+                    //Log.d("Hand","checkRun(): don't have any wild cards to use");
+                    return false;
+                }
+
+                //there isn't enough wild cards in this group to account
+                //for the difference between cards
+                if(diff > numWildCards+1){
+                    //Log.d("Hand","checkRun(): not enough wild cards");
+                    //Log.d("Hand","checkRun(): diff "+diff+" numWildCards "+numWildCards);
+                    return false;
+                }
+
+                //a wild card was found update the number of Wild cards available
+                numWildCards = diff-1;
             }
         }
         return true;
@@ -279,10 +331,45 @@ public class Hand {
      * @return groupDiff: an int array with calculated differences in rank
      */
     public int[] checkGroup(ArrayList<Card> group){
+        //wild card is set before this method is called in TTGameState canPlayerGoOut()
+
         int[] groupDiff = new int[group.size()-1];
         ArrayList<Card> sortedHand = sortByRank(group);
         for(int i=0; i<groupDiff.length; i++){
             groupDiff[i] = sortedHand.get(i+1).getCardRank()-sortedHand.get(i).getCardRank();
+        }
+        return groupDiff;
+    }
+
+    /**
+     * makes a difference array with the wilds taken out
+     * used in checkIfRun()
+     * @param group the provided group to create difference array
+     * @return the difference array not including wilds
+     */
+    public ArrayList<Integer> checkGroupNoWild(ArrayList<Card> group){
+
+        //sort the given hand by rank
+        ArrayList<Card> sortedHand = sortByRank(group);
+        ArrayList<Integer> groupDiff = new ArrayList<>();
+
+        //iterate through the sorted group
+        int previousCardRank = 0;
+        for(Card c : sortedHand){
+            if(c.getCardRank() == this.wildCard) {
+                //ignore the wild card
+                continue;
+            }
+            else if(previousCardRank == 0){
+                //initialize the standard card rank with the first non wild card encountered
+                previousCardRank = c.getCardRank();
+                continue;
+            }
+
+            //this is not a wild card and the difference between the current card
+            //and this on will be added to the array list
+            groupDiff.add(c.getCardRank() - previousCardRank);
+            previousCardRank = c.getCardRank();
         }
         return groupDiff;
     }
@@ -294,9 +381,11 @@ public class Hand {
     public boolean createGrouping(ArrayList<Card> group){
         //checks to make sure group is not null and isn't empty
         if((group == null) || group.isEmpty()){
+            //Log.d("Hand","the group passed in was null or empty");
             return false;
         }
 
+        //Log.d("Hand","the size of groupings"+groupings.size());
         //checks to make sure the groupings is not already full
         boolean hasEmptyGroup = false;
         for(ArrayList<Card> checkGroups : groupings){
@@ -306,17 +395,20 @@ public class Hand {
             }
         }
         if(!hasEmptyGroup){
+            //Log.d("Hand","the groupings is already full");
             return false;
         }
 
         //check to make sure each card is not in a current group
         for(Card c : group){
             if(isCardInGroup(c)){
+                //Log.d("Hand","there is an intersecting grouping");
                 return false;
             }
         }
 
         //this group can be created
+        //Log.d("Hand","the group was successfully made");
         groupings.add(group);
         return true;
     }
@@ -333,6 +425,7 @@ public class Hand {
 
         //check if the card is in a group
         if(!isCardInGroup(cardToRemove)){
+            Log.d("Hand","the card was not found in a group");
             return false;
         }
 

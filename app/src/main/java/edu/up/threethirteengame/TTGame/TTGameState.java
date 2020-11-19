@@ -66,10 +66,12 @@ public class TTGameState extends GameState {
             }
         }
         Collections.shuffle(deck);
+        Collections.shuffle(deck);
 
-        //start the discard pile from top of deck
-        discardPile.add(deck.get(deck.size()-1));
-        deck.remove(deck.size()-1);
+        //TODO: remove later, this is accounted for in deal hand
+//        //start the discard pile from top of deck
+//        discardPile.add(deck.get(deck.size()-1));
+//        deck.remove(deck.size()-1);
 
         //sets round number and the wild card
         roundNum = 1;
@@ -266,26 +268,43 @@ public class TTGameState extends GameState {
      */
     public boolean isRoundOver() {
 
-        //both players need to have the same amount of turns
-        if(player0TurnsTaken != player1TurnsTaken){
-            Log.d("isRoundOver()", "different amount of turns");
-            Log.d("TTGameState", "player zero " + player0TurnsTaken);
-            Log.d("TTGameState", "player one " + player1TurnsTaken);
+        //TODO: remove later
+//        //both players need to have the same amount of turns
+//        if(player0TurnsTaken != player1TurnsTaken){
+//            Log.d("isRoundOver()", "different amount of turns");
+//            Log.d("TTGameState", "player zero " + player0TurnsTaken);
+//            Log.d("TTGameState", "player one " + player1TurnsTaken);
+//            return false;
+//        }
+
+//        //the amount of turns should be equal to the current round number
+//        if(player0TurnsTaken != roundNum){
+//            Log.d("isRoundOver()", "player 0's turns arent equal to round");
+//            return false;
+//        }
+//        else if(player1TurnsTaken != roundNum){
+//            Log.d("isRoundOver()", "player 1's turns arent equal to round");
+//            return false;
+//        }
+
+        //the round is NOT over if none of the players have gone out
+        if (!player0GoneOut && !player1GoneOut) {
             return false;
         }
 
-        //the amount of turns should be equal to the current round number
-        if(player0TurnsTaken != roundNum){
-            Log.d("isRoundOver()", "player 0's turns arent equal to round");
-            return false;
+        //if the other player has gone out, it's this player's last turn
+        if((playerTurn == 0) && (player0GoneOut)){
+            return true;
         }
-        else if(player1TurnsTaken != roundNum){
-            Log.d("isRoundOver()", "player 1's turns arent equal to round");
-            return false;
+        else if ((playerTurn == 1) && (player1GoneOut)){
+            return true;
         }
-        Log.d("TTGameState", "round is over");
-        //the round is over if the previous statements weren't caught
-        return true;
+
+        Log.d("GameState","most likely found a bug in round over");
+        Log.d("GameState",toString());
+        Log.d("GameState","has player 0 gone out "+player0GoneOut);
+        Log.d("GameState","has player 1 gone out "+player1GoneOut);
+        return false;
     }
 
     /**
@@ -301,8 +320,6 @@ public class TTGameState extends GameState {
         //update round num
         if (roundNum != 11) {
             roundNum++;
-            //deal a new set of cards
-            dealHand();
         }
 
         //update player's scores
@@ -314,6 +331,9 @@ public class TTGameState extends GameState {
         player0Drawn = false;
         player1Drawn = false;
 
+        if (roundNum != 11) {
+            dealHand();
+        }
 
     }
 
@@ -323,20 +343,69 @@ public class TTGameState extends GameState {
      */
     public void updateScores(){
 
+        //check if each card is in a valid group player 0
+        for(ArrayList<Card> group0 : player0Hand.getGroupings()){
+            if(player0Hand.checkIfRun(group0) || player0Hand.checkIfSet(group0)){
+                //found a valid group
+                for(Card c0 : group0){
+                    //set the card in the group to true
+                    c0.setInValidGroup(true);
+
+                    //need to find the card in the players hand now because they are not
+                    //not stored in the same memory
+                    for(Card cardInHand0 :  player0Hand.getHand()){
+                        if((c0.getCardSuit() == cardInHand0.getCardSuit()) && (c0.getCardRank() == cardInHand0.getCardRank())){
+                            //set the card in the player's hand to true
+                            cardInHand0.setInValidGroup(true);
+                        }
+                    }
+                }
+            }
+        }
+
         //update player 0's score
         int roundScore = 0;
+        Log.d("GameState","updateScores(): calculating round score for p0");
         for(Card c0 : player0Hand.getHand()){
-            roundScore += c0.getCardRank();
+            Log.d("GameState","updateScores(): card in p0 hand "+c0.getCardRank()+c0.getCardSuit()+" "+c0.getInValidGroup());
+            if(!c0.getInValidGroup()) {
+                roundScore += c0.getCardRank();
+            }
         }
         player0Score += roundScore;
 
+        //check if each card is in a valid group for player 1
+        for(ArrayList<Card> group1 : player1Hand.getGroupings()){
+            if(player1Hand.checkIfRun(group1) || player1Hand.checkIfSet(group1)){
+                //found a valid group
+                for(Card c1 : group1){
+                    //set the card in the group to true
+                    c1.setInValidGroup(true);
+
+                    //need to find the card in the players hand now because they are not
+                    //stored in the same memory
+                    for(Card cardInHand1 :  player1Hand.getHand()){
+                        if((c1.getCardSuit() == cardInHand1.getCardSuit()) && (c1.getCardRank() == cardInHand1.getCardRank())){
+                            //set the card in the player's hand to true
+                            cardInHand1.setInValidGroup(true);
+                        }
+                    }
+                }
+            }
+        }
+
         //update player 1's score
         roundScore = 0;
+        Log.d("GameState","updateScores(): calculating round score for p1");
         for(Card c1 : player1Hand.getHand()){
-            roundScore += c1.getCardRank();
+            Log.d("GameState","updateScores(): card in p1 hand "+c1.getCardRank()+c1.getCardSuit()+" "+c1.getInValidGroup());
+            if(!c1.getInValidGroup()) {
+                roundScore += c1.getCardRank();
+            }
         }
         player1Score += roundScore;
     }
+
     @Override
     public String toString() {
         String round = "Round number: " + roundNum;
@@ -527,6 +596,7 @@ public class TTGameState extends GameState {
                 break;
             }
         }
+
         //the player's turn always ends when they discard
         nextTurn();
 
@@ -588,6 +658,9 @@ public class TTGameState extends GameState {
                 }
             }
         }
+
+        //set the wild card in the current player's hand
+        currentPlayerHand().setWildCard(this.wildCard);
 
         //checks the groupings and sees if the card can be discarded
         if(playerDiscard(discardGoOut)){
@@ -679,6 +752,7 @@ public class TTGameState extends GameState {
             return false;
         }
 
+        //TODO: remove later
 //        //check to make sure there are groups in the current player's hand
 //        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
 //            Log.d("isCardInGroup()", "the first element in player's groupings is empty");
@@ -741,21 +815,73 @@ public class TTGameState extends GameState {
      * in remaining rounds, player receives 1 card per round
      */
     public void dealHand(){
-        setWild();
-        if(roundNum == 1) {
-            for (int i = 0; i <= roundNum + 1; i++) {
-                player0Hand.addToHand(deck.get(deck.size()-1));
-                deck.remove(deck.size()-1);
-                player1Hand.addToHand(deck.get(deck.size()-1));
-                deck.remove(deck.size()-1);
+        //TODO: remove later
+//        if(roundNum == 1) {
+//            for (int i = 0; i <= roundNum + 1; i++) {
+//                player0Hand.addToHand(deck.get(deck.size()-1));
+//                deck.remove(deck.size()-1);
+//                player1Hand.addToHand(deck.get(deck.size()-1));
+//                deck.remove(deck.size()-1);
+//            }
+//        }
+//        else{
+//            player0Hand.addToHand(deck.get(deck.size()-1));
+//            deck.remove(deck.size()-1);
+//            player1Hand.addToHand(deck.get(deck.size()-1));
+//            deck.remove(deck.size()-1);
+//        }
+
+//        //put all the cards back into the deck
+//        for(Card c0 : player0Hand.getHand()){
+//            deck.add(c0);
+//        }
+//        player0Hand.getHand().clear();
+//        for(Card c1 : player1Hand.getHand()){
+//            deck.add(c1);
+//        }
+//        player1Hand.getHand().clear();
+//        for(Card c2 : discardPile){
+//            deck.add(c2);
+//        }
+//        discardPile.clear();
+
+        //clear the player's hands, discard pile and deck
+        player0Hand.getHand().clear();
+        player1Hand.getHand().clear();
+        discardPile.clear();
+        deck.clear();
+
+        //clear each player's groupings
+        for(ArrayList<Card> group0 : player0Hand.getGroupings()){
+            group0.clear();
+        }
+        for(ArrayList<Card> group1 : player1Hand.getGroupings()){
+            group1.clear();
+        }
+
+        //make a fresh deck with 52 card objects then shuffle deck randomly
+        for(int s = 0; s < 4; s++) {
+            for (int v = 1; v <= 13; v++) {
+                deck.add(new Card(1, suite[s], v));
             }
         }
-        else{
+        Collections.shuffle(deck);
+        Collections.shuffle(deck);
+
+        //place a card down for the discard pile
+        discardPile.add(deck.get(deck.size()-1));
+        deck.remove(deck.size()-1);
+
+        //a new hand is dealt with each round
+        for (int i = 0; i <= roundNum + 1; i++) {
             player0Hand.addToHand(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
             player1Hand.addToHand(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
         }
+
+        //set the wild card
+        setWild();
     }//dealHand
 
     /**
