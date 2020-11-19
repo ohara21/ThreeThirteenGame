@@ -60,7 +60,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // Create temp group for set
         tempGrouping.add(checkForSet(computerHand));
         //TODO: Look for runs (disregarding common cards) -> create grouping per run
-        // Need sorting based on suit and rank to complete
 
         // Check set and runs for similar cards
         ArrayList<Card> similar = checkForSimilar(tempGrouping);
