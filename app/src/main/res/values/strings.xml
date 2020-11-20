@@ -20,4 +20,5 @@
     lowest score.
     \nA card of higher rank, like a queen, will have a higher penalty if it stays in your hand.
     \nGood luck!</string>
+    <string name="actionText">The computer player hasn\'t acted yet.</string>
 </resources>
