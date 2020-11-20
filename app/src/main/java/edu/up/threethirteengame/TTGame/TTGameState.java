@@ -596,6 +596,8 @@ public class TTGameState extends GameState {
                 break;
             }
         }
+        //move the cards from the discard pile to the deck if the deck is empty
+        discardToDeck();
 
         //the player's turn always ends when they discard
         nextTurn();
@@ -609,7 +611,6 @@ public class TTGameState extends GameState {
      * Go Out: all of player's cards except one must be in run/set to Go Out
      * @return whether the player can Go Out or not
      */
-    //TODO: doesn't account for wild card yet
     public boolean canPlayerGoOut(){
         Log.d("canPlayerGoOut()", "testing if possible");
         //check to make sure there is at least one group in 2D groupings
@@ -690,7 +691,6 @@ public class TTGameState extends GameState {
     /**
      * action method for the current player to go out
      */
-    //TODO: doesn't account for wild card yet
     public void goOut(){
         //check if player can Go Out, all cards are in a group except one
         if(!this.canPlayerGoOut()){
@@ -752,13 +752,6 @@ public class TTGameState extends GameState {
             return false;
         }
 
-        //TODO: remove later
-//        //check to make sure there are groups in the current player's hand
-//        if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
-//            Log.d("isCardInGroup()", "the first element in player's groupings is empty");
-//            return false;
-//        }
-
         //iterate through the current player's groupings for the given card
         //Log.d("isCardInGroup()", "trying to find the card in player's groups");
         for(ArrayList<Card> groups : currentPlayerHand().getGroupings()){
@@ -815,36 +808,6 @@ public class TTGameState extends GameState {
      * in remaining rounds, player receives 1 card per round
      */
     public void dealHand(){
-        //TODO: remove later
-//        if(roundNum == 1) {
-//            for (int i = 0; i <= roundNum + 1; i++) {
-//                player0Hand.addToHand(deck.get(deck.size()-1));
-//                deck.remove(deck.size()-1);
-//                player1Hand.addToHand(deck.get(deck.size()-1));
-//                deck.remove(deck.size()-1);
-//            }
-//        }
-//        else{
-//            player0Hand.addToHand(deck.get(deck.size()-1));
-//            deck.remove(deck.size()-1);
-//            player1Hand.addToHand(deck.get(deck.size()-1));
-//            deck.remove(deck.size()-1);
-//        }
-
-//        //put all the cards back into the deck
-//        for(Card c0 : player0Hand.getHand()){
-//            deck.add(c0);
-//        }
-//        player0Hand.getHand().clear();
-//        for(Card c1 : player1Hand.getHand()){
-//            deck.add(c1);
-//        }
-//        player1Hand.getHand().clear();
-//        for(Card c2 : discardPile){
-//            deck.add(c2);
-//        }
-//        discardPile.clear();
-
         //clear the player's hands, discard pile and deck
         player0Hand.getHand().clear();
         player1Hand.getHand().clear();
@@ -883,6 +846,29 @@ public class TTGameState extends GameState {
         //set the wild card
         setWild();
     }//dealHand
+
+    /**
+     * used when the deck is empty during a round and the cards in the discard pile need to be
+     * reshuffled and placed back into the deck
+     */
+    public void discardToDeck(){
+        //check to make sure that the deck is empty
+        if(!deck.isEmpty()){
+            return;
+        }
+
+        //move the cards in the discard pile to the deck
+        for(Card c :discardPile){
+            deck.add(c);
+        }
+        discardPile.clear();
+
+        //shuffle the deck and move the top card from the deck to the discard pile
+        Collections.shuffle(deck);
+        Collections.shuffle(deck);
+        discardPile.add(deck.get(deck.size()-1));
+        deck.remove(deck.size()-1);
+    }
 
     /**
      * returns the current player's hand depending on turn
