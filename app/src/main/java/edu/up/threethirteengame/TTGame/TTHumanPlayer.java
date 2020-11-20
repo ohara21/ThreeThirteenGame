@@ -255,15 +255,37 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 gameBoard.invalidate();
                 break;
             case (R.id.discardButton):
-                // Loop through all player cards until reaches clicked card, then discard
+                // Loop through all player cards until reaches clicked card
+                //if only one card is clicked, discard
+                //if more than one card is clicked, do nothing
+                Card discardCard = null;
+                boolean tooManyCards = false;
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
                         Log.d("HP Before Discard","card being discarded: "+state.currentPlayerHand().getCard(i).getCardRank()+state.currentPlayerHand().getCard(i).getCardSuit());
-                        game.sendAction(new TTDiscardAction(this,state.currentPlayerHand().getCard(i)));
-                        gameBoard.invalidate();
-                        break;
+                        if(discardCard == null){
+                            //the first clicked card was found
+                            discardCard = state.currentPlayerHand().getCard(i);
+                        }
+                        else{
+                            //more than one card was clicked
+                            tooManyCards = true;
+                            break;
+                        }
                     }
                 }
+
+                //take the action if only one card was found
+                if((discardCard != null) && !tooManyCards) {
+                    game.sendAction(new TTDiscardAction(this, discardCard));
+                }
+                else{
+                    //deselect all the cards if too many cards were selected
+                    for(Card cSelect : state.currentPlayerHand().getHand()){
+                        cSelect.setIsClick(false);
+                    }
+                }
+                gameBoard.invalidate();
                 break;
             case (R.id.addGroupButton):
                 //1:check to make selected cards are not in a group
