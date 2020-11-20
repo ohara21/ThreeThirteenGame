@@ -21,4 +21,36 @@
     \nA card of higher rank, like a queen, will have a higher penalty if it stays in your hand.
     \nGood luck!</string>
     <string name="actionText">The computer player hasn\'t acted yet.</string>
+    \nWhen the first round begins, players are dealt 3 cards. This number increments:
+    4 cards are dealt in round 2, 5 in round 3, and so on, up to 13 in the last one, round 11.
+
+    \nThe player who goes first (that\'s you!) draws a card from either the draw or discard pile.
+
+    \nYour objective is to make sets or runs from your hand.
+
+    \nA set is a group with 3 or more cards of the same rank.
+    \nExample: the 5 of hearts, clubs, and spades.
+
+    \nA run is a group with 3 or more cards of incrementing ranks and same suit.
+    \nExample: a 6, 7, and 8 of diamonds.
+    \nThe add to and remove group buttons are useful for organizing cards.
+
+    \nYou can put any cards you want into a group together. It is meant to help you keep track of
+    possible runs or sets. Simply select the cards you want together, and then click the button.
+    You must discard a card each turn. Select the card you want to get rid of and then click the
+    discard button.
+
+    \nOnce all of the cards in your hand, except for one, which would theoretically be discarded,
+    have been put into groups, each with a complete run or set, click
+    the go out button. This will give your opponent one last turn before ending the round.
+
+    \nThe goal is to end each round with the lowest score possible. Each kind of card is associated
+    with a certain point value: 1 point for an ace, 2 for a 2, 3 for a 3, and so on, up to
+    13 for a king. The points associated with any cards in your hand at the end of the round that are
+    not a part of complete sets or runs are added to your total score. When you go out, 0 is added to
+    your score for that round.
+
+    \nThe player with the lowest score at the end of the 11 rounds wins.
+    Good luck!</string>
+<string name="actionText">The computer player hasn\'t acted yet.</string>
 </resources>
