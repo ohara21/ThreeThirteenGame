@@ -13,6 +13,7 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
     //the local game state
     private TTGameState newState = null;
 
+
     /**
      * constructor
      *
@@ -47,7 +48,7 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
             Log.d("Computer Player",newState.toString());
             return;
         }
-
+        sleep(2);
         if(newState.playerDrawDeck()){
             Log.d("Computer Player","Top of discard "+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardRank()+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardSuit());
             Log.d("Computer Player"," is drawing from deck: "+newState.getDeck().get(newState.getDeck().size()-1).getCardRank()+newState.getDeck().get(newState.getDeck().size()-1).getCardSuit());

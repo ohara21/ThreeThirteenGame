@@ -29,9 +29,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     //our activity
     private Activity myActivity = null;
 
-    //our local game
-    private TTLocalGame localGame;
-
     //our buttons
     private Button helpButton;
     private Button quitButton;
@@ -91,7 +88,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     public void receiveInfo(GameInfo info) {
         // ignore the message if it's not a CounterState message
         if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
-            actionInfoTextValue = 4;
             return;
         }
         else if (!(info instanceof TTGameState)){
@@ -109,20 +105,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             if(gameBoard == null){
                 return;
             }
-            if (state.getPlayer1Drawn() && state.getPlayer1Discard()) {
-                actionInfoTextValue = 1;
-            } else if (state.getIsPlayer1GoneOut()) {
-                actionInfoTextValue = 2;
-            } else if (state.getRoundOver()) {
-                actionInfoTextValue = 3;
-                player0ScoreIncrease = state.getPlayer0Score() - previousPlayer0Score;
-                player1ScoreIncrease = state.getPlayer1Score() - previousPlayer1Score;
-                previousPlayer0Score = state.getPlayer0Score();
-                previousPlayer1Score = state.getPlayer1Score();
-            }
+            Log.d("TTHumanPlayer", "action val: " + String.valueOf(state.getActionTextVal()));
             //send the current state to the GameBoard and redraws it
             gameBoard.setTtGameState(this.state);
             gameBoard.invalidate();
+            // get current actionInfoTextValue
+            actionInfoTextValue = state.getActionTextVal();
             updateDisplay();
         }
     }
@@ -144,6 +132,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 actionInfoText.setText("The computer player has gone out.  You have one turn left.");
                 break;
             case 3:
+                player0ScoreIncrease = state.getPlayer0Score() - previousPlayer0Score;
+                previousPlayer0Score = state.getPlayer0Score();
+                player1ScoreIncrease = state.getPlayer1Score() - previousPlayer1Score;
+                previousPlayer1Score = state.getPlayer1Score();
                 actionInfoText.setText("Your score has been increased by " + player0ScoreIncrease + " and the computer's score has been increased by " + player1ScoreIncrease + ".");
                 break;
             case 4:

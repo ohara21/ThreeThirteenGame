@@ -55,6 +55,9 @@ public class TTGameState extends GameState {
     //the card value of the card that can be used as any card in a group for a given round
     private int wildCard;
 
+    // used to help update the text view about computer player's actions
+    private int actionTextVal;
+
     /**
      * GameState initialization constructor
      */
@@ -95,6 +98,9 @@ public class TTGameState extends GameState {
 
         //player 0 goes first
         playerTurn = 0;
+
+        //start with default text view
+        actionTextVal = 0;
     }
 
     /**
@@ -131,6 +137,7 @@ public class TTGameState extends GameState {
         this.roundOver = orig.getRoundOver();
         this.playerTurn = orig.getPlayerTurn();
         this.wildCard = orig.getWildCard();
+        this.actionTextVal = orig.getActionTextVal();
     }
 
     /**
@@ -404,6 +411,8 @@ public class TTGameState extends GameState {
             }
         }
         player1Score += roundScore;
+        // informs player of updated scores
+        actionTextVal = 3;
     }
 
     @Override
@@ -450,11 +459,15 @@ public class TTGameState extends GameState {
         if(deck.size() == 0){
             Log.d("playerDrawDeck()","deck is apparently empty, drawing from discard");
             //have to draw from discard
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
         if(currentPlayerHand().getHand().size() == (roundNum+3)){
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
 
@@ -500,11 +513,15 @@ public class TTGameState extends GameState {
         if(discardPile.size() == 0){
             Log.d("playerDrawDiscard()","discard is apparently empty, drawing from deck");
             //have to draw from discard
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
         if(currentPlayerHand().getHand().size() == (roundNum+3)){
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
 
@@ -549,6 +566,8 @@ public class TTGameState extends GameState {
         //checks if the card exists
         if(c == null){
             Log.d("playerDiscard()","card to remove wasn't found");
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
 
@@ -559,6 +578,8 @@ public class TTGameState extends GameState {
             }
         }
 
+        // illegal move attempted
+        actionTextVal = 4;
         return false;
     }
 
@@ -599,6 +620,10 @@ public class TTGameState extends GameState {
         //move the cards from the discard pile to the deck if the deck is empty
         discardToDeck();
 
+        // records if computer player has discarded
+        if (getPlayerTurn() == 1) {
+            actionTextVal = 1;
+        }
         //the player's turn always ends when they discard
         nextTurn();
 
@@ -616,6 +641,8 @@ public class TTGameState extends GameState {
         //check to make sure there is at least one group in 2D groupings
         if(currentPlayerHand().getGroupings().isEmpty()){
             Log.d("canPlayerGoOut()", "no groupings");
+            // illegal move attempted
+            actionTextVal = 4;
             return false;
         }
         //if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
@@ -627,12 +654,16 @@ public class TTGameState extends GameState {
         if(playerTurn == 0){
             if(player0GoneOut){
                 Log.d("canPlayerGoOut()","player 0 has already gone out");
+                // illegal move attempted
+                actionTextVal = 4;
                 return false;
             }
         }
         else{
             if(player1GoneOut){
                 Log.d("canPlayerGoOut()","player 1 has already gone out");
+                // illegal move attempted
+                actionTextVal = 4;
                 return false;
             }
         }
@@ -655,6 +686,8 @@ public class TTGameState extends GameState {
                     //there is more than one card in the groupings that isn't in the player's hand
                     //therefore, we don't take any action and they can't really Go Out
                     Log.d("canPlayerGoOut()","more than one card to be removed");
+                    // illegal move attempted
+                    actionTextVal = 4;
                     return false;
                 }
             }
@@ -685,6 +718,8 @@ public class TTGameState extends GameState {
             }
         }
         Log.d("canPlayerGoOut()", "go out not possible");
+        // illegal move attempted
+        actionTextVal = 4;
         return false;
     }
 
@@ -716,6 +751,10 @@ public class TTGameState extends GameState {
             //current player discards the remaining card and its the next players turn
             discardCard(discardGoOut);
 
+            //records if computer player has gone out
+            if (getPlayerTurn() == 1) {
+                actionTextVal = 2;
+            }
             //player has gone out for this round and the other player should have another turn
             //if they already went
             if(this.playerTurn == 0){
@@ -898,5 +937,7 @@ public class TTGameState extends GameState {
     public void removeGrouping(Card cardToRemove) {
         currentPlayerHand().removeGrouping(cardToRemove);
     }
+
+    public int getActionTextVal() {return actionTextVal;}
 
 }
