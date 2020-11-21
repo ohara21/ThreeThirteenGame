@@ -16,6 +16,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
     private ArrayList<ArrayList<Card>> compGroup = new ArrayList<>();
 
+    private ArrayList<Card> canDiscard = new ArrayList<>();
+
     /**
      * constructor
      *
@@ -49,17 +51,20 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             game.sendAction(new TTDrawDeckAction(this));
         }
 
-        //update need list using optimization algorithm
+        //update need list using optimization algorithm and adds new groupings to gameState
         needCard = optimizeHand(newState);
+        for(ArrayList groups: compGroup) {
+            game.sendAction(new TTAddGroupAction(this, groups));
+        }
 
         //try to go out
         if(newState.canPlayerGoOut()){
             game.sendAction(new TTGoOutAction(this));
         }
 
-        //TODO: discard card not apart of needed list or apart of a group
+        //discard card not apart of needed list or apart of a group
         else{
-            Card discard = needCard.get(0);
+            Card discard = canDiscard.get(0);
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
@@ -89,8 +94,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         computerHand.setHand(computerHand.sortByRank(computerHand.getHand()));
         // Create temp group for set
         tempGrouping.add(checkForSet(computerHand));
-        //TODO: Look for runs (disregarding common cards) -> create grouping per run
 
+        //Look for runs (disregarding common cards) -> create grouping per run
         ArrayList<ArrayList<Card>> runGroup = checkForRun(computerHand);
         for(ArrayList list: runGroup){
             tempGrouping.add(list);
@@ -125,9 +130,9 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             tempGrouping.remove(smallestSum(sumHold));
 
         }
-        //TODO: check for incomplete run
-        //Check for incomplete set
+        //TODO: check for incomplete run (not completed yet)
 
+        //Check for incomplete set
         ArrayList<Card> tempHand = computerHand.getHand();
 
         //gets rid of cards that are apart of a set or run
@@ -168,7 +173,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
 
         }
-        // return cards not in group
+
+        //TODO: find cards that are needed
+
+        //finds cards not in group and adds it to the can discard pile
+        canDiscard.clear();
         for(Card c: computerHand.getHand()){
             boolean outcast = false;
             for(int i = 0; i < finalGrouping.size(); i++){
@@ -177,16 +186,18 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
             if(outcast){
-                needed.add(c);
+                this.canDiscard.add(c);
             }
         }
 
+        //if new group is formed, add confirmed group to the computers groups
         for(ArrayList fGroup: finalGrouping){
             if(!isIn(this.compGroup, fGroup)) {
                 compGroup.add(fGroup);
             }
         }
 
+        //returns needed cards so the compPlayer can check discard pile
         return needed;
     }
 
@@ -217,7 +228,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
     }
 
     /**
-     * Returns group of run
+     * Returns group of runs
      * @param hand
      * @return
      */
@@ -237,6 +248,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         int[] heartRunIndex = new int[2];
         int[] spadeRunIndex = new int[2];
 
+        //splits hand into sub groups based on suite
         for(Card c: hand.getHand()){
             switch(c.getCardSuit()){
                 case 's':
@@ -254,6 +266,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
         }
 
+        //sorts suites by rank and find starting and ending index of consecutive 1's
         club = rankSort(club);
         clubRunIndex = findRunIndex(club);
         diamond = rankSort(diamond);
@@ -262,32 +275,36 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         heartRunIndex = findRunIndex(heart);
         spade = rankSort(spade);
         spadeRunIndex = findRunIndex(spade);
-        if(clubRunIndex[0] != -1) {
+
+        //adds found runs in a group
+        if(clubRunIndex[0] != -1 && clubRunIndex[0] != clubRunIndex[1]) {
             for (int i = clubRunIndex[0]; i <= clubRunIndex[1]; i++) {
                 clubRun.add(club.get(i));
             }
         }
-        if(diamondRunIndex[0] != -1) {
+        if(diamondRunIndex[0] != -1 && diamondRunIndex[0] != diamondRunIndex[1]) {
             for (int i = diamondRunIndex[0]; i <= diamondRunIndex[1]; i++) {
                 diamondRun.add(diamond.get(i));
             }
         }
-        if(heartRunIndex[0] != -1) {
+        if(heartRunIndex[0] != -1 && heartRunIndex[0] != heartRunIndex[1]) {
             for (int i = heartRunIndex[0]; i <= heartRunIndex[1]; i++) {
                 heartRun.add(heart.get(i));
             }
         }
-        if(spadeRunIndex[0] != -1) {
+        if(spadeRunIndex[0] != -1 && spadeRunIndex[0] != spadeRunIndex[1]) {
             for (int i = spadeRunIndex[0]; i <= spadeRunIndex[1]; i++) {
                 spadeRun.add(club.get(i));
             }
         }
 
+        //adds groups of separate suites into final grouping to return
         runs.add(clubRun);
         runs.add(diamondRun);
         runs.add(heartRun);
         runs.add(spadeRun);
 
+        //returns all runs found in hand
         return runs;
     }
 
@@ -341,7 +358,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return sum.indexOf(smallest);
     }
 
-
+    /**
+     * sorts cards based on rank value
+     * @param hand
+     * @return
+     */
     public ArrayList<Card> rankSort(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
@@ -352,7 +373,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return hand;
     }
 
-
+    /**
+     * finds index of runs based on arraylist given
+     * @param hand
+     * @return
+     */
     private int[] findRunIndex(ArrayList<Card> hand){
         ArrayList<Integer> groupDiff = new ArrayList<>();
         int[] index = new int[2];
@@ -379,6 +404,19 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return index;
     }
 
+    /**
+     * Finds starting and ending index of similar values in an array
+     * @param a
+     * @param n
+     * @param key
+     * @return
+     *
+     * External Citation:
+     * Problem: Returning starting and ending index of consecutive values
+     * Date: 11/21/2020
+     * Source: https://www.geeksforgeeks.org/find-start-ending-index-element-unsorted-array/
+     * Solution: used the code
+     */
     static int[] findIndex(ArrayList<Integer> a, int n, int key) {
         int[] index = new int[2];
         int start = -1;
@@ -407,6 +445,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return index;
     }
 
+    /**
+     * Used to check if top of discard is a needed card
+     * @param need
+     * @param rank
+     * @return
+     */
     private boolean isNeeded(ArrayList<Card> need, int rank){
         for(Card c: need){
             if(c.getCardRank() == rank){
@@ -416,6 +460,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return false;
     }
 
+    /**
+     * checks if groups created from optimization hand is already a group of the computer player
+     * @param finalGroup
+     * @param group
+     * @return
+     */
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
         for(ArrayList fgroup: finalGroup){
             if(fgroup.equals(group)){
