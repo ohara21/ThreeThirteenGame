@@ -2,6 +2,7 @@ package edu.up.threethirteengame.TTGame;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -252,9 +253,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 break;
             case (R.id.quitButton):
                 // close program
-                System.exit(0);
-                //TODO: use bottom code when we figure it out
-                //myActivity.startActivity(new Intent(myActivity, QuitMenu.class));
+                myActivity.startActivity(new Intent(myActivity, QuitMenu.class));
                 break;
             case (R.id.restartButton):
                 // back to game config screen

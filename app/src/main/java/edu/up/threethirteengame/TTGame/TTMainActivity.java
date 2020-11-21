@@ -28,6 +28,11 @@ public class TTMainActivity extends GameMainActivity {
     @Override
     public GameConfig createDefaultConfig() {
 
+        // closes app if user has clicked "yes" on quit button
+        if( getIntent().getBooleanExtra("Exit me", false)){
+            finish();
+        }
+
         // Define the allowed player types
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 

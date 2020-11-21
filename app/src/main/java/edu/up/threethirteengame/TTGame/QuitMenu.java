@@ -1,5 +1,6 @@
 package edu.up.threethirteengame.TTGame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,13 @@ public class QuitMenu extends AppCompatActivity {
      * Problem: how to make a quit menu
      * Source: Blokus Game by Dylan Pascua, Nicholas Baldwin, Justin Cao
      * Solution: looked at their implementation and figured it out
+     */
+
+    /**External Citation
+     * Date: 11/21/20
+     * Problem: how to completely exit the app
+     * Source: https://stackoverflow.com/questions/3226495/how-to-exit-from-the-application-and-show-the-home-screen/9735524#9735524
+     * Solution: read explanations and used code given
      */
 
     //buttons if you want to quit or not
@@ -37,13 +45,16 @@ public class QuitMenu extends AppCompatActivity {
             }
         });
 
-        //ends game when "yes" button is pressed
-        //and returns user to starting menu
+        //closes the app when "yes" button is pressed
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                System.exit(0);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
             }
         });
     }
