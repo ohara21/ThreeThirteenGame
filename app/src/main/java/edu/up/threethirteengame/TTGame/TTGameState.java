@@ -152,6 +152,8 @@ public class TTGameState extends GameState {
         return discardPile;
     }
 
+    public Card getTopDiscard(){return discardPile.get(discardPile.size() -1);}
+
     public Hand getPlayer1Hand() {
         return player1Hand;
     }
