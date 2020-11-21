@@ -48,7 +48,7 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
             Log.d("Computer Player",newState.toString());
             return;
         }
-        sleep(2);
+
         if(newState.playerDrawDeck()){
             Log.d("Computer Player","Top of discard "+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardRank()+newState.getDiscardPile().get(newState.getDiscardPile().size()-1).getCardSuit());
             Log.d("Computer Player"," is drawing from deck: "+newState.getDeck().get(newState.getDeck().size()-1).getCardRank()+newState.getDeck().get(newState.getDeck().size()-1).getCardSuit());
@@ -62,11 +62,12 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
         }
         else {
             Card discard;
-            int handSize = newState.getPlayer1Hand().getSize();
+            int handSize = newState.currentPlayerHand().getSize();
             int randomIndex = rand.nextInt(handSize-1);
-            discard = newState.getPlayer1Hand().getCard(randomIndex);
+            discard = newState.currentPlayerHand().getCard(randomIndex);
             Log.d("Computer Player"," is discarding a random card");
             Log.d("Computer Player","discarding "+discard.getCardRank()+discard.getCardSuit());
+            sleep(2);
             game.sendAction(new TTDiscardAction(this, discard));
         }
 

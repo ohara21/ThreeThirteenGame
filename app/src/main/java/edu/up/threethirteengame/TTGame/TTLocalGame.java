@@ -77,7 +77,7 @@ public class TTLocalGame extends LocalGame {
             //round 11 must be over
             Log.d("TTLocalGame", state.toString());
             if(!state.isRoundOver()){
-                Log.d("checkIfGameOver()", "round isnt over");
+                Log.d("checkIfGameOver()", "round isn't over");
                 return null;
             }
 

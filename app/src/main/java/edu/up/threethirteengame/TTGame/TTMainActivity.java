@@ -38,9 +38,15 @@ public class TTMainActivity extends GameMainActivity {
             }});
 
         // a computer player type (player type 1)
-        playerTypes.add(new GamePlayerType("Computer Player") {
+        playerTypes.add(new GamePlayerType("Easy AI") {
             public GamePlayer createPlayer(String name) {
                 return new TTComputerPlayerDumb(name);
+            }});
+
+        //a smart computer player
+        playerTypes.add(new GamePlayerType("Difficult AI") {
+            public GamePlayer createPlayer(String name) {
+                return new TTComputerPlayerSmart(name);
             }});
 
 //        // a computer player type (player type 2)

@@ -275,25 +275,6 @@ public class TTGameState extends GameState {
      */
     public boolean isRoundOver() {
 
-        //TODO: remove later
-//        //both players need to have the same amount of turns
-//        if(player0TurnsTaken != player1TurnsTaken){
-//            Log.d("isRoundOver()", "different amount of turns");
-//            Log.d("TTGameState", "player zero " + player0TurnsTaken);
-//            Log.d("TTGameState", "player one " + player1TurnsTaken);
-//            return false;
-//        }
-
-//        //the amount of turns should be equal to the current round number
-//        if(player0TurnsTaken != roundNum){
-//            Log.d("isRoundOver()", "player 0's turns arent equal to round");
-//            return false;
-//        }
-//        else if(player1TurnsTaken != roundNum){
-//            Log.d("isRoundOver()", "player 1's turns arent equal to round");
-//            return false;
-//        }
-
         //the round is NOT over if none of the players have gone out
         if (!player0GoneOut && !player1GoneOut) {
             return false;
@@ -332,15 +313,19 @@ public class TTGameState extends GameState {
         //update player's scores
         updateScores();
 
+        //don't deal a new hand if the game is over
+        //all rounds before round 11, deal a hand at the start of a round
+        //on round 11, deal a hand only if both players have NOT Gone Out
+        if ((roundNum != 11) || (!player0GoneOut && !player1GoneOut)) {
+            dealHand();
+        }
+
         //it is a new round so reset that player's went out and drew cards
         player0GoneOut = false;
         player1GoneOut = false;
         player0Drawn = false;
         player1Drawn = false;
 
-        if (roundNum != 11) {
-            dealHand();
-        }
 
     }
 
@@ -572,7 +557,16 @@ public class TTGameState extends GameState {
         }
 
         //checks if it is currently the player's turn and they have enough cards
+        Log.d("TTGameState","playerDiscard(): current player "+playerTurn+" hand size "+currentPlayerHand().getSize());
         if(currentPlayerHand().getSize() == (this.roundNum+3)){
+            Log.d("TTGameState","playerDiscard(): entered if statement to find the card in hand");
+            for(Card test : currentPlayerHand().getHand()){
+                Log.d("TTGameState","playerDiscard(): card in player 0 hand "+test.getCardRank()+test.getCardSuit());
+            }
+            Log.d("TTGameState","playerDiscard(): ");
+            for(Card test1 : player1Hand.getHand()){
+                Log.d("TTGameState","playerDiscard(): card in player 1 hand "+test1.getCardRank()+test1.getCardSuit());
+            }
             if(isCardInHand(c)) {
                 return true;
             }
@@ -594,11 +588,11 @@ public class TTGameState extends GameState {
             Log.d("discardCard()","card to remove wasn't found");
             return;
         }
+
         //checks if the player can discard
         if(!playerDiscard(discardCard)){
             return;
         }
-
 
         //iterates through current player's hand for the card to discard
         //removes the card from the players hand and adds it to the discard pile

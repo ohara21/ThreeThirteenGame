@@ -29,6 +29,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     //our activity
     private Activity myActivity = null;
 
+    //player names
+    private String p0Name;
+    private String p1Name;
+
     //our buttons
     private Button helpButton;
     private Button quitButton;
@@ -41,8 +45,8 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
 
     //text views
     private TextView roundText;
-    private TextView yourScoreText;
-    private TextView opponScoreText;
+    private TextView p0ScoreText;
+    private TextView p1ScoreText;
     private TextView actionInfoText;
     private GameBoard gameBoard;
 
@@ -96,9 +100,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         else{
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
+            gameBoard.invalidate();
+            Log.d("Human Player",this.state.toString());
             if(this.state.getPlayerTurn() != playerNum){
-                Log.d("Human Player","not this player's turn!!");
-                Log.d("Human Player",this.state.toString());
                 return;
             }
             //don't do anything if the gameBoard hasn't been initialized
@@ -120,10 +124,14 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
      * setting textViews
      */
     protected void updateDisplay() {
-        //setAsGui(myActivity);
-        roundText.setText("Round " + state.getRoundNum());
-        yourScoreText.setText("You: " + state.getPlayer0Score());
-        opponScoreText.setText("Opponent's score: " + state.getPlayer1Score());
+        //Update the text boxes on the score board
+        String roundString = "Round "+state.getRoundNum();
+        String p0String = p0Name+": "+state.getPlayer0Score();
+        String p1String = p1Name+": "+state.getPlayer1Score();
+        roundText.setText(roundString);
+        p0ScoreText.setText(p0String);
+        p1ScoreText.setText(p1String);
+
         switch (actionInfoTextValue) {
             case 1:
                 actionInfoText.setText("The computer player has drawn and discarded.");
@@ -136,7 +144,8 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 previousPlayer0Score = state.getPlayer0Score();
                 player1ScoreIncrease = state.getPlayer1Score() - previousPlayer1Score;
                 previousPlayer1Score = state.getPlayer1Score();
-                actionInfoText.setText("Your score has been increased by " + player0ScoreIncrease + " and the computer's score has been increased by " + player1ScoreIncrease + ".");
+                String increaseScore = p0Name+" Score +"+player0ScoreIncrease+"   "+p1Name+" Score +"+player1ScoreIncrease;
+                actionInfoText.setText(increaseScore);
                 break;
             case 4:
                 actionInfoText.setText("An illegal move has been attempted.");
@@ -158,8 +167,8 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         myActivity = activity;
         myActivity.setContentView(R.layout.tt_human_player);
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
-        yourScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
-        opponScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
+        p0ScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
+        p1ScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
         actionInfoText = (TextView) myActivity.findViewById(R.id.actionInfoText);
 
         //assign surfaceView
@@ -193,6 +202,15 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         if (state != null) {
             receiveInfo(state);
         }
+    }
+
+    /**
+     * initialize the player names to be displayed on the scoreboard
+     */
+    @Override
+    protected void initAfterReady() {
+        this.p0Name = allPlayerNames[0];
+        this.p1Name = allPlayerNames[1];
     }
 
 
