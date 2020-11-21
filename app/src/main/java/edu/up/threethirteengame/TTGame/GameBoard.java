@@ -47,9 +47,13 @@ public class GameBoard extends SurfaceView {
     Paint purple = new Paint();
     Paint black = new Paint();
     Paint red = new Paint();
+    Paint yellow = new Paint();
 
     //used to rotate the card images
     Matrix rotate = new Matrix();
+
+    //the empty card if the player needs to draw before discarding
+    Card emptyCard = new Card(1,'e',0);
 
     /**
      * constructors that were inherited from SurfaceView class
@@ -125,6 +129,9 @@ public class GameBoard extends SurfaceView {
         red.setColor(Color.RED);
         red.setStrokeWidth(7.0f);
         red.setStyle(Paint.Style.STROKE);
+        yellow.setColor(Color.rgb(255,255,0));
+        yellow.setStrokeWidth(7.0f);
+        yellow.setStyle(Paint.Style.STROKE);
 
         if(ttGameState.getPlayer0Hand().getHand() == null){
             //do nothing if player hand doesn't exist
@@ -132,6 +139,11 @@ public class GameBoard extends SurfaceView {
         }
         else if(ttGameState.getPlayer0Hand().getHand().isEmpty()){
             //do nothing if player hand is empty
+            return;
+        }
+
+        if(card.getCardSuit() == 'e'){
+            canvas.drawRect(x,y,x+card.getWidth(),y+card.getHeight(),yellow);
             return;
         }
 
@@ -206,6 +218,9 @@ public class GameBoard extends SurfaceView {
         black.setColor(Color.BLACK);
         black.setStrokeWidth(5.0f);
         black.setStyle(Paint.Style.STROKE);
+        yellow.setColor(Color.rgb(255,255,0));
+        yellow.setStrokeWidth(7.0f);
+        yellow.setStyle(Paint.Style.STROKE);
 
         //draw the rotated card
         Bitmap tempObj = BitmapFactory.decodeResource(getResources(), card.getCardId());
@@ -213,8 +228,20 @@ public class GameBoard extends SurfaceView {
         Bitmap rotObj = Bitmap.createBitmap(cardObj, 0, 0, cardObj.getWidth(),cardObj.getHeight(), rotate, true);
         canvas.drawBitmap(rotObj, x , y,null);
 
-        //only need to draw a border for a front facing card
-        if(card.getCardType() == 1) {
+//        //draw the borders
+//        if(card.getCardType() == 1) {
+//            //this is for a normal front facing card
+//            if (ttGameState.currentPlayerHand().getHand().size() == ttGameState.getRoundNum() + 2) {
+//                canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), darkGreen);
+//            }
+//            else {
+//                canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), black);
+//            }
+//        }
+        if (ttGameState.currentPlayerHand().getHand().size() == ttGameState.getRoundNum() + 2) {
+            canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), yellow);
+        }
+        else {
             canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), black);
         }
 
@@ -275,6 +302,10 @@ public class GameBoard extends SurfaceView {
                     if (numCards < userHand.size()) {
                         drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, userHand.get(numCards));
                         userHand.get(numCards).setBoardLocation(numCards);
+                        numCards++;
+                    }
+                    else if (numCards == ttGameState.getRoundNum()+2) {
+                        drawCard(canvas, col * sectionWidth + padx, row * sectionHeight + pady, emptyCard);
                         numCards++;
                     }
                 }

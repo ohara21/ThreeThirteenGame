@@ -153,6 +153,10 @@ public class Card {
     private int getId(char suit, int value){
         int cardId = 3;
 
+        if((suit == 'e') && (value == 0)){
+            return R.drawable.empty_card;
+        }
+
         switch(suit){
             case 's':
                 switch(value){
