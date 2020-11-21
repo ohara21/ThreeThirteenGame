@@ -437,7 +437,7 @@ public class Hand {
                 if ((cardToRemove.getCardRank() == c.getCardRank() && (cardToRemove.getCardSuit() == c.getCardSuit()))) {
                     //found the card to remove from 2D groupings
                     Log.d("Hand","the size of the group to remove: "+groupToRemove.size());
-                    if(groupToRemove.size() <= 3){
+                    if(groupToRemove.size() <= 2){
                         //we need to remove the whole group because it's too small
                         breakLoop =true;
                         break;
