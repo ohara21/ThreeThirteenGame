@@ -306,13 +306,15 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 int numCardsClicked =0;
                 for (Card cardInHand : state.currentPlayerHand().getHand()) {
                     // if card is selected, add it to group
-                    if (cardInHand.getIsClick() && !state.isCardInGroup(cardInHand)) {
+                    //if (cardInHand.getIsClick() && !state.isCardInGroup(cardInHand)) {
+                    if (cardInHand.getIsClick()) {
                         Log.d("Human Player","adding card to temporary group");
                         group.add(cardInHand);
                         numCardsClicked++;
                     }
                 }
-                if(numCardsClicked >= 3){
+                if(numCardsClicked >= 2){ // they should be able to make a group of 2 cards
+                    // groups don't need to be complete runs or sets
                     Log.d("Human Player","enough cards were clicked to add a group");
                     game.sendAction(new TTAddGroupAction(this, group));
                     gameBoard.invalidate();

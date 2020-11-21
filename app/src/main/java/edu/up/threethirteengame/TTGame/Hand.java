@@ -402,8 +402,8 @@ public class Hand {
         //check to make sure each card is not in a current group
         for(Card c : group){
             if(isCardInGroup(c)){
-                //Log.d("Hand","there is an intersecting grouping");
-                return false;
+                Log.d("Hand","there is an intersecting grouping");
+                removeGrouping(c); // remove so that the new group can be created
             }
         }
 
