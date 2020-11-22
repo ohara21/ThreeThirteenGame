@@ -48,6 +48,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private TextView roundText;
     private TextView p0ScoreText;
     private TextView p1ScoreText;
+    private TextView wildCardText;
     private TextView actionInfoText;
     private GameBoard gameBoard;
 
@@ -133,6 +134,21 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         p0ScoreText.setText(p0String);
         p1ScoreText.setText(p1String);
 
+        //set the wild card textView
+        String wildText;
+        if (state.getRoundNum() == 9) {
+            wildText = "Wild card for this round is the Jack";
+        } else if (state.getRoundNum() == 10) {
+            wildText = "Wild card for this round is the Queen";
+        }
+        else if (state.getRoundNum() == 11) {
+            wildText = "Wild card for this round is the King";
+        }
+        else{
+            wildText = "Wild card for this round is "+state.getWildCard();
+        }
+        wildCardText.setText(wildText);
+
         // updates display based on if the computer has taken a major action, the round ends, or if the human attempts an illegal move
         switch (actionInfoTextValue) {
             case 1:
@@ -192,6 +208,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         p0ScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         p1ScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);
+        wildCardText = (TextView) myActivity.findViewById(R.id.wild_text);
         actionInfoText = (TextView) myActivity.findViewById(R.id.actionInfoText);
 
         //assign surfaceView

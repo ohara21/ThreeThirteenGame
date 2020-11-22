@@ -67,7 +67,7 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
             discard = newState.currentPlayerHand().getCard(randomIndex);
             Log.d("Computer Player"," is discarding a random card");
             Log.d("Computer Player","discarding "+discard.getCardRank()+discard.getCardSuit());
-            sleep(2);
+            //sleep(2);
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
