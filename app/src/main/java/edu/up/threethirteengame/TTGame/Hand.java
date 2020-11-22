@@ -128,13 +128,6 @@ public class Hand {
         return hand;
     }
 
-    /**
-     * Sorts cards by suite and rank
-     */
-    public ArrayList<Card> sortBySuiteAndRank(ArrayList<Card> hand){
-        return hand;
-    }
-
 
     /**
      * checks if a given arrayList of cards is a valid set
@@ -437,7 +430,7 @@ public class Hand {
                 if ((cardToRemove.getCardRank() == c.getCardRank() && (cardToRemove.getCardSuit() == c.getCardSuit()))) {
                     //found the card to remove from 2D groupings
                     Log.d("Hand","the size of the group to remove: "+groupToRemove.size());
-                    if(groupToRemove.size() <= 2){
+                    if(groupToRemove.size() <= 3){
                         //we need to remove the whole group because it's too small
                         breakLoop =true;
                         break;

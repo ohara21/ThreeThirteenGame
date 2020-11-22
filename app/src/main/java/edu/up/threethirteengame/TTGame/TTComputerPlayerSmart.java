@@ -43,7 +43,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //initialize the game state
         newState = (TTGameState)info;
 
-        //check discard with needed list and draw from discard if can else draw from deck
+        //check discard with needed list and draw from discard if can, else draw from deck
         if(isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()){
             game.sendAction(new TTDrawDiscardAction(this));
         }
@@ -68,8 +68,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
-
-
     }
 
     private ArrayList<Card> optimizeHand(TTGameState gameState){
@@ -84,7 +82,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         ArrayList<ArrayList<Card>> finalGrouping = new ArrayList<>();
 
         //copying current hand of computer
-        Hand computerHand = gameState.getPlayer1Hand();
+        //TODO: will cause a bug, need to use currentPlayerHand(). it also doesn't copy, it's direct manipulation of the player's hand
+        Hand computerHand = new Hand(gameState.currentPlayerHand());
 
         // Check for Wild Card
         int wildValue = gameState.getWildCard();
@@ -93,8 +92,10 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // Sort Cards based on value
         computerHand.setHand(computerHand.sortByRank(computerHand.getHand()));
         // Create temp group for set
+        //TODO: question - are we only adding one set to the temp group?
         tempGrouping.add(checkForSet(computerHand));
 
+        //TODO: comment - interesting that checkForSet returns 1D arrayList while checkForRun returns 2D arrayList
         //Look for runs (disregarding common cards) -> create grouping per run
         ArrayList<ArrayList<Card>> runGroup = checkForRun(computerHand);
         for(ArrayList list: runGroup){
@@ -109,7 +110,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         for(Card c: similar){
             //Go through each grouping that has the similar card and puts the sums of individual groupings
             //into an array list to get compared to each other
-
+            //TODO: is saveIndex needed?
             ArrayList<Integer> saveIndex = new ArrayList<>();
             ArrayList<Integer> sumHold = new ArrayList<>();
 
@@ -125,12 +126,18 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
 
-            //adds smallest sum grouping to final grouping and removes grouping fom temp group
+            //adds smallest sum grouping to final grouping and removes grouping from temp group
             finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
             tempGrouping.remove(smallestSum(sumHold));
-
         }
         //TODO: check for incomplete run (not completed yet)
+        /**
+         * 1. sort the leftover cards by suit
+         * 2. within each suit, sort by rank and get the difference array
+         * 3. count the number of wild cards available to use
+         * 4. starting with the cards of highest rank, see if the difference can be filled with wild cards (you can choose to prioritize incomplete sets or runs)
+         * 5. if they can't be filled, find out the need cards (the card before, between, and/or after the incomplete set)
+         */
 
         //Check for incomplete set
         ArrayList<Card> tempHand = computerHand.getHand();
@@ -138,23 +145,24 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //gets rid of cards that are apart of a set or run
         for(Card c: computerHand.getHand()){
             for(ArrayList<Card> groups: finalGrouping){
+                //TODO: unexpected comparison
                 if(groups.contains(c)){
                     tempHand.remove(c);
                 }
             }
         }
 
-        //checks for cards that are the same rank and puts them incomplete temp set
+        //checks for cards that are the same rank and puts them into incomplete temp set
         ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
         ArrayList<Card> tempGroup = new ArrayList<>();
 
         for(Card c: tempHand){
+            //TODO: incompleteTemp.contains() may not compare what you want it to
             if((findCardByRank(tempHand, c.getCardRank()) != -1) && !incompleteTemp.contains(c)){
                 tempGroup.add(c);
                 tempGroup.add(tempHand.get(findCardByRank(tempHand, c.getCardRank())));
                 incompleteTemp.add(tempGroup);
                 tempGroup.clear();
-
             }
         }
 
@@ -171,7 +179,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                     tempGroup.remove(group);
                 }
             }
-
         }
 
         //TODO: find cards that are needed
@@ -213,6 +220,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         for(int i = 0; i < hand.getSize(); i++){
             startIndex = i;
             for(int j = 0; j < hand.getSize(); j++){
+                //TODO: probs won't work as expected because it's comparing pointers, need to compare ranks
                 if(hand.getCard(j) == hand.getCard(i)){
                     sameCount++;
                 }
@@ -399,7 +407,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         }
 
-        previousCard = 0;
         index = findIndex(groupDiff, groupDiff.size(), 1);
         return index;
     }
@@ -468,6 +475,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      */
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
         for(ArrayList fgroup: finalGroup){
+            //TODO: may want to compare ranks and suits unless certain they point to the same card
             if(fgroup.equals(group)){
                 return true;
             }

@@ -170,7 +170,7 @@
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Add to group"
+                    android:text="create group"
                     android:textColor="@android:color/white" />
 
                 <Button
