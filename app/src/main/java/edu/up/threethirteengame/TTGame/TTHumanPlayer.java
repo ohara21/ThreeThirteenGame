@@ -133,6 +133,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         p0ScoreText.setText(p0String);
         p1ScoreText.setText(p1String);
 
+        // updates display based on if the computer has taken a major action, the round ends, or if the human attempts an illegal move
         switch (actionInfoTextValue) {
             case 1:
                 actionInfoText.setText("The computer player has drawn and discarded.");
@@ -149,7 +150,28 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 actionInfoText.setText(increaseScore);
                 break;
             case 4:
-                actionInfoText.setText("An illegal move has been attempted.");
+                actionInfoText.setText("Attempted to draw from an empty draw deck, drew from discard pile instead.");
+                break;
+            case 5:
+                actionInfoText.setText("You cannot draw another card.");
+                break;
+            case 6:
+                actionInfoText.setText("Attempted to draw from an empty discard deck, drew from draw pile instead.");
+                break;
+            case 7:
+                actionInfoText.setText("You cannot discard at this time.");
+                break;
+            case 8:
+                actionInfoText.setText("You have no groups to go out with.");
+                break;
+            case 9:
+                actionInfoText.setText("You cannot go out again.");
+                break;
+            case 10:
+                actionInfoText.setText("You have too many left over cards to go out.");
+                break;
+            case 11:
+                actionInfoText.setText("Impossible to go out at this time.");
                 break;
             default:
                 // no change
