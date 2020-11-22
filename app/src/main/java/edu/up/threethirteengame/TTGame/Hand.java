@@ -402,8 +402,14 @@ public class Hand {
 
         //this group can be created
         //Log.d("Hand","the group was successfully made");
-        groupings.add(group);
-        return true;
+        //must be valid group
+        if (checkIfRun(group) || checkIfSet(group)) {
+            groupings.add(group);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**

@@ -440,15 +440,15 @@ public class TTGameState extends GameState {
         if(deck.size() == 0){
             Log.d("playerDrawDeck()","deck is apparently empty, drawing from discard");
             //have to draw from discard
-            // illegal move attempted
+            // empty draw deck message
             actionTextVal = 4;
             return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
         if(currentPlayerHand().getHand().size() == (roundNum+3)){
-            // illegal move attempted
-            actionTextVal = 4;
+            // too many cards to draw message
+            actionTextVal = 5;
             return false;
         }
 
@@ -494,15 +494,15 @@ public class TTGameState extends GameState {
         if(discardPile.size() == 0){
             Log.d("playerDrawDiscard()","discard is apparently empty, drawing from deck");
             //have to draw from discard
-            // illegal move attempted
-            actionTextVal = 4;
+            // empty discard deck message
+            actionTextVal = 6;
             return false;
         }
 
         //can't draw a card if you already have enough cards in your hand
         if(currentPlayerHand().getHand().size() == (roundNum+3)){
-            // illegal move attempted
-            actionTextVal = 4;
+            // too many cards to draw message
+            actionTextVal = 5;
             return false;
         }
 
@@ -547,8 +547,8 @@ public class TTGameState extends GameState {
         //checks if the card exists
         if(c == null){
             Log.d("playerDiscard()","card to remove wasn't found");
-            // illegal move attempted
-            actionTextVal = 4;
+            // no card to discard message
+            actionTextVal = 7;
             return false;
         }
 
@@ -569,7 +569,7 @@ public class TTGameState extends GameState {
         }
 
         // illegal move attempted
-        actionTextVal = 4;
+        actionTextVal = 7;
         return false;
     }
 
@@ -631,8 +631,8 @@ public class TTGameState extends GameState {
         //check to make sure there is at least one group in 2D groupings
         if(currentPlayerHand().getGroupings().isEmpty()){
             Log.d("canPlayerGoOut()", "no groupings");
-            // illegal move attempted
-            actionTextVal = 4;
+            // no groupings to go out with message
+            actionTextVal = 8;
             return false;
         }
         //if(currentPlayerHand().getGroupings().get(MAX_NUM_GROUPS-1).isEmpty()){
@@ -644,16 +644,16 @@ public class TTGameState extends GameState {
         if(playerTurn == 0){
             if(player0GoneOut){
                 Log.d("canPlayerGoOut()","player 0 has already gone out");
-                // illegal move attempted
-                actionTextVal = 4;
+                // already gone out message
+                actionTextVal = 9;
                 return false;
             }
         }
         else{
             if(player1GoneOut){
                 Log.d("canPlayerGoOut()","player 1 has already gone out");
-                // illegal move attempted
-                actionTextVal = 4;
+                // already gone out message
+                actionTextVal = 9;
                 return false;
             }
         }
@@ -676,8 +676,8 @@ public class TTGameState extends GameState {
                     //there is more than one card in the groupings that isn't in the player's hand
                     //therefore, we don't take any action and they can't really Go Out
                     Log.d("canPlayerGoOut()","more than one card to be removed");
-                    // illegal move attempted
-                    actionTextVal = 4;
+                    // no groups to go out with message
+                    actionTextVal = 8;
                     return false;
                 }
             }
@@ -709,7 +709,7 @@ public class TTGameState extends GameState {
         }
         Log.d("canPlayerGoOut()", "go out not possible");
         // illegal move attempted
-        actionTextVal = 4;
+        actionTextVal = 11;
         return false;
     }
 
