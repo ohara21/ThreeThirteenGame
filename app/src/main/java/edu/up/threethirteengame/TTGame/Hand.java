@@ -409,8 +409,14 @@ public class Hand {
 
         //this group can be created
         //Log.d("Hand","the group was successfully made");
-        groupings.add(group);
-        return true;
+        //must be valid group
+        if (checkIfRun(group) || checkIfSet(group)) {
+            groupings.add(group);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -437,7 +443,7 @@ public class Hand {
                 if ((cardToRemove.getCardRank() == c.getCardRank() && (cardToRemove.getCardSuit() == c.getCardSuit()))) {
                     //found the card to remove from 2D groupings
                     Log.d("Hand","the size of the group to remove: "+groupToRemove.size());
-                    if(groupToRemove.size() <= 2){
+                    if(groupToRemove.size() <= 3){
                         //we need to remove the whole group because it's too small
                         breakLoop =true;
                         break;

@@ -335,8 +335,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                         numCardsClicked++;
                     }
                 }
-                if(numCardsClicked >= 2){ // they should be able to make a group of 2 cards
-                    // groups don't need to be complete runs or sets
+                if(numCardsClicked >= 3){ // must be 3 cards
                     Log.d("Human Player","enough cards were clicked to add a group");
                     game.sendAction(new TTAddGroupAction(this, group));
                     gameBoard.invalidate();
