@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,6 +69,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //try to go out
         if(newState.canPlayerGoOut()){
             game.sendAction(new TTGoOutAction(this));
+            return;
         }
 
         //discard card not apart of needed list or apart of a group
@@ -76,7 +79,28 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 discard = canDiscard.get(0);
             }
             else {
-                discard = newState.currentPlayerHand().getHand().get(0);
+                //TODO: Nick modified code here
+                //discard = newState.currentPlayerHand().getHand().get(0);
+
+                //cycle through the player's hand for the card with the largest rank
+                discard = null;
+                int highestRank = 0;
+                for(Card c : newState.currentPlayerHand().getHand()){
+
+                    if(c.getCardRank() == newState.getWildCard()){
+                        //don't discard the wild card
+                        continue;
+                    }
+                    else if(c.getCardRank() > highestRank){
+                        //generally discard the higher cards
+                        highestRank = c.getCardRank();
+                        discard = c;
+                    }
+                    else{
+                        Log.d("TTComputerPlayerSmart:","should hardly ever reach this case for discarding");
+                        discard = newState.currentPlayerHand().getHand().get(0);
+                    }
+                }
             }
             game.sendAction(new TTDiscardAction(this, discard));
         }
@@ -220,7 +244,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      * @param hand
      * @return
      */
-    private ArrayList<ArrayList<Card>> checkForSet(Hand hand){
+    public ArrayList<ArrayList<Card>> checkForSet(Hand hand){
         ArrayList<ArrayList<Card>> set = new ArrayList<>();
         ArrayList<Card> tempHand = hand.sortByRank(hand.getHand());
         ArrayList<Card> tempGroup = new ArrayList<>();
@@ -232,7 +256,9 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
             if(tempGroup.size() >= 3){
-                set.add(tempGroup);
+                //Log.d("TTComputerPlayerSmart:","checkForSet() found a set to add rank:"+i);
+                //TODO: Nick changed here, needed to create a new tempGroup
+                set.add(new ArrayList<Card>(tempGroup));
             }
             tempGroup.clear();
         }
@@ -245,7 +271,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      * @param hand
      * @return
      */
-    private ArrayList<ArrayList<Card>> checkForRun(Hand hand){
+    public ArrayList<ArrayList<Card>> checkForRun(Hand hand){
         ArrayList<ArrayList<Card>> runs = new ArrayList<>();
         ArrayList<Card> club = new ArrayList<>();
         ArrayList<Card> diamond = new ArrayList<>();
@@ -289,25 +315,26 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         spade = rankSort(spade);
         spadeRunIndex = findRunIndex(spade);
 
+        //TODO: Nick- the index was off by one so I added the +1 in the for loops
         //adds found runs in a group
         if(clubRunIndex[0] != -1 && clubRunIndex[0] != clubRunIndex[1]) {
-            for (int i = clubRunIndex[0]; i <= clubRunIndex[1]; i++) {
+            for (int i = clubRunIndex[0]; i <= clubRunIndex[1]+1; i++) {
                 clubRun.add(club.get(i));
             }
         }
         if(diamondRunIndex[0] != -1 && diamondRunIndex[0] != diamondRunIndex[1]) {
-            for (int i = diamondRunIndex[0]; i <= diamondRunIndex[1]; i++) {
+            for (int i = diamondRunIndex[0]; i <= diamondRunIndex[1]+1; i++) {
                 diamondRun.add(diamond.get(i));
             }
         }
         if(heartRunIndex[0] != -1 && heartRunIndex[0] != heartRunIndex[1]) {
-            for (int i = heartRunIndex[0]; i <= heartRunIndex[1]; i++) {
+            for (int i = heartRunIndex[0]; i <= heartRunIndex[1]+1; i++) {
                 heartRun.add(heart.get(i));
             }
         }
         if(spadeRunIndex[0] != -1 && spadeRunIndex[0] != spadeRunIndex[1]) {
-            for (int i = spadeRunIndex[0]; i <= spadeRunIndex[1]; i++) {
-                spadeRun.add(club.get(i));
+            for (int i = spadeRunIndex[0]; i <= spadeRunIndex[1]+1; i++) {
+                spadeRun.add(spade.get(i));
             }
         }
 
@@ -401,9 +428,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             return index;
         }
 
+        char cardSuitTest = 'e';
         for(Card c: hand){
             if(previousCard == 0){
                 previousCard = c.getCardRank();
+                cardSuitTest = c.getCardSuit();
                 continue;
             }
 
@@ -413,6 +442,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         }
 
         index = findIndex(groupDiff, groupDiff.size(), 1);
+        System.out.println("findRunIndex() for "+cardSuitTest+": "+index[0]+" "+index[1]);
         return index;
     }
 
