@@ -123,7 +123,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             //into an array list to get compared to each other
             ArrayList<Integer> sumHold = new ArrayList<>();
 
-            //TODO: possible IOB
             for(int i = 0; i < tempGrouping.size()-1; i++){
 
                 if(tempGrouping.get(i).indexOf(c) != -1) {
@@ -181,7 +180,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         }
 
         //finds cards not in group and adds it to the can discard pile
-        //TODO: Possible IOB
         canDiscard.clear();
         for(Card c: computerHand.getHand()){
             boolean outcast = false;
@@ -666,7 +664,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      */
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
         for(ArrayList fgroup: finalGroup){
-            //TODO: may want to compare ranks and suits unless certain they point to the same card
             if(fgroup.equals(group)){
                 return true;
             }
