@@ -69,6 +69,8 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
         this.saveMe = new Handler();
     }
 
+    protected final String getTag() {return TAG;}
+
     /**
      * Returns this object's game timer
      *

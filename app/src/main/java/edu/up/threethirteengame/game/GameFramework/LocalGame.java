@@ -464,4 +464,6 @@ public abstract class LocalGame implements Game, Tickable {
         return this.currentSetupTurn;
     }
 
+    public GamePlayer[] getPlayers() {return this.players;}
+
 }// class LocalGame

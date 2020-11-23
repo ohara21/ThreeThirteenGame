@@ -4,6 +4,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import edu.up.threethirteengame.game.GameFramework.GamePlayer;
+import edu.up.threethirteengame.game.GameFramework.LocalGame;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
 
 /**
@@ -57,6 +60,7 @@ public class TTGameState extends GameState {
 
     // used to help update the text view about computer player's actions
     private int actionTextVal;
+    private boolean player0Acted; // true if action was taken by player 0, false if taken by player 1
 
     /**
      * GameState initialization constructor
@@ -205,6 +209,8 @@ public class TTGameState extends GameState {
     }
 
     public boolean getRoundOver() { return roundOver; }
+
+    public boolean getPlayer0Acted() {return player0Acted;}
 
     /**
      * gets the number of cards in a given player's hand
@@ -616,9 +622,12 @@ public class TTGameState extends GameState {
         //move the cards from the discard pile to the deck if the deck is empty
         discardToDeck();
 
-        // records if computer player has discarded
-        if (getPlayerTurn() == 1) {
-            actionTextVal = 1;
+        // records if a player has discarded
+        actionTextVal = 1;
+        if (getPlayerTurn() == 0) {
+            player0Acted = true;
+        } else if (getPlayerTurn() == 1) {
+            player0Acted = false;
         }
         //the player's turn always ends when they discard
         nextTurn();
@@ -747,9 +756,12 @@ public class TTGameState extends GameState {
             //current player discards the remaining card and its the next players turn
             discardCard(discardGoOut);
 
-            //records if computer player has gone out
-            if (getPlayerTurn() == 1) {
-                actionTextVal = 2;
+            //records if a player has gone out
+            actionTextVal = 2;
+            if (getPlayerTurn() == 0) {
+                player0Acted = true;
+            } else if (getPlayerTurn() == 1) {
+                player0Acted = false;
             }
             //player has gone out for this round and the other player should have another turn
             //if they already went

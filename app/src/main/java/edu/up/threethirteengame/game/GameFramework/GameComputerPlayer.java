@@ -42,6 +42,8 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
     // this game is connected to the GUI
     private GameTimer myTimer = new GameTimer(this); // my timer
 
+    protected final String getTag() {return TAG;}
+
     /**
      * Returns this game's timer.
      *

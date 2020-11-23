@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import edu.up.threethirteengame.R;
 import edu.up.threethirteengame.game.GameFramework.GameHumanPlayer;
 import edu.up.threethirteengame.game.GameFramework.GameMainActivity;
+import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
@@ -64,6 +65,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private int previousPlayer1Score = 0;
     private int player0ScoreIncrease = 0;
     private int player1ScoreIncrease = 0;
+    private boolean player0Acted;
 
     /**
      * constructor
@@ -132,14 +134,21 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         roundText.setText(roundString);
         p0ScoreText.setText(p0String);
         p1ScoreText.setText(p1String);
+        player0Acted = state.getPlayer0Acted();
+        String usedName;
+        if (player0Acted) {
+            usedName = p0Name;
+        } else {
+            usedName = p1Name;
+        }
 
         // updates display based on if the computer has taken a major action, the round ends, or if the human attempts an illegal move
         switch (actionInfoTextValue) {
             case 1:
-                actionInfoText.setText("The computer player has drawn and discarded.");
+                actionInfoText.setText(usedName + " has drawn and discarded.");
                 break;
             case 2:
-                actionInfoText.setText("The computer player has gone out.  You have one turn left.");
+                actionInfoText.setText(usedName + " has gone out.  There's one turn left.");
                 break;
             case 3:
                 player0ScoreIncrease = state.getPlayer0Score() - previousPlayer0Score;
@@ -189,6 +198,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
        // Getting xml elements
         myActivity = activity;
         myActivity.setContentView(R.layout.tt_human_player);
+        
         roundText = (TextView) myActivity.findViewById(R.id.roundText);
         p0ScoreText = (TextView) myActivity.findViewById(R.id.yourScoreText);
         p1ScoreText = (TextView) myActivity.findViewById(R.id.opponScoreText);

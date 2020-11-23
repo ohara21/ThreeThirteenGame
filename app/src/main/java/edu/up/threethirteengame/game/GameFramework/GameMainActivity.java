@@ -62,6 +62,8 @@ public abstract class GameMainActivity extends Activity implements
 
     // an array containing references to all the players that are playing the game
     private GamePlayer[] players = null;
+    private String player0tag = null;
+    private String player1tag = null;
 
     // tells which player, if any, is running in the GUI
     private GamePlayer guiPlayer = null;
@@ -782,6 +784,8 @@ public abstract class GameMainActivity extends Activity implements
     private int getPortNumber() {
         return config.getPortNum();
     }
+
+    public GamePlayer[] getPlayers() {return players;}
 
     /**
      * marks the game as being over

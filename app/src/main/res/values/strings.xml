@@ -35,5 +35,5 @@
 
     \nThe player with the lowest score at the end of the 11 rounds wins.
     Good luck!</string>
-<string name="actionText">The computer player hasn\'t acted yet.</string>
+<string name="actionText">Nothing has happened yet.</string>
 </resources>
