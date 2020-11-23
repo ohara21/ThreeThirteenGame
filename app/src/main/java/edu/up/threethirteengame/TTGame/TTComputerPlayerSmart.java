@@ -353,18 +353,75 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      * @param group
      * @return ArrayList of similar cards in run(s) and set(s)
      */
-    private ArrayList<Card> checkForSimilar(ArrayList<ArrayList<Card>> group){
+    public ArrayList<Card> checkForSimilar(ArrayList<ArrayList<Card>> group){
 
         ArrayList<Card> similar = new ArrayList<>();
 
-        for(int i = 0; i < group.size()-1; i++){
-            ArrayList<Card> temp1 = group.get(i);
-            ArrayList<Card> temp2 = group.get(i+1);
-            temp1.retainAll(temp2);
-            for(Card c : temp1){
-                similar.add(c);
+        //TODO: Nick - previous implementation would only check groups next to each other
+        //groups are added to the end, so check by decrementing index
+        for(int i = group.size()-1; i > 0; i--){
+//            ArrayList<Card> temp1 = group.get(i);
+//            ArrayList<Card> temp2 = group.get(i+1);
+//            temp1.retainAll(temp2);
+//            for(Card c : temp1){
+//                similar.add(c);
+//            }
+
+            //maintain the first group as we compare it to the other groups
+            ArrayList<Card> temp1 = new ArrayList<>(group.get(i));
+            for(int j= i-1;j>=0;j--) {
+                //compare the first group with the other groups
+                //this way won't check the same two groups twice
+
+                //TODO: remove SOP.ln messages once confident checkForSimilar works
+                System.out.println("Index i: "+i+" j: "+j);
+                ArrayList<Card> temp2 = new ArrayList<>(group.get(j));
+                System.out.print("comparing Temp 1:");
+                for(Card c : temp1){
+                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+                }
+                System.out.println();
+                System.out.print("with Temp 2:");
+                for(Card c : temp2){
+                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+                }
+                System.out.println();
+                //check for similar cards and add it to the similar groups
+                temp2.retainAll(temp1);
+                similar.addAll(temp2);
+                System.out.print("Similar: ");
+                for(Card c : similar){
+                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+                }
+                System.out.println("\n");
             }
         }
+
+        //check for duplicate cards
+        ArrayList<Card> finalSimilar = new ArrayList<>();
+
+        //TODO: may not even need, remove later if there are no problems with duplicate cards
+//        for(Card c : similar){
+//            //initialize finalSimilar with the first card in similar arrayList
+//            if(finalSimilar.isEmpty()){
+//                finalSimilar.add(c);
+//                continue;
+//            }
+//            int initSize = finalSimilar.size();
+//            Card cFinal;
+//            boolean cardFound = false;
+//            //loop through the finalSimilar arrayList to check for a duplicate
+//            for(int i=0; i<initSize; i++){
+//                cFinal = finalSimilar.get(i);
+//                //the same card was found
+//                if(c.getCardRank()==cFinal.getCardRank() && c.getCardSuit()==cFinal.getCardSuit()){
+//                    cardFound = true;
+//                }
+//            }
+//            if(!cardFound){
+//                finalSimilar.add(c);
+//            }
+//        }
         return similar;
     }
 
