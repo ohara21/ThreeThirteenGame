@@ -105,7 +105,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
             gameBoard.invalidate();
-            Log.d("Human Player",this.state.toString());
+
             if(this.state.getPlayerTurn() != playerNum){
                 return;
             }

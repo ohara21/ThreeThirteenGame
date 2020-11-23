@@ -75,11 +75,6 @@ public class TTGameState extends GameState {
         Collections.shuffle(deck);
         Collections.shuffle(deck);
 
-        //TODO: remove later, this is accounted for in deal hand
-//        //start the discard pile from top of deck
-//        discardPile.add(deck.get(deck.size()-1));
-//        deck.remove(deck.size()-1);
-
         //sets round number and the wild card
         roundNum = 1;
         roundOver = false;
@@ -296,10 +291,6 @@ public class TTGameState extends GameState {
             return true;
         }
 
-        Log.d("GameState","most likely found a bug in round over");
-        Log.d("GameState",toString());
-        Log.d("GameState","has player 0 gone out "+player0GoneOut);
-        Log.d("GameState","has player 1 gone out "+player1GoneOut);
         return false;
     }
 
@@ -359,9 +350,7 @@ public class TTGameState extends GameState {
 
         //update player 0's score
         int roundScore = 0;
-        Log.d("GameState","updateScores(): calculating round score for p0");
         for(Card c0 : player0Hand.getHand()){
-            Log.d("GameState","updateScores(): card in p0 hand "+c0.getCardRank()+c0.getCardSuit()+" "+c0.getInValidGroup());
             if(!c0.getInValidGroup()) {
                 roundScore += c0.getCardRank();
             }
@@ -390,9 +379,7 @@ public class TTGameState extends GameState {
 
         //update player 1's score
         roundScore = 0;
-        Log.d("GameState","updateScores(): calculating round score for p1");
         for(Card c1 : player1Hand.getHand()){
-            Log.d("GameState","updateScores(): card in p1 hand "+c1.getCardRank()+c1.getCardSuit()+" "+c1.getInValidGroup());
             if(!c1.getInValidGroup()) {
                 roundScore += c1.getCardRank();
             }
@@ -412,6 +399,18 @@ public class TTGameState extends GameState {
         String turn = "Player " + playerTurn + " turn";
         String playerScoreString = "Player 0 score: " + player0Score;
         String computerScoreString = "Player 1 score: " + player1Score;
+
+        String player0cards = "Player 0 cards:";
+        String player1cards = "Player 1 cards:";
+        String cardVal;
+        for(Card c : player0Hand.getHand()){
+            cardVal = " "+c.getCardRank()+c.getCardSuit();
+            player0cards = player0cards.concat(cardVal);
+        }
+        for(Card c : player1Hand.getHand()){
+            cardVal = " "+c.getCardRank()+c.getCardSuit();
+            player1cards = player1cards.concat(cardVal);
+        }
 
         int group0size =0;
         int group1size=0;
@@ -433,7 +432,8 @@ public class TTGameState extends GameState {
         String computerGroup = "Player 1 num groups: " + group1size;
         String toString = round + "\n" + deckSize + "\n" + discardSize + "\n" + playerCard + "\n"
                 + computerCard + "\n" + turn + "\n" + playerScoreString + "\n"
-                + computerScoreString + "\n" + playerGroup + "\n" + computerGroup;
+                + computerScoreString + "\n" + playerGroup + "\n" + computerGroup +"\n"
+                + player0cards + "\n" + player1cards;
         return toString;
     }
 
@@ -552,22 +552,21 @@ public class TTGameState extends GameState {
     public boolean playerDiscard(Card c){
         //checks if the card exists
         if(c == null){
-            Log.d("playerDiscard()","card to remove wasn't found");
             // no card to discard message
             actionTextVal = 7;
             return false;
         }
 
         //checks if it is currently the player's turn and they have enough cards
-        Log.d("TTGameState","playerDiscard(): current player "+playerTurn+" hand size "+currentPlayerHand().getSize());
+        //Log.d("TTGameState","playerDiscard(): current player "+playerTurn+" hand size "+currentPlayerHand().getSize());
         if(currentPlayerHand().getSize() == (this.roundNum+3)){
-            Log.d("TTGameState","playerDiscard(): entered if statement to find the card in hand");
+            //Log.d("TTGameState","playerDiscard(): entered if statement to find the card in hand");
             for(Card test : currentPlayerHand().getHand()){
-                Log.d("TTGameState","playerDiscard(): card in player 0 hand "+test.getCardRank()+test.getCardSuit());
+                //Log.d("TTGameState","playerDiscard(): card in player 0 hand "+test.getCardRank()+test.getCardSuit());
             }
-            Log.d("TTGameState","playerDiscard(): ");
+            //Log.d("TTGameState","playerDiscard(): ");
             for(Card test1 : player1Hand.getHand()){
-                Log.d("TTGameState","playerDiscard(): card in player 1 hand "+test1.getCardRank()+test1.getCardSuit());
+                //Log.d("TTGameState","playerDiscard(): card in player 1 hand "+test1.getCardRank()+test1.getCardSuit());
             }
             if(isCardInHand(c)) {
                 return true;

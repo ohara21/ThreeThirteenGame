@@ -117,6 +117,7 @@ public class TTLocalGame extends LocalGame {
             // illegal player
             return false;
         }
+        Log.d("TTLocalGame:",state.toString());
 
         //game logic for these actions are located in the TTGameState
         if(ttma.isDiscard()){

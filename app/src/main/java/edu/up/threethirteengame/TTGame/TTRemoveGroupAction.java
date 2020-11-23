@@ -25,7 +25,7 @@ public class TTRemoveGroupAction extends TTMoveAction{
      * @param cardInGroup the group that this card is in will be removed
      */
     public TTRemoveGroupAction(GamePlayer player, Card cardInGroup){
-        super(player, cardInGroup, false);
+        super(player, cardInGroup, false) ;
     }
 
     /**
