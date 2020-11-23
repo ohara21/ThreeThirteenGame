@@ -43,9 +43,14 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //initialize the game state
         newState = (TTGameState)info;
 
-        //check discard with needed list and draw from discard if can else draw from deck
-        if(isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()){
-            game.sendAction(new TTDrawDiscardAction(this));
+        //check discard with needed list and draw from discard if can, else draw from deck
+        if(!needCard.isEmpty()) {
+            if (isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()) {
+                game.sendAction(new TTDrawDiscardAction(this));
+            }
+            else if(newState.playerDrawDeck()) {
+                game.sendAction(new TTDrawDeckAction(this));
+            }
         }
         else if(newState.playerDrawDeck()) {
             game.sendAction(new TTDrawDeckAction(this));
@@ -53,8 +58,10 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         //update need list using optimization algorithm and adds new groupings to gameState
         needCard = optimizeHand(newState);
-        for(ArrayList groups: compGroup) {
-            game.sendAction(new TTAddGroupAction(this, groups));
+        if(!needCard.isEmpty()) {
+            for (ArrayList groups : compGroup) {
+                game.sendAction(new TTAddGroupAction(this, groups));
+            }
         }
 
         //try to go out
@@ -64,11 +71,15 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         //discard card not apart of needed list or apart of a group
         else{
-            Card discard = canDiscard.get(0);
+            Card discard;
+            if(!canDiscard.isEmpty()) {
+                discard = canDiscard.get(0);
+            }
+            else {
+                discard = newState.currentPlayerHand().getHand().get(0);
+            }
             game.sendAction(new TTDiscardAction(this, discard));
         }
-
-
 
     }
 
@@ -84,16 +95,17 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         ArrayList<ArrayList<Card>> finalGrouping = new ArrayList<>();
 
         //copying current hand of computer
-        Hand computerHand = gameState.getPlayer1Hand();
+        Hand computerHand = new Hand(gameState.currentPlayerHand());
 
         // Check for Wild Card
         int wildValue = gameState.getWildCard();
 
         // Look for sets -> create grouping per set
-        // Sort Cards based on value
-        computerHand.setHand(computerHand.sortByRank(computerHand.getHand()));
-        // Create temp group for set
-        tempGrouping.add(checkForSet(computerHand));
+
+        ArrayList<ArrayList<Card>> setGroup = checkForSet(computerHand);
+        for(ArrayList list: setGroup){
+            tempGrouping.add(list);
+        }
 
         //Look for runs (disregarding common cards) -> create grouping per run
         ArrayList<ArrayList<Card>> runGroup = checkForRun(computerHand);
@@ -109,15 +121,13 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         for(Card c: similar){
             //Go through each grouping that has the similar card and puts the sums of individual groupings
             //into an array list to get compared to each other
-
-            ArrayList<Integer> saveIndex = new ArrayList<>();
             ArrayList<Integer> sumHold = new ArrayList<>();
 
-            for(int i = 0; i < tempGrouping.size(); i++){
+            //TODO: possible IOB
+            for(int i = 0; i < tempGrouping.size()-1; i++){
 
                 if(tempGrouping.get(i).indexOf(c) != -1) {
                     int sum = 0;
-                    saveIndex.add(i);
                     for (Card k : tempGrouping.get(i)) {
                         sum += k.getCardRank();
                     }
@@ -125,12 +135,10 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
 
-            //adds smallest sum grouping to final grouping and removes grouping fom temp group
+            //adds smallest sum grouping to final grouping and removes grouping from temp group
             finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
             tempGrouping.remove(smallestSum(sumHold));
-
         }
-        //TODO: check for incomplete run (not completed yet)
 
         //Check for incomplete set
         ArrayList<Card> tempHand = computerHand.getHand();
@@ -138,27 +146,26 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //gets rid of cards that are apart of a set or run
         for(Card c: computerHand.getHand()){
             for(ArrayList<Card> groups: finalGrouping){
-                if(groups.contains(c)){
+                if(compareGroupToCard(groups, c)){
                     tempHand.remove(c);
                 }
             }
         }
 
-        //checks for cards that are the same rank and puts them incomplete temp set
+        //checks for cards that are the same rank and puts them into incomplete temp set
         ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
         ArrayList<Card> tempGroup = new ArrayList<>();
 
         for(Card c: tempHand){
-            if((findCardByRank(tempHand, c.getCardRank()) != -1) && !incompleteTemp.contains(c)){
+            if((findCardByRank(tempHand, c.getCardRank()) != -1) && !compareGroupingToCard(tempGrouping, c)){
                 tempGroup.add(c);
                 tempGroup.add(tempHand.get(findCardByRank(tempHand, c.getCardRank())));
                 incompleteTemp.add(tempGroup);
                 tempGroup.clear();
-
             }
         }
 
-        //Implements use of wild cards to incomplete sets and runs
+        //Implements use of wild cards to incomplete sets
         if(computerHand.hasWildCard(wildValue)){
             int wildCardCount = computerHand.wildCount(wildValue);
             for(ArrayList<Card> group: incompleteTemp){
@@ -171,16 +178,14 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                     tempGroup.remove(group);
                 }
             }
-
         }
 
-        //TODO: find cards that are needed
-
         //finds cards not in group and adds it to the can discard pile
+        //TODO: Possible IOB
         canDiscard.clear();
         for(Card c: computerHand.getHand()){
             boolean outcast = false;
-            for(int i = 0; i < finalGrouping.size(); i++){
+            for(int i = 0; i < finalGrouping.size()-1; i++){
                 if(finalGrouping.get(i).indexOf(c) == -1){
                     outcast= true;
                 }
@@ -188,6 +193,17 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             if(outcast){
                 this.canDiscard.add(c);
             }
+        }
+
+        //find cards that are needed for set and run
+        ArrayList<Card> tempNeed = addToNeedRun(this.canDiscard);
+        for(Card c: tempNeed){
+            needed.add(c);
+        }
+        tempNeed.clear();
+        tempNeed = addToNeedSet(this.canDiscard);
+        for(Card c: tempNeed){
+            needed.add(c);
         }
 
         //if new group is formed, add confirmed group to the computers groups
@@ -202,29 +218,28 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
     }
 
     /**
-     * Returns group of set
+     * Returns groups of set
      * @param hand
      * @return
      */
-    private ArrayList<Card> checkForSet(Hand hand){
-        ArrayList<Card> set = new ArrayList<>();
-        int sameCount = 0;
-        int startIndex;
-        for(int i = 0; i < hand.getSize(); i++){
-            startIndex = i;
-            for(int j = 0; j < hand.getSize(); j++){
-                if(hand.getCard(j) == hand.getCard(i)){
-                    sameCount++;
+    private ArrayList<ArrayList<Card>> checkForSet(Hand hand){
+        ArrayList<ArrayList<Card>> set = new ArrayList<>();
+        ArrayList<Card> tempHand = hand.sortByRank(hand.getHand());
+        ArrayList<Card> tempGroup = new ArrayList<>();
+
+        for(int i = 1; i <= 13; i++){
+            for(Card c: tempHand){
+                if(c.getCardRank() == i){
+                    tempGroup.add(c);
                 }
             }
-            if(sameCount >= 3){
-                for(int k = 0; k < sameCount; k++){
-                    set.add(hand.getCard(startIndex + k));
-                }
-                return set;
+            if(tempGroup.size() >= 3){
+                set.add(tempGroup);
             }
+            tempGroup.clear();
         }
-        return set; // return empty if hits this return statement
+
+        return set;
     }
 
     /**
@@ -317,7 +332,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         ArrayList<Card> similar = new ArrayList<>();
 
-        for(int i = 0; i < group.size(); i++){
+        for(int i = 0; i < group.size()-1; i++){
             ArrayList<Card> temp1 = group.get(i);
             ArrayList<Card> temp2 = group.get(i+1);
             temp1.retainAll(temp2);
@@ -363,7 +378,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      * @param hand
      * @return
      */
-    public ArrayList<Card> rankSort(final ArrayList<Card> hand){
+    private ArrayList<Card> rankSort(final ArrayList<Card> hand){
         Collections.sort(hand, new Comparator<Card>() {
             @Override
             public int compare(Card card1, Card card2) {
@@ -399,7 +414,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         }
 
-        previousCard = 0;
         index = findIndex(groupDiff, groupDiff.size(), 1);
         return index;
     }
@@ -419,7 +433,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      */
     static int[] findIndex(ArrayList<Integer> a, int n, int key) {
         int[] index = new int[2];
-        int start = -1;
+        int start = 0;
 
         // Traverse from beginning to find
         // first occurrence
@@ -461,6 +475,190 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
     }
 
     /**
+     * Finds cards that are needed to complete sets
+     * @param hand
+     * @return
+     */
+    private ArrayList<Card> addToNeedSet(ArrayList<Card> hand){
+        ArrayList<Card> need = new ArrayList<>();
+        ArrayList<Card> temp = new ArrayList<>();
+
+        for(int i = 1; i <= 13; i++){
+            for(int j = 0; j < hand.size(); j++) {
+                if (hand.get(j).getCardRank() == i){
+                    temp.add(hand.get(j));
+                }
+            }
+
+            if(temp.size() == 2){
+                switch(temp.get(0).getCardSuit()){
+                    case 'd':
+                        switch(temp.get(1).getCardSuit()){
+                            case 'h':
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 's':
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 'c':
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                break;
+                        }
+                    case 'h':
+                        switch(temp.get(1).getCardSuit()){
+                            case 'd':
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 's':
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 'c':
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                break;
+                        }
+                    case 's':
+                        switch(temp.get(1).getCardSuit()){
+                            case 'h':
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 'd':
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'c', temp.get(0).getCardRank()));
+                                break;
+                            case 'c':
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                break;
+                        }
+                    case 'c':
+                        switch(temp.get(1).getCardSuit()){
+                            case 'h':
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                break;
+                            case 's':
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'d', temp.get(0).getCardRank()));
+                                break;
+                            case 'd':
+                                need.add(new Card(1,'s', temp.get(0).getCardRank()));
+                                need.add(new Card(1,'h', temp.get(0).getCardRank()));
+                                break;
+                        }
+                }
+            }
+        }
+
+        return need;
+    }
+
+    /**
+     * Returns cards needed to complete runs
+     * @param hand
+     * @return
+     */
+    private ArrayList<Card> addToNeedRun(ArrayList<Card> hand){
+        ArrayList<Card> need = new ArrayList<>();
+        ArrayList<Card> club = new ArrayList<>();
+        ArrayList<Card> diamond = new ArrayList<>();
+        ArrayList<Card> heart = new ArrayList<>();
+        ArrayList<Card> spade = new ArrayList<>();
+        ArrayList<Integer> clubDiff = new ArrayList<>();
+        ArrayList<Integer> diamondDiff = new ArrayList<>();
+        ArrayList<Integer> heartDiff = new ArrayList<>();
+        ArrayList<Integer> spadeDiff = new ArrayList<>();
+
+        //splits hand into sub groups based on suite
+        for(Card c: hand){
+            switch(c.getCardSuit()){
+                case 's':
+                    spade.add(c);
+                    break;
+                case 'h':
+                    heart.add(c);
+                    break;
+                case 'd':
+                    diamond.add(c);
+                    break;
+                case 'c':
+                    club.add(c);
+                    break;
+            }
+        }
+
+        spade = rankSort(spade);
+        spadeDiff = getDifference(spade);
+        heart = rankSort(heart);
+        heartDiff = getDifference(heart);
+        diamond = rankSort(diamond);
+        diamondDiff = getDifference(diamond);
+        club = rankSort(club);
+        clubDiff = getDifference(club);
+
+        for(int i: spadeDiff){
+            if(i == 1 ){
+                need.add(new Card(1, 's', spade.get(i).getCardRank() - 1));
+                if(spade.get(i+1).getCardRank() != 13) {
+                    need.add(new Card(1, 's', spade.get(i + 1).getCardRank() + 1));
+                }
+
+            }
+            if(i == 2){
+                need.add(new Card(1, 's', spade.get(i).getCardRank()+1));
+            }
+        }
+
+        for(int i: heartDiff){
+            if(i == 1 ){
+                need.add(new Card(1, 'h', heart.get(i).getCardRank() - 1));
+                if(heart.get(i+1).getCardRank() != 13) {
+                    need.add(new Card(1, 'h', heart.get(i + 1).getCardRank() + 1));
+                }
+
+            }
+            if(i == 2){
+                need.add(new Card(1, 'h', heart.get(i).getCardRank()+1));
+            }
+        }
+
+        for(int i: diamondDiff){
+            if(i == 1 ){
+                need.add(new Card(1, 'd', diamond.get(i).getCardRank() - 1));
+                if(spade.get(i+1).getCardRank() != 13) {
+                    need.add(new Card(1, 'd', diamond.get(i + 1).getCardRank() + 1));
+                }
+
+            }
+            if(i == 2){
+                need.add(new Card(1, 'd', diamond.get(i).getCardRank()+1));
+            }
+        }
+
+        for(int i: clubDiff){
+            if(i == 1 ){
+                need.add(new Card(1, 'c', club.get(i).getCardRank() - 1));
+                if(spade.get(i+1).getCardRank() != 13) {
+                    need.add(new Card(1, 'c', club.get(i + 1).getCardRank() + 1));
+                }
+
+            }
+            if(i == 2){
+                need.add(new Card(1, 'c', club.get(i).getCardRank()+1));
+            }
+        }
+
+
+        return need;
+    }
+
+    /**
      * checks if groups created from optimization hand is already a group of the computer player
      * @param finalGroup
      * @param group
@@ -468,11 +666,63 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      */
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
         for(ArrayList fgroup: finalGroup){
+            //TODO: may want to compare ranks and suits unless certain they point to the same card
             if(fgroup.equals(group)){
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * deep search of specific card in a group
+     * @param group
+     * @param card
+     * @return
+     */
+    private boolean compareGroupToCard(ArrayList<Card> group, Card card){
+        for(Card c: group){
+            if(c.getCardRank() == card.getCardRank() && c.getCardSuit() == card.getCardSuit()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * deep search of card in a group of groups
+     * @param groups
+     * @param card
+     * @return
+     */
+    private boolean compareGroupingToCard(ArrayList<ArrayList<Card>> groups, Card card){
+        for(ArrayList<Card> group: groups){
+            for(Card c: group){
+                if(c.getCardSuit() == card.getCardSuit() && c.getCardRank() == card.getCardRank()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * finds differences of a hand based on card rank
+     * @param hand
+     * @return
+     */
+    private ArrayList<Integer> getDifference(ArrayList<Card> hand){
+        ArrayList<Integer> diff = new ArrayList<>();
+        if(hand.size() == 0){
+            diff.add(-1);
+            return diff;
+        }
+        for(int i = 0; i < hand.size(); i++){
+            if(hand.get(i) != hand.get(hand.size()-1)){
+                diff.add(hand.get(i).getCardRank() - hand.get(i+1).getCardRank());
+            }
+        }
+        return diff;
     }
 
     }

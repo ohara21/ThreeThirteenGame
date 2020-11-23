@@ -12,87 +12,88 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00000000">
-
-        <TextView
-            android:id="@+id/roundText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="4sp"
-            android:layout_weight="1"
-            android:background="#AC2300"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="@string/round_num"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp" />
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#000000"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/scoresText"
+                android:id="@+id/roundText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2sp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4sp"
+                android:layout_weight="3"
                 android:background="#AC2300"
-                android:gravity="center_horizontal"
-                android:text="Scores"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/round_num"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/yourScoreText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:background="#AC2300"
+                        android:gravity="center_horizontal"
+                        android:text="@string/human_score"
+                        android:textColor="#FFFFFF"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/opponScoreText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2sp"
+                        android:layout_marginLeft="2sp"
+                        android:layout_weight="1"
+                        android:background="#AC2300"
+                        android:gravity="center_horizontal"
+                        android:text="@string/computer_score"
+                        android:textColor="#FFFFFF"
+                        android:textSize="25sp" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/yourScoreText"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/wild_text"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2sp"
-                    android:layout_marginEnd="2sp"
-                    android:layout_marginRight="2sp"
-                    android:layout_weight="1"
+                    android:layout_marginTop="4sp"
                     android:background="#AC2300"
                     android:gravity="center_horizontal"
-                    android:text="@string/human_score"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp" />
 
-                <TextView
-                    android:id="@+id/opponScoreText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2sp"
-                    android:layout_marginLeft="2sp"
-                    android:layout_marginTop="2sp"
-                    android:layout_weight="1"
-                    android:background="#AC2300"
-                    android:gravity="center_horizontal"
-                    android:text="@string/computer_score"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/actionInfoText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4sp"
-                android:layout_weight="1"
-                android:background="#AC2300"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/actionText"
-                android:textColor="#FFFFFF"
-                android:textSize="25sp" />
-
-
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/actionInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4sp"
+            android:layout_weight="1"
+            android:background="#AC2300"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/actionText"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -170,7 +171,7 @@
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Add to group"
+                    android:text="create group"
                     android:textColor="@android:color/white" />
 
                 <Button

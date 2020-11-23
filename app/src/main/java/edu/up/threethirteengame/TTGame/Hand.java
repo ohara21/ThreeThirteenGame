@@ -128,24 +128,6 @@ public class Hand {
         return hand;
     }
 
-    /**
-     * Sorts cards by suite and rank
-     */
-    public ArrayList<Card> sortBySuiteAndRank(ArrayList<Card> hand){
-        return hand;
-    }
-
-    /**
-     * sorts a given hand by groupings
-     * @param hand
-     * @return a sorted array with groupings at the front
-     */
-    public ArrayList<Card> sortByGroupings(final ArrayList<Card> hand) {
-        for (Card c: hand) {
-
-        }
-        return hand;
-    }
 
     /**
      * checks if a given arrayList of cards is a valid set

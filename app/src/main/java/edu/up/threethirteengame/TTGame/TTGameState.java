@@ -313,20 +313,14 @@ public class TTGameState extends GameState {
             return;
         }
 
-        //update round num
-        if (roundNum != 11) {
-            roundNum++;
-        }
-
         //update player's scores
         updateScores();
 
-        //don't deal a new hand if the game is over
-        //all rounds before round 11, deal a hand at the start of a round
-        //on round 11, deal a hand only if both players have NOT Gone Out
-        if ((roundNum != 11) || (!player0GoneOut && !player1GoneOut)) {
+        //update round num
+        if (roundNum != 11) {
+            roundNum++;
             dealHand();
-        }
+        } 
 
         //it is a new round so reset that player's went out and drew cards
         player0GoneOut = false;
