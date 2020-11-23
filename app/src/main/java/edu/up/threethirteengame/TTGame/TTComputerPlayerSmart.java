@@ -44,8 +44,13 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         newState = (TTGameState)info;
 
         //check discard with needed list and draw from discard if can, else draw from deck
-        if(isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()){
-            game.sendAction(new TTDrawDiscardAction(this));
+        if(!needCard.isEmpty()) {
+            if (isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()) {
+                game.sendAction(new TTDrawDiscardAction(this));
+            }
+            else if(newState.playerDrawDeck()) {
+                game.sendAction(new TTDrawDeckAction(this));
+            }
         }
         else if(newState.playerDrawDeck()) {
             game.sendAction(new TTDrawDeckAction(this));
@@ -53,8 +58,10 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         //update need list using optimization algorithm and adds new groupings to gameState
         needCard = optimizeHand(newState);
-        for(ArrayList groups: compGroup) {
-            game.sendAction(new TTAddGroupAction(this, groups));
+        if(!needCard.isEmpty()) {
+            for (ArrayList groups : compGroup) {
+                game.sendAction(new TTAddGroupAction(this, groups));
+            }
         }
 
         //try to go out
@@ -64,7 +71,13 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         //discard card not apart of needed list or apart of a group
         else{
-            Card discard = canDiscard.get(0);
+            Card discard;
+            if(!canDiscard.isEmpty()) {
+                discard = canDiscard.get(0);
+            }
+            else {
+                discard = newState.currentPlayerHand().getHand().get(0);
+            }
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
@@ -110,7 +123,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             //into an array list to get compared to each other
             ArrayList<Integer> sumHold = new ArrayList<>();
 
-            for(int i = 0; i < tempGrouping.size(); i++){
+            //TODO: possible IOB
+            for(int i = 0; i < tempGrouping.size()-1; i++){
 
                 if(tempGrouping.get(i).indexOf(c) != -1) {
                     int sum = 0;
@@ -167,10 +181,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         }
 
         //finds cards not in group and adds it to the can discard pile
+        //TODO: Possible IOB
         canDiscard.clear();
         for(Card c: computerHand.getHand()){
             boolean outcast = false;
-            for(int i = 0; i < finalGrouping.size(); i++){
+            for(int i = 0; i < finalGrouping.size()-1; i++){
                 if(finalGrouping.get(i).indexOf(c) == -1){
                     outcast= true;
                 }
@@ -317,7 +332,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         ArrayList<Card> similar = new ArrayList<>();
 
-        for(int i = 0; i < group.size(); i++){
+        for(int i = 0; i < group.size()-1; i++){
             ArrayList<Card> temp1 = group.get(i);
             ArrayList<Card> temp2 = group.get(i+1);
             temp1.retainAll(temp2);
@@ -418,7 +433,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      */
     static int[] findIndex(ArrayList<Integer> a, int n, int key) {
         int[] index = new int[2];
-        int start = -1;
+        int start = 0;
 
         // Traverse from beginning to find
         // first occurrence
