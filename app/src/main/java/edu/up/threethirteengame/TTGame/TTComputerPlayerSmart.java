@@ -45,6 +45,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //initialize the game state
         newState = (TTGameState)info;
 
+        //TODO: Nick- added check if its the smart AI's turn
+        //return if it's not the Computer Player's turn
+        if (newState.getPlayerTurn() != playerNum){
+            return;
+        }
+
         //check discard with needed list and draw from discard if can, else draw from deck
         if(!needCard.isEmpty()) {
             if (isNeeded(needCard, newState.getTopDiscard().getCardRank()) && newState.playerDrawDiscard()) {
@@ -85,21 +91,23 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 //cycle through the player's hand for the card with the largest rank
                 discard = null;
                 int highestRank = 0;
+                Log.d("TTComputerPlayerSmart:", "current player turn "+newState.getPlayerTurn());
                 for(Card c : newState.currentPlayerHand().getHand()){
-
+                    //Log.d("TTComputerPlayerSmart:","highest rank: "+highestRank+" card rank: "+c.getCardRank());
                     if(c.getCardRank() == newState.getWildCard()){
                         //don't discard the wild card
                         continue;
                     }
                     else if(c.getCardRank() > highestRank){
                         //generally discard the higher cards
+                        Log.d("TTComputerPlayerSmart:","found a card with high rank");
                         highestRank = c.getCardRank();
                         discard = c;
                     }
-                    else{
-                        Log.d("TTComputerPlayerSmart:","should hardly ever reach this case for discarding");
-                        discard = newState.currentPlayerHand().getHand().get(0);
-                    }
+                }
+                if(discard == null){
+                    Log.d("TTComputerPlayerSmart:","should hardly ever reach this case for discarding");
+                    discard = newState.currentPlayerHand().getHand().get(0);
                 }
             }
             game.sendAction(new TTDiscardAction(this, discard));
@@ -107,7 +115,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
     }
 
-    private ArrayList<Card> optimizeHand(TTGameState gameState){
+    public ArrayList<Card> optimizeHand(TTGameState gameState){
 
         // returned array for bot to know what cards look for
         ArrayList<Card> needed = new ArrayList<>();
@@ -118,6 +126,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // final grouping used to create groups in computer hand
         ArrayList<ArrayList<Card>> finalGrouping = new ArrayList<>();
 
+        //TODO: should we remove the wild cards from this hand before looking for sets/runs?
         //copying current hand of computer
         Hand computerHand = new Hand(gameState.currentPlayerHand());
 
@@ -158,13 +167,31 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
 
+            //TODO: don't we need to remove all groups containing similar cards from tempGrouping?
             //adds smallest sum grouping to final grouping and removes grouping from temp group
             finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
             tempGrouping.remove(smallestSum(sumHold));
         }
 
+        //TODO: remove later after testing
+        System.out.println("Final Groupings consists of:");
+        for(ArrayList<Card> group : finalGrouping){
+            for(Card c : group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            if(!group.isEmpty()){
+                System.out.println();
+            }
+        }
+        System.out.println();
+
         //Check for incomplete set
         ArrayList<Card> tempHand = computerHand.getHand();
+        System.out.println("Temporary Hand Before Removing cards in groups: ");
+        for(Card c : tempHand){
+            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+        }
+        System.out.println();
 
         //gets rid of cards that are apart of a set or run
         for(Card c: computerHand.getHand()){
@@ -174,6 +201,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
         }
+
+        System.out.println("Temporary Hand After Removing cards in groups: ");
+        for(Card c : tempHand){
+            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+        }
+        System.out.println();
 
         //checks for cards that are the same rank and puts them into incomplete temp set
         ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
@@ -187,6 +220,17 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 tempGroup.clear();
             }
         }
+
+        System.out.println("Incomplete Sets: ");
+        for(ArrayList<Card> group : incompleteTemp){
+            for(Card c : group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            if(!group.isEmpty()){
+                System.out.println();
+            }
+        }
+        System.out.println();
 
         //Implements use of wild cards to incomplete sets
         if(computerHand.hasWildCard(wildValue)){
@@ -202,6 +246,17 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
         }
+
+        System.out.println("Final Groupings to be added to Real Groupings consists of:");
+        for(ArrayList<Card> group : finalGrouping){
+            for(Card c : group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            if(!group.isEmpty()){
+                System.out.println();
+            }
+        }
+        System.out.println();
 
         //finds cards not in group and adds it to the can discard pile
         canDiscard.clear();
@@ -373,27 +428,28 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 //compare the first group with the other groups
                 //this way won't check the same two groups twice
 
-                //TODO: remove SOP.ln messages once confident checkForSimilar works
-                System.out.println("Index i: "+i+" j: "+j);
                 ArrayList<Card> temp2 = new ArrayList<>(group.get(j));
-                System.out.print("comparing Temp 1:");
-                for(Card c : temp1){
-                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-                }
-                System.out.println();
-                System.out.print("with Temp 2:");
-                for(Card c : temp2){
-                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-                }
-                System.out.println();
+
+//                //TODO: remove SOP.ln messages once confident checkForSimilar works
+//                System.out.println("Index i: "+i+" j: "+j);
+//                System.out.print("comparing Temp 1:");
+//                for(Card c : temp1){
+//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//                }
+//                System.out.println();
+//                System.out.print("with Temp 2:");
+//                for(Card c : temp2){
+//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//                }
+//                System.out.println();
                 //check for similar cards and add it to the similar groups
                 temp2.retainAll(temp1);
                 similar.addAll(temp2);
-                System.out.print("Similar: ");
-                for(Card c : similar){
-                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-                }
-                System.out.println("\n");
+//                System.out.print("Similar: ");
+//                for(Card c : similar){
+//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//                }
+//                System.out.println("\n");
             }
         }
 
