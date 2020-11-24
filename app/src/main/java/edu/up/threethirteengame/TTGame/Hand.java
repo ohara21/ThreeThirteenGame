@@ -468,4 +468,16 @@ public class Hand {
 
         return true;
     }
+
+    public Hand removeWild(int wildRank){
+        Hand withoutWild = this;
+        ArrayList<Card> tempHand = this.getHand();
+        for(Card c: tempHand){
+            if(c.getCardRank() == wildRank){
+                tempHand.remove(c);
+            }
+        }
+        withoutWild.setHand(tempHand);
+        return withoutWild;
+    }
 }
