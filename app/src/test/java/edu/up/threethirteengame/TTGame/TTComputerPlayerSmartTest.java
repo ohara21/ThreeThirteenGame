@@ -9,11 +9,6 @@ import static org.junit.Assert.*;
 public class TTComputerPlayerSmartTest {
 
     @Test
-    public void findIndex() {
-
-    }
-
-    @Test
     public void checkForSet() {
         TTGameState ttGameState = new TTGameState();
         TTComputerPlayerSmart ttComp = new TTComputerPlayerSmart("Comp");
