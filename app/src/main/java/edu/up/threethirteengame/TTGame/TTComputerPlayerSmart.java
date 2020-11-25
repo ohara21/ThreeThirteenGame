@@ -1,5 +1,11 @@
 package edu.up.threethirteengame.TTGame;
 
+/**
+ * @description: Computer Player Smart class contains the AI actions and optimization for a smart AI opponent
+ * @author: Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
+ * @version: 10/24/2020
+ */
+
 import android.util.Log;
 
 import java.util.ArrayList;
