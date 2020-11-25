@@ -3,9 +3,6 @@ package edu.up.threethirteengame.TTGame;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import androidx.core.widget.TextViewCompat;
 
 import static org.junit.Assert.*;
 

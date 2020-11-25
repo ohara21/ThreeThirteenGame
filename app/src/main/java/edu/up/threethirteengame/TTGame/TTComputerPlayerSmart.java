@@ -45,7 +45,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //initialize the game state
         newState = (TTGameState)info;
 
-        //TODO: Nick- added check if its the smart AI's turn
         //return if it's not the Computer Player's turn
         if (newState.getPlayerTurn() != playerNum){
             return;
@@ -85,7 +84,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 discard = canDiscard.get(0);
             }
             else {
-                //TODO: Nick modified code here
                 //discard = newState.currentPlayerHand().getHand().get(0);
 
                 //cycle through the player's hand for the card with the largest rank
@@ -126,22 +124,25 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // final grouping used to create groups in computer hand
         ArrayList<ArrayList<Card>> finalGrouping = new ArrayList<>();
 
-        //TODO: should we remove the wild cards from this hand before looking for sets/runs?
-        //copying current hand of computer
-        Hand computerHand = new Hand(gameState.currentPlayerHand());
-
         // Check for Wild Card
         int wildValue = gameState.getWildCard();
 
+        //copying current hand of computer
+        Hand computerHand = new Hand(gameState.currentPlayerHand());
+        //copying current hand of computer without wilds
+        Hand withoutWild = new Hand(computerHand.removeWild(wildValue));
+
+
+
         // Look for sets -> create grouping per set
 
-        ArrayList<ArrayList<Card>> setGroup = checkForSet(computerHand);
+        ArrayList<ArrayList<Card>> setGroup = checkForSet(withoutWild);
         for(ArrayList list: setGroup){
             tempGrouping.add(list);
         }
 
         //Look for runs (disregarding common cards) -> create grouping per run
-        ArrayList<ArrayList<Card>> runGroup = checkForRun(computerHand);
+        ArrayList<ArrayList<Card>> runGroup = checkForRun(withoutWild);
         for(ArrayList list: runGroup){
             tempGrouping.add(list);
         }
@@ -167,10 +168,9 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
 
-            //TODO: don't we need to remove all groups containing similar cards from tempGrouping?
             //adds smallest sum grouping to final grouping and removes grouping from temp group
             finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
-            tempGrouping.remove(smallestSum(sumHold));
+            tempGrouping.clear();
         }
 
         //TODO: remove later after testing
@@ -312,7 +312,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
             if(tempGroup.size() >= 3){
                 //Log.d("TTComputerPlayerSmart:","checkForSet() found a set to add rank:"+i);
-                //TODO: Nick changed here, needed to create a new tempGroup
                 set.add(new ArrayList<Card>(tempGroup));
             }
             tempGroup.clear();
@@ -370,25 +369,24 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         spade = rankSort(spade);
         spadeRunIndex = findRunIndex(spade);
 
-        //TODO: Nick- the index was off by one so I added the +1 in the for loops
         //adds found runs in a group
         if(clubRunIndex[0] != -1 && clubRunIndex[0] != clubRunIndex[1]) {
-            for (int i = clubRunIndex[0]; i <= clubRunIndex[1]+1; i++) {
+            for (int i = clubRunIndex[0]; i <= clubRunIndex[1]; i++) {
                 clubRun.add(club.get(i));
             }
         }
         if(diamondRunIndex[0] != -1 && diamondRunIndex[0] != diamondRunIndex[1]) {
-            for (int i = diamondRunIndex[0]; i <= diamondRunIndex[1]+1; i++) {
+            for (int i = diamondRunIndex[0]; i <= diamondRunIndex[1]; i++) {
                 diamondRun.add(diamond.get(i));
             }
         }
         if(heartRunIndex[0] != -1 && heartRunIndex[0] != heartRunIndex[1]) {
-            for (int i = heartRunIndex[0]; i <= heartRunIndex[1]+1; i++) {
+            for (int i = heartRunIndex[0]; i <= heartRunIndex[1]; i++) {
                 heartRun.add(heart.get(i));
             }
         }
         if(spadeRunIndex[0] != -1 && spadeRunIndex[0] != spadeRunIndex[1]) {
-            for (int i = spadeRunIndex[0]; i <= spadeRunIndex[1]+1; i++) {
+            for (int i = spadeRunIndex[0]; i <= spadeRunIndex[1]; i++) {
                 spadeRun.add(spade.get(i));
             }
         }
@@ -412,72 +410,19 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         ArrayList<Card> similar = new ArrayList<>();
 
-        //TODO: Nick - previous implementation would only check groups next to each other
         //groups are added to the end, so check by decrementing index
-        for(int i = group.size()-1; i > 0; i--){
-//            ArrayList<Card> temp1 = group.get(i);
-//            ArrayList<Card> temp2 = group.get(i+1);
-//            temp1.retainAll(temp2);
-//            for(Card c : temp1){
-//                similar.add(c);
-//            }
+        for(int i = group.size(); i > 0; i--){
 
             //maintain the first group as we compare it to the other groups
             ArrayList<Card> temp1 = new ArrayList<>(group.get(i));
             for(int j= i-1;j>=0;j--) {
-                //compare the first group with the other groups
-                //this way won't check the same two groups twice
 
                 ArrayList<Card> temp2 = new ArrayList<>(group.get(j));
 
-//                //TODO: remove SOP.ln messages once confident checkForSimilar works
-//                System.out.println("Index i: "+i+" j: "+j);
-//                System.out.print("comparing Temp 1:");
-//                for(Card c : temp1){
-//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//                }
-//                System.out.println();
-//                System.out.print("with Temp 2:");
-//                for(Card c : temp2){
-//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//                }
-//                System.out.println();
-                //check for similar cards and add it to the similar groups
                 temp2.retainAll(temp1);
                 similar.addAll(temp2);
-//                System.out.print("Similar: ");
-//                for(Card c : similar){
-//                    System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//                }
-//                System.out.println("\n");
             }
         }
-
-        //check for duplicate cards
-        ArrayList<Card> finalSimilar = new ArrayList<>();
-
-        //TODO: may not even need, remove later if there are no problems with duplicate cards
-//        for(Card c : similar){
-//            //initialize finalSimilar with the first card in similar arrayList
-//            if(finalSimilar.isEmpty()){
-//                finalSimilar.add(c);
-//                continue;
-//            }
-//            int initSize = finalSimilar.size();
-//            Card cFinal;
-//            boolean cardFound = false;
-//            //loop through the finalSimilar arrayList to check for a duplicate
-//            for(int i=0; i<initSize; i++){
-//                cFinal = finalSimilar.get(i);
-//                //the same card was found
-//                if(c.getCardRank()==cFinal.getCardRank() && c.getCardSuit()==cFinal.getCardSuit()){
-//                    cardFound = true;
-//                }
-//            }
-//            if(!cardFound){
-//                finalSimilar.add(c);
-//            }
-//        }
         return similar;
     }
 
