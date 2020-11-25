@@ -23,8 +23,10 @@ import java.util.ArrayList;
  *      for quit button.
  * Dumb AI: Functional according to requirements, but will never be able to score according to current implementation.
  *      This could happen in a real game, but the team will continue to make improvements so the Dumb AI can score sometimes
- * Smart AI:
- * Playable with any combination of two players, per our requirements and game rules.
+ * Smart AI: Functional according to requirements. The Smart AI has the ability to create groups of sets and runs in order
+ *      to check if the AI is able to go out. It also is capable of understanding which cards are needed to complete a set and
+ *      will check the discard pile to see if the card is suitable to compelete a set. The able to discard cards in hand does update
+ *      per turn as the hand is always changing based on draws and discards.
  */
 public class TTMainActivity extends GameMainActivity {
 
