@@ -13,6 +13,19 @@ import java.util.ArrayList;
  * @author Nick Ohara, Shane Matsushima, Lindsey Warren, Adrian Muth
  * @version 11/3/20
  */
+
+/**
+ * @BetaRelease
+ * Playable according to the rules of Three Thirteen
+ * GUI functionality specified in the requirements are present. Added a text box that displays
+ *      information regarding illegal moves, actions taken, etc. Added indicator if player needs to draw.
+ *      Added text box that tells player what the wild card is for the round. Added confirmation screen
+ *      for quit button.
+ * Dumb AI: Functional according to requirements, but will never be able to score according to current implementation.
+ *      This could happen in a real game, but the team will continue to make improvements so the Dumb AI can score sometimes
+ * Smart AI:
+ * Playable with any combination of two players, per our requirements and game rules.
+ */
 public class TTMainActivity extends GameMainActivity {
 
     /**
