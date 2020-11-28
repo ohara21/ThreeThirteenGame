@@ -23,6 +23,11 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
+/**
+ * @description TTHumanPlayer class responds to events initiated by the user.
+ * @author Nick Ohara, Shane Matsushima, Lindsey Warren, Adrian Muth
+ * @version 11/3/20
+ */
 public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener, View.OnTouchListener {
 
     //our game state
