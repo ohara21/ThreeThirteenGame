@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.io.Serializable;
+
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 
@@ -8,7 +10,7 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public class TTGoOutAction extends TTMoveAction {
+public class TTGoOutAction extends TTMoveAction implements Serializable {
     /**
      * constructor for TTGoOutAction
      *

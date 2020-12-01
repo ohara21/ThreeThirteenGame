@@ -43,7 +43,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     private Button discardButton;
     private Button removeGroupButton;
     private Button addGroupButton;
-    private Button endTurnButton;
 
     //text views
     private TextView roundText;
@@ -232,7 +231,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         discardButton = myActivity.findViewById(R.id.discardButton);
         addGroupButton = myActivity.findViewById(R.id.addGroupButton);
         removeGroupButton = myActivity.findViewById(R.id.removeGroupButton);
-        endTurnButton = myActivity.findViewById(R.id.endTurnButton);
 
         //set onTouch listener
         gameBoard.setOnTouchListener(this);
@@ -245,7 +243,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         discardButton.setOnClickListener(this);
         addGroupButton.setOnClickListener(this);
         removeGroupButton.setOnClickListener(this);
-        endTurnButton.setOnClickListener(this);
 
         // if the state is not null, simulate having just received the state so that
         // any state-related processing is done
@@ -320,7 +317,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 boolean tooManyCards = false;
                 for (int i = 0; i < state.currentPlayerHand().getSize(); i++) {
                     if (state.currentPlayerHand().getCard(i).getIsClick()) {
-                        Log.d("HP Before Discard","card being discarded: "+state.currentPlayerHand().getCard(i).getCardRank()+state.currentPlayerHand().getCard(i).getCardSuit());
                         if(discardCard == null){
                             //the first clicked card was found
                             discardCard = state.currentPlayerHand().getCard(i);
@@ -350,7 +346,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 //2:place selected cards in an ArrayList<Card> group
                 //3:use createGrouping() to add the selected cards to 2D groupings in Hand
 
-                Log.d("Human Player","addGroupButton was pressed");
                 ArrayList<Card> group = new ArrayList<>();
                 int numCardsClicked =0;
                 for (Card cardInHand : state.currentPlayerHand().getHand()) {
@@ -380,15 +375,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                     }
                 }
                 gameBoard.invalidate();
-                break;
-            case (R.id.endTurnButton):
-                // check if player has drawn and and discarded
-                if (state.getPlayer0Drawn() && state.getPlayer0Discard()) {
-                    state.nextTurn();
-                    gameBoard.invalidate();
-                } else {
-                    Log.d("End turn", "user cannot end turn at this time");
-                }
                 break;
             default:
                 // do nothing

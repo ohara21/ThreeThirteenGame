@@ -1,5 +1,6 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
@@ -10,7 +11,7 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
  * @author Nick Ohara
  * @version 11/5/20
  */
-public class TTMoveAction extends GameAction {
+public class TTMoveAction extends GameAction implements Serializable {
 
     private Card discard;
     private ArrayList<Card> addGroup;

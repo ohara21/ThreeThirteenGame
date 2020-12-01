@@ -72,7 +72,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //update need list using optimization algorithm and adds new groupings to gameState
         needCard = optimizeHand(newState);
         if(!needCard.isEmpty()) {
-            for (ArrayList groups : compGroup) {
+            Log.d("TTComputerPlayerSmart:","Size of compGroup: "+compGroup.size());
+            for (ArrayList<Card> groups : compGroup) {
+                Log.d("TTComputerPlayerSmart:","Sending group:");
+//                for(Card c : groups){
+//                    Log.d("TTComputerPlayerSmart:"," "+c.getCardRank()+c.getCardSuit());
+//                }
                 game.sendAction(new TTAddGroupAction(this, groups));
             }
         }
@@ -90,8 +95,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 discard = canDiscard.get(0);
             }
             else {
-                //discard = newState.currentPlayerHand().getHand().get(0);
-
                 //cycle through the player's hand for the card with the largest rank
                 discard = null;
                 int highestRank = 0;
@@ -183,24 +186,24 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         }
 
         //TODO: remove later after testing
-        System.out.println("Final Groupings consists of:");
-        for(ArrayList<Card> group : finalGrouping){
-            for(Card c : group){
-                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-            }
-            if(!group.isEmpty()){
-                System.out.println();
-            }
-        }
-        System.out.println();
+//        System.out.println("Final Groupings consists of:");
+//        for(ArrayList<Card> group : finalGrouping){
+//            for(Card c : group){
+//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//            }
+//            if(!group.isEmpty()){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
 
         //Check for incomplete set
         ArrayList<Card> newTempHand = computerHand.getHand();
-        System.out.println("Temporary Hand Before Removing cards in groups: ");
-        for(Card c : newTempHand){
-            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-        }
-        System.out.println();
+//        System.out.println("Temporary Hand Before Removing cards in groups: ");
+//        for(Card c : newTempHand){
+//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//        }
+//        System.out.println();
 
         //gets rid of cards that are apart of a set or run
         ArrayList<Card> tempHand = new ArrayList<>();
@@ -211,11 +214,11 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
         }
 
-        System.out.println("Temporary Hand After Removing cards in groups: ");
-        for(Card c : tempHand){
-            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-        }
-        System.out.println();
+//        System.out.println("Temporary Hand After Removing cards in groups: ");
+//        for(Card c : tempHand){
+//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//        }
+//        System.out.println();
 
         //checks for cards that are the same rank and puts them into incomplete temp set
         ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
@@ -233,16 +236,16 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
         }
 
-        System.out.println("Incomplete Sets: ");
-        for(ArrayList<Card> group : incompleteTemp){
-            for(Card c : group){
-                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-            }
-            if(!group.isEmpty()){
-                System.out.println();
-            }
-        }
-        System.out.println();
+//        System.out.println("Incomplete Sets: ");
+//        for(ArrayList<Card> group : incompleteTemp){
+//            for(Card c : group){
+//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//            }
+//            if(!group.isEmpty()){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
 
         //Implements use of wild cards to incomplete sets
         if(computerHand.hasWildCard(wildValue)){
@@ -259,16 +262,16 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
         }
 
-        System.out.println("Final Groupings to be added to Real Groupings consists of:");
-        for(ArrayList<Card> group : finalGrouping){
-            for(Card c : group){
-                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-            }
-            if(!group.isEmpty()){
-                System.out.println();
-            }
-        }
-        System.out.println();
+//        System.out.println("Final Groupings to be added to Real Groupings consists of:");
+//        for(ArrayList<Card> group : finalGrouping){
+//            for(Card c : group){
+//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//            }
+//            if(!group.isEmpty()){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
 
         //finds cards not in group and adds it to the can discard pile
         this.canDiscard.clear();
@@ -289,23 +292,23 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             needed.add(c);
         }
 
-        System.out.println("Cards in Needed list:");
-        for(Card c: needed){
-            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-        }
-        if(!needed.isEmpty()){
-            System.out.println();
-        }
-        System.out.println();
+//        System.out.println("Cards in Needed list:");
+//        for(Card c: needed){
+//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//        }
+//        if(!needed.isEmpty()){
+//            System.out.println();
+//        }
+//        System.out.println();
 
-        System.out.println("Cards that can be discarded");
-        for(Card c: this.canDiscard){
-            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-        }
-        if(!this.canDiscard.isEmpty()){
-            System.out.println();
-        }
-        System.out.println();
+//        System.out.println("Cards that can be discarded");
+//        for(Card c: this.canDiscard){
+//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+//        }
+//        if(!this.canDiscard.isEmpty()){
+//            System.out.println();
+//        }
+//        System.out.println();
 
 
         //if new group is formed, add confirmed group to the computers groups

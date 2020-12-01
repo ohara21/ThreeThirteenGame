@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.io.Serializable;
+
 import edu.up.threethirteengame.game.GameFramework.GamePlayer;
 
 /**
@@ -7,7 +9,7 @@ import edu.up.threethirteengame.game.GameFramework.GamePlayer;
  * @author Nick Ohara
  * @version 11/3/20
  */
-public class TTDrawDiscardAction extends TTMoveAction {
+public class TTDrawDiscardAction extends TTMoveAction implements Serializable {
 
     /**
      * constructor for TTDrawDiscardAction class

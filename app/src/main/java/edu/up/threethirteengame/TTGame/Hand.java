@@ -7,11 +7,12 @@ package edu.up.threethirteengame.TTGame;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Hand {
+public class Hand implements Serializable {
     private ArrayList<Card> userHand = null;
     private ArrayList<ArrayList<Card>> groupings = null;
     public static final int MAX_NUM_GROUPS = 4;
@@ -263,7 +264,6 @@ public class Hand {
 
         //checks to make sure card exists
         if(card == null){
-            Log.d("isCardInGroup()", "passed card was null");
             return false;
         }
 
@@ -299,7 +299,6 @@ public class Hand {
     public boolean isCardInHand(Card card){
         //checks to make sure card exists
         if(card == null){
-            Log.d("isCardInGroup()", "passed card was null");
             return false;
         }
 
@@ -424,7 +423,6 @@ public class Hand {
 
         //check if the card is in a group
         if(!isCardInGroup(cardToRemove)){
-            Log.d("Hand","the card was not found in a group");
             return false;
         }
 

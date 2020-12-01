@@ -32,6 +32,13 @@
 
     \nThe player with the lowest score at the end of the 11 rounds wins.
     Good luck!</string>
-<string name="actionText">Nothing has happened yet.</string>
+    <string name="actionText">Let\'s play a game of Three Thirteen!</string>
+    <string name="how_to_play_text">How to Play</string>
+    <string name="quit">Quit</string>
+    <string name="restart">Restart</string>
+    <string name="create_group">create group</string>
+    <string name="remove_from_group">Remove from group</string>
+    <string name="go_out">Go out</string>
+    <string name="discard">Discard</string>
     <item name="top_gui_layout" type="id" />
 </resources>

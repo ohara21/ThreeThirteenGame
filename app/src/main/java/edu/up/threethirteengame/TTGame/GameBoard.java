@@ -10,6 +10,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceView;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import edu.up.threethirteengame.R;
@@ -20,7 +22,7 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
  * @author Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
  * @version 11/3/20
  */
-public class GameBoard extends SurfaceView {
+public class GameBoard extends SurfaceView implements Serializable {
 
     /**
      * External Citation

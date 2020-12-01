@@ -123,7 +123,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
                 android:orientation="vertical">
 
                 <Button
@@ -131,11 +130,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Help"
+                    android:text="@string/how_to_play_text"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -143,11 +141,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="30sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Quit"
+                    android:text="@string/quit"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -155,11 +153,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="30sp"
                     android:layout_marginRight="10sp"
-                    android:layout_marginBottom="15sp"
+                    android:layout_marginBottom="70sp"
                     android:background="@drawable/button_background"
-                    android:text="Restart"
+                    android:text="@string/restart"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -167,11 +165,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="130sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="create group"
+                    android:text="@string/create_group"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -179,23 +177,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="30sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Remove from group"
-                    android:textColor="@android:color/white" />
-
-                <Button
-                    android:id="@+id/goOutButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
-                    android:layout_marginRight="10sp"
-                    android:layout_marginBottom="15sp"
-                    android:background="@drawable/button_background"
-                    android:text="Go out"
+                    android:text="@string/remove_from_group"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -203,23 +189,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="30sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="Discard"
+                    android:text="@string/discard"
                     android:textColor="@android:color/white" />
 
                 <Button
-                    android:id="@+id/endTurnButton"
+                    android:id="@+id/goOutButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="30sp"
                     android:layout_marginRight="10sp"
                     android:layout_marginBottom="15sp"
                     android:background="@drawable/button_background"
-                    android:text="End turn"
+                    android:text="@string/go_out"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

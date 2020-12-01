@@ -1,5 +1,7 @@
 package edu.up.threethirteengame.TTGame;
 
+import java.io.Serializable;
+
 import edu.up.threethirteengame.R;
 
 /**
@@ -7,7 +9,7 @@ import edu.up.threethirteengame.R;
  * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
  * @version: 10/20/2020
  */
-public class Card {
+public class Card implements Serializable {
 
     /**
      * External Citation

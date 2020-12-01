@@ -37,7 +37,7 @@ public class TTMainActivity extends GameMainActivity {
      * Source:https://github.com/cs301up/Counter.git
      * Solution: copied and modified code
      */
-    public static final int PORT_NUMBER = 4752;
+    public static final int PORT_NUMBER = 9893;
 
     /** a Three Thirteen game for two players. The default is human vs. computer */
     @Override

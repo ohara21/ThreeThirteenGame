@@ -2,6 +2,7 @@ package edu.up.threethirteengame.TTGame;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,7 +16,7 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameState;
  * @author Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
  * @version 10/20/2020
  */
-public class TTGameState extends GameState {
+public class TTGameState extends GameState implements Serializable {
 
     //creating a deck of 52 cards
     private static char[] suite = new char[] {'c','s','h','d'};
@@ -311,6 +312,9 @@ public class TTGameState extends GameState {
         if (roundNum != 11) {
             roundNum++;
             dealHand();
+
+            //set the wild card in the current player's hand
+            currentPlayerHand().setWildCard(this.wildCard);
         } 
 
         //it is a new round so reset that player's went out and drew cards
@@ -444,8 +448,6 @@ public class TTGameState extends GameState {
     public boolean playerDrawDeck(){
         //checks if there are cards in deck
         if(deck.size() == 0){
-            Log.d("playerDrawDeck()","deck is apparently empty, drawing from discard");
-            //have to draw from discard
             // empty draw deck message
             actionTextVal = 4;
             return false;
@@ -498,8 +500,6 @@ public class TTGameState extends GameState {
     public boolean playerDrawDiscard(){
         //checks if there are cards in discard
         if(discardPile.size() == 0){
-            Log.d("playerDrawDiscard()","discard is apparently empty, drawing from deck");
-            //have to draw from discard
             // empty discard deck message
             actionTextVal = 6;
             return false;
@@ -601,7 +601,6 @@ public class TTGameState extends GameState {
             if((discardCard.getCardRank() == c.getCardRank() && (discardCard.getCardSuit() == c.getCardSuit()))){
                 Log.d("GameState","a card is being discarded "+discardCard.getCardRank()+discardCard.getCardSuit());
                 discardPile.add(c);
-                Log.d("GameState","the top of discard pile "+discardPile.get(discardPile.size()-1).getCardRank()+discardPile.get(discardPile.size()-1).getCardSuit());
 
                 //check if this card is in a group before discarding
                 if(isCardInGroup(discardCard)){
@@ -635,10 +634,8 @@ public class TTGameState extends GameState {
      * @return whether the player can Go Out or not
      */
     public boolean canPlayerGoOut(){
-        Log.d("canPlayerGoOut()", "testing if possible");
         //check to make sure there is at least one group in 2D groupings
         if(currentPlayerHand().getGroupings().isEmpty()){
-            Log.d("canPlayerGoOut()", "no groupings");
             // no groupings to go out with message
             actionTextVal = 8;
             return false;
@@ -651,7 +648,6 @@ public class TTGameState extends GameState {
         //checks to make sure they haven't already Gone Out this round
         if(playerTurn == 0){
             if(player0GoneOut){
-                Log.d("canPlayerGoOut()","player 0 has already gone out");
                 // already gone out message
                 actionTextVal = 9;
                 return false;
@@ -659,7 +655,6 @@ public class TTGameState extends GameState {
         }
         else{
             if(player1GoneOut){
-                Log.d("canPlayerGoOut()","player 1 has already gone out");
                 // already gone out message
                 actionTextVal = 9;
                 return false;
@@ -683,7 +678,6 @@ public class TTGameState extends GameState {
                 else{
                     //there is more than one card in the groupings that isn't in the player's hand
                     //therefore, we don't take any action and they can't really Go Out
-                    Log.d("canPlayerGoOut()","more than one card to be removed");
                     // no groups to go out with message
                     actionTextVal = 8;
                     return false;
@@ -816,7 +810,6 @@ public class TTGameState extends GameState {
     public boolean isCardInHand(Card card){
         //checks to make sure card exists
         if(card == null){
-            Log.d("isCardInGroup()", "passed card was null");
             return false;
         }
 

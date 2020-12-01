@@ -75,9 +75,7 @@ public class TTLocalGame extends LocalGame {
         //the game ends on round 11
         if(state.getRoundNum() == 11){
             //round 11 must be over
-            Log.d("TTLocalGame", state.toString());
             if(!state.isRoundOver()){
-                Log.d("checkIfGameOver()", "round isn't over");
                 return null;
             }
 
@@ -117,16 +115,13 @@ public class TTLocalGame extends LocalGame {
             // illegal player
             return false;
         }
-        Log.d("TTLocalGame:",state.toString());
+        Log.d("LocalGame Before Act:",state.toString());
 
         //game logic for these actions are located in the TTGameState
         if(ttma.isDiscard()){
             Log.d("Local Game","discard card in TTMoveAction "+ttma.getDiscard().getCardRank()+ttma.getDiscard().getCardSuit());
             //Card is passed in to discard from player's hand
-            Log.d("Local Game","can the player discard: "+String.valueOf(state.playerDiscard(ttma.getDiscard())));
             state.discardCard(ttma.getDiscard());
-            Log.d("Local Game","top discard pile "+state.getDiscardPile().get(state.getDiscardPile().size()-1).getCardRank()+state.getDiscardPile().get(state.getDiscardPile().size()-1).getCardSuit());
-
         }
         else if(ttma.isDrawDiscard()){
             state.playerDrawDiscard();
@@ -141,11 +136,9 @@ public class TTLocalGame extends LocalGame {
             //ArrayList<Card> is passed in to create a group
             Log.d("Local Game","received group, will now call GameState method");
             state.createGrouping(ttma.getAddGroup());
-            Log.d("Local Game",state.toString());
         }
         else if(ttma.isRemoveGroup()){
             //Card is passed in to remove from a group
-            Log.d("Local Game","trying to remove group");
             if(ttma.getRemoveGroup() != null) {
                 Log.d("Local Game", "trying to remove card: "+ttma.getRemoveGroup().getCardRank()+ttma.getRemoveGroup().getCardSuit());
             }
@@ -156,6 +149,7 @@ public class TTLocalGame extends LocalGame {
             return false;
         }
 
+        Log.d("Local Game After Act",state.toString());
         //the move was successful at this point
         return true;
     }//makeMove
