@@ -75,10 +75,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             Log.d("TTComputerPlayerSmart:","Size of compGroup: "+compGroup.size());
             for (ArrayList<Card> groups : compGroup) {
                 Log.d("TTComputerPlayerSmart:","Sending group:");
-//                for(Card c : groups){
-//                    Log.d("TTComputerPlayerSmart:"," "+c.getCardRank()+c.getCardSuit());
-//                }
-                game.sendAction(new TTAddGroupAction(this, groups));
+                if(isIn(compGroup, groups))
+                    game.sendAction(new TTAddGroupAction(this, groups));
             }
         }
 
@@ -185,25 +183,9 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             tempGrouping.clear();
         }
 
-        //TODO: remove later after testing
-//        System.out.println("Final Groupings consists of:");
-//        for(ArrayList<Card> group : finalGrouping){
-//            for(Card c : group){
-//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//            }
-//            if(!group.isEmpty()){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
 
         //Check for incomplete set
         ArrayList<Card> newTempHand = computerHand.getHand();
-//        System.out.println("Temporary Hand Before Removing cards in groups: ");
-//        for(Card c : newTempHand){
-//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//        }
-//        System.out.println();
 
         //gets rid of cards that are apart of a set or run
         ArrayList<Card> tempHand = new ArrayList<>();
@@ -213,12 +195,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 tempHand.add(c);
             }
         }
-
-//        System.out.println("Temporary Hand After Removing cards in groups: ");
-//        for(Card c : tempHand){
-//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//        }
-//        System.out.println();
 
         //checks for cards that are the same rank and puts them into incomplete temp set
         ArrayList<ArrayList<Card>> incompleteTemp = new ArrayList<>();
@@ -236,42 +212,51 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             }
         }
 
-//        System.out.println("Incomplete Sets: ");
-//        for(ArrayList<Card> group : incompleteTemp){
-//            for(Card c : group){
-//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//            }
-//            if(!group.isEmpty()){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
 
         //Implements use of wild cards to incomplete sets
+        ArrayList<Card> tempComputerHand = computerHand.getHand();
+
         if(computerHand.hasWildCard(wildValue)){
+
             int wildCardCount = computerHand.wildCount(wildValue);
-            for(ArrayList<Card> group: incompleteTemp){
-                if(wildCardCount != 0) {
-                    group.add(computerHand.getHand().get(findCardByRank(computerHand.getHand(), wildValue)));
+
+            if(wildCardCount > incompleteTemp.size()){
+                for(ArrayList<Card> group: incompleteTemp){
+                    group.add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                    tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
                     wildCardCount--;
                 }
-                if(group.size() == 3){
-                    finalGrouping.add(group);
-                    tempGroup.remove(group);
+                for(int i = wildCardCount; i <= 0; i--){
+                    incompleteTemp.get(0).add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                    tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                }
+
+                for(ArrayList<Card> group: incompleteTemp){
+                    if(group.size() >= 3){
+                        finalGrouping.add(group);
+                        tempGrouping.remove(group);
+
+                    }
+                }
+
+            }
+            else {
+                for (ArrayList<Card> group : incompleteTemp) {
+
+                    if (wildCardCount != 0) {
+                        group.add(computerHand.getHand().get(findCardByRank(tempComputerHand, wildValue)));
+                        tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                        wildCardCount--;
+                    }
+
+                    if (group.size() == 3) {
+                        finalGrouping.add(group);
+                        tempGroup.remove(group);
+                    }
                 }
             }
         }
 
-//        System.out.println("Final Groupings to be added to Real Groupings consists of:");
-//        for(ArrayList<Card> group : finalGrouping){
-//            for(Card c : group){
-//                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//            }
-//            if(!group.isEmpty()){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
 
         //finds cards not in group and adds it to the can discard pile
         this.canDiscard.clear();
@@ -291,24 +276,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         for(Card c: tempNeed){
             needed.add(c);
         }
-
-//        System.out.println("Cards in Needed list:");
-//        for(Card c: needed){
-//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//        }
-//        if(!needed.isEmpty()){
-//            System.out.println();
-//        }
-//        System.out.println();
-
-//        System.out.println("Cards that can be discarded");
-//        for(Card c: this.canDiscard){
-//            System.out.print(" "+c.getCardRank()+c.getCardSuit());
-//        }
-//        if(!this.canDiscard.isEmpty()){
-//            System.out.println();
-//        }
-//        System.out.println();
 
 
         //if new group is formed, add confirmed group to the computers groups
@@ -795,21 +762,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
         for(ArrayList fgroup: finalGroup){
             if(fgroup.equals(group)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * deep search of specific card in a group
-     * @param group
-     * @param card
-     * @return
-     */
-    private boolean compareGroupToCard(ArrayList<Card> group, Card card){
-        for(Card c: group){
-            if(c.getCardRank() == card.getCardRank() && c.getCardSuit() == card.getCardSuit()){
                 return true;
             }
         }
