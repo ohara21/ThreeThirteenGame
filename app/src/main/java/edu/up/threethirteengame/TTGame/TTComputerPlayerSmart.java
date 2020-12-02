@@ -74,8 +74,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         if(!needCard.isEmpty()) {
             Log.d("TTComputerPlayerSmart:","Size of compGroup: "+compGroup.size());
             for (ArrayList<Card> groups : compGroup) {
-                Log.d("TTComputerPlayerSmart:","Sending group:");
                 if(isIn(compGroup, groups))
+                    Log.d("TTComputerPlayerSmart:","Sending group:");
                     game.sendAction(new TTAddGroupAction(this, groups));
             }
         }
@@ -145,42 +145,85 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // Look for sets -> create grouping per set
 
         ArrayList<ArrayList<Card>> setGroup = checkForSet(withoutWild);
+        System.out.println("Size of setGroup: "+setGroup.size());
         for(ArrayList list: setGroup){
             tempGrouping.add(list);
         }
 
+        System.out.println("Set Groups:");
+        for(ArrayList<Card> group: tempGrouping){
+            System.out.print("Set group: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            System.out.println();
+        }
+
         //Look for runs (disregarding common cards) -> create grouping per run
         ArrayList<ArrayList<Card>> runGroup = checkForRun(withoutWild);
+        System.out.println("Size of runGroup: "+runGroup.size());
         for(ArrayList list: runGroup){
             tempGrouping.add(list);
         }
 
-        // Check set and runs for similar cards
-        ArrayList<Card> similar = checkForSimilar(tempGrouping);
 
-
-        //Goes through list of similar cards
-        for(Card c: similar){
-            //Go through each grouping that has the similar card and puts the sums of individual groupings
-            //into an array list to get compared to each other
-            ArrayList<Integer> sumHold = new ArrayList<>();
-
-            for(int i = 0; i < tempGrouping.size()-1; i++){
-
-                if(tempGrouping.get(i).indexOf(c) != -1) {
-                    int sum = 0;
-                    for (Card k : tempGrouping.get(i)) {
-                        sum += k.getCardRank();
-                    }
-                    sumHold.add(sum);
-                }
+        System.out.println("Set and Run  Groups:");
+        for(ArrayList<Card> group: tempGrouping){
+            System.out.print("Set and Run group: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
             }
+            System.out.println();
+        }
 
-            //adds smallest sum grouping to final grouping and removes grouping from temp group
-            if(!sumHold.isEmpty()) {
-                finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
+        // Check if there are both run and set groups
+        if(runGroup.size() != 0 && setGroup.size() != 0) {
+
+            // Check set and runs for similar cards
+            ArrayList<Card> similar = checkForSimilar(tempGrouping);
+
+
+            //Goes through list of similar cards
+            for (Card c : similar) {
+                //Go through each grouping that has the similar card and puts the sums of individual groupings
+                //into an array list to get compared to each other
+                ArrayList<Integer> sumHold = new ArrayList<>();
+
+                for (int i = 0; i < tempGrouping.size() - 1; i++) {
+
+                    if (tempGrouping.get(i).indexOf(c) != -1) {
+                        int sum = 0;
+                        for (Card k : tempGrouping.get(i)) {
+                            sum += k.getCardRank();
+                        }
+                        sumHold.add(sum);
+                    }
+                }
+
+                //adds smallest sum grouping to final grouping and removes grouping from temp group
+                if (!sumHold.isEmpty()) {
+                    finalGrouping.add(tempGrouping.get(smallestSum(sumHold)));
+                }
+                tempGrouping.clear();
+            }
+        }
+        else {
+            for(ArrayList<Card> group: tempGrouping){
+                finalGrouping.add(group);
             }
             tempGrouping.clear();
+        }
+
+        for(ArrayList<Card> group: finalGrouping){
+            System.out.println("Final Grouping: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            System.out.println();
+        }
+
+        if(finalGrouping.size() == 0){
+            System.out.println("No groups formed in final");
         }
 
 
@@ -229,7 +272,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             int wildCardCount = computerHand.wildCount(wildValue);
 
             if(wildCardCount > incompleteTemp.size()){
-                System.out.println("wild count > incomplete size");
                 for(ArrayList<Card> group: incompleteTemp){
                     group.add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
                     tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
@@ -266,13 +308,6 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                     }
                 }
             }
-        }
-        for(ArrayList<Card> group: finalGrouping){
-            System.out.print("Final Groups: ");
-            for(Card c: group){
-                System.out.print(" "+c.getCardRank()+c.getCardSuit());
-            }
-            System.out.println();
         }
 
         //finds cards not in group and adds it to the can discard pile
@@ -414,10 +449,19 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         }
 
         //adds groups of separate suites into final grouping to return
-        runs.add(clubRun);
-        runs.add(diamondRun);
-        runs.add(heartRun);
-        runs.add(spadeRun);
+        if(!clubRun.isEmpty()) {
+            runs.add(clubRun);
+        }
+        if(!diamondRun.isEmpty()) {
+            runs.add(diamondRun);
+        }
+        if(!heartRun.isEmpty()) {
+            runs.add(heartRun);
+        }
+        if(!spadeRun.isEmpty()){
+            runs.add(spadeRun);
+        }
+
 
         //returns all runs found in hand
         return runs;

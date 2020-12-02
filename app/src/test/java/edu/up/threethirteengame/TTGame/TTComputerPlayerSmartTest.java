@@ -239,16 +239,18 @@ public class TTComputerPlayerSmartTest {
 //        ttGameState.currentPlayerHand().getHand().add(card11);
 //        ttGameState.currentPlayerHand().getHand().add(card12);
 
-        Card card1 = new Card(1, 'c', 7);
-        Card card2 = new Card(1, 's', 3);
-        Card card3 = new Card(1, 'd', 7);
-        Card card4 = new Card(1, 'd', 3);
+        Card card1 = new Card(1, 'h', 10);
+        Card card2 = new Card(1, 's', 10);
+        Card card3 = new Card(1, 'd', 10);
+        Card card4 = new Card(1, 'c', 10);
+        Card card5 = new Card(1, 'h', 4);
         ttGameState.currentPlayerHand().getHand().add(card1);
         ttGameState.currentPlayerHand().getHand().add(card2);
         ttGameState.currentPlayerHand().getHand().add(card3);
         ttGameState.currentPlayerHand().getHand().add(card4);
+        ttGameState.currentPlayerHand().getHand().add(card5);
 
-        assertEquals(4,ttGameState.currentPlayerHand().getHand().size());
+        assertEquals(5,ttGameState.currentPlayerHand().getHand().size());
 
         System.out.println("current player hand: ");
         for(Card c : ttGameState.currentPlayerHand().getHand()){
