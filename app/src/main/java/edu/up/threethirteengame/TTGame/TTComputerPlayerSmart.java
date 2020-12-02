@@ -202,7 +202,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         for(Card c: tempHand){
 
-            if(findSimilarCard(tempHand, c) != -1 && !compareGroupingToCard(incompleteTemp, c)){
+            if(findSimilarCard(tempHand, c) != -1 && !compareGroupingToCard(incompleteTemp, c) && c.getCardRank() != wildValue){
 
                 tempGroup.add(c);
                 tempGroup.add(tempHand.get(findSimilarCard(tempHand, c)));
@@ -210,6 +210,14 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 tempGroup.clear();
 
             }
+        }
+
+        for(ArrayList<Card> group: incompleteTemp){
+            System.out.print(" Incomplete Group: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            System.out.println();
         }
 
 
@@ -221,14 +229,17 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             int wildCardCount = computerHand.wildCount(wildValue);
 
             if(wildCardCount > incompleteTemp.size()){
+                System.out.println("wild count > incomplete size");
                 for(ArrayList<Card> group: incompleteTemp){
                     group.add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
                     tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
                     wildCardCount--;
                 }
-                for(int i = wildCardCount; i <= 0; i--){
-                    incompleteTemp.get(0).add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
-                    tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                for(int i = 0; i < incompleteTemp.size(); i++){
+                    if(wildCardCount > 0){
+                        incompleteTemp.get(i).add(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                        tempComputerHand.remove(tempComputerHand.get(findCardByRank(tempComputerHand, wildValue)));
+                    }
                 }
 
                 for(ArrayList<Card> group: incompleteTemp){
@@ -256,7 +267,13 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 }
             }
         }
-
+        for(ArrayList<Card> group: finalGrouping){
+            System.out.print("Final Groups: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            System.out.println();
+        }
 
         //finds cards not in group and adds it to the can discard pile
         this.canDiscard.clear();
@@ -314,6 +331,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
 
         return set;
     }
+
+    public ArrayList<ArrayList<Card>> getCompGroup(){return this.compGroup;}
 
     /**
      * Returns group of runs

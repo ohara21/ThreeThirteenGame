@@ -258,6 +258,21 @@ public class TTComputerPlayerSmartTest {
 
         ArrayList<Card> needArray = ttComp.optimizeHand(ttGameState);
 
+        System.out.println("Cards needed");
+        for(Card c: needArray){
+            System.out.println(" "+c.getCardRank()+c.getCardSuit());
+        }
+
+        System.out.println("Groups formed");
+        ArrayList<ArrayList<Card>> formedGroups = ttComp.getCompGroup();
+        for(ArrayList<Card> group: formedGroups){
+            System.out.print("Group: ");
+            for(Card c: group){
+                System.out.print(" "+c.getCardRank()+c.getCardSuit());
+            }
+            System.out.println();
+        }
+
         System.out.println();
         System.out.println("**End of optimizeHand() test**\n\n");
     }
