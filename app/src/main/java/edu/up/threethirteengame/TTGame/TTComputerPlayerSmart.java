@@ -76,14 +76,27 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
             game.sendAction(new TTDrawDeckAction(this));
         }
 
-        //update need list using optimization algorithm and adds new groupings to gameState
+        //update need list using optimization a
+        // algorithm and adds new groupings to gameState
         needCard = optimizeHand(newState);
-        if(!needCard.isEmpty()) {
-            Log.d("TTComputerPlayerSmart:","Size of compGroup: "+compGroup.size());
+        System.out.println("Need: ");
+        for(Card c: needCard) {
+            System.out.print(" "+c.getCardRank()+c.getCardSuit());
+        }
+        System.out.println();
+        if(!compGroup.isEmpty()) {
+            Log.d("TTComputerPlayerSmart:", "Size of compGroup: " + compGroup.size());
             for (ArrayList<Card> groups : compGroup) {
-                if(isIn(compGroup, groups))
-                    Log.d("TTComputerPlayerSmart:","Sending group:");
+                if (!isIn(newState.currentPlayerHand().getGroupings(), groups) && !groups.isEmpty()) {
+                    Log.d("TTComputerPlayerSmart:", "Sending group:");
+                    System.out.println("Group Sending: ");
+                    for (Card c : groups) {
+                        System.out.print(" " + c.getCardRank() + c.getCardSuit());
+                    }
+                    System.out.println();
+                    compGroup.remove(groups);
                     game.sendAction(new TTAddGroupAction(this, groups));
+                }
             }
         }
 
@@ -105,8 +118,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 int highestRank = 0;
                 Log.d("TTComputerPlayerSmart:", "current player turn "+newState.getPlayerTurn());
                 for(Card c : newState.currentPlayerHand().getHand()){
-                    //Log.d("TTComputerPlayerSmart:","highest rank: "+highestRank+" card rank: "+c.getCardRank());
-                    if(c.getCardRank() == newState.getWildCard()){
+                   if(c.getCardRank() == newState.getWildCard()){
                         //don't discard the wild card
                         continue;
                     }
@@ -330,18 +342,23 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //find cards that are needed for set and run
         ArrayList<Card> tempNeed = addToNeedRun(this.canDiscard);
         for(Card c: tempNeed){
-            needed.add(c);
+            if(!compareCardToGroup(c, needed)){
+                needed.add(c);
+            }
+
         }
         tempNeed.clear();
         tempNeed = addToNeedSet(incompleteTemp);
         for(Card c: tempNeed){
-            needed.add(c);
+            if(!compareCardToGroup(c, needed)){
+                needed.add(c);
+            }
         }
 
 
         //if new group is formed, add confirmed group to the computers groups
         for(ArrayList fGroup: finalGrouping){
-            if(!isIn(this.compGroup, fGroup)) {
+            if(!isIn(this.compGroup, fGroup) && fGroup.size()>2) {
                 compGroup.add(fGroup);
             }
         }
@@ -832,12 +849,21 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
      * @return
      */
     private boolean isIn(ArrayList<ArrayList<Card>> finalGroup, ArrayList<Card> group){
-        for(ArrayList fgroup: finalGroup){
-            if(fgroup.equals(group)){
-                return true;
+        boolean statement = false;
+        for(ArrayList<Card> fgroup: finalGroup){
+            if(fgroup.size() == group.size()){
+                for(int i = 0; i < group.size(); i++){
+                    if(fgroup.get(i).getCardRank() == group.get(i).getCardRank() && fgroup.get(i).getCardSuit() == group.get(i).getCardSuit()){
+                        statement = true;
+                    }
+                    else{
+                        statement = false;
+                    }
+                }
             }
+
         }
-        return false;
+        return statement;
     }
 
     /**
@@ -852,6 +878,15 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
                 if(c.getCardSuit() == card.getCardSuit() && c.getCardRank() == card.getCardRank()){
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean compareCardToGroup(Card card, ArrayList<Card> group){
+        for(Card c: group){
+            if(c.getCardRank() == card.getCardRank() && c.getCardSuit() == c.getCardSuit()){
+                return true;
             }
         }
         return false;
@@ -876,6 +911,12 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         return diff;
     }
 
+    /**
+     * Removes a wild card from the AI's hand based on the wild card rank
+     * @param wildRank
+     * @param hand
+     * @return
+     */
     public Hand removeWild(int wildRank, Hand hand){
         Hand withoutWild = new Hand();
         ArrayList<Card> tempHand = hand.getHand();
