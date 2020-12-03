@@ -23,6 +23,11 @@ import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.IllegalMoveInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
+/**
+ * @description TTHumanPlayer class acts as the "Listener" by responding to click and touch events
+ * @author Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version 10/20/2020
+ */
 public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListener, View.OnTouchListener {
 
     //our game state
@@ -94,6 +99,9 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
     @Override
     public void receiveInfo(GameInfo info) {
         // ignore the message if it's not a CounterState message
+        if(state != null) {
+            Log.d("Received", " info in TTHumanPlayer: " + state.toString());
+        }
         if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
             return;
         }
@@ -136,7 +144,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         p1ScoreText.setText(p1String);
         player0Acted = state.getPlayer0Acted();
         String usedName;
-        if (player0Acted) {
+        if (state.getPlayerTurn() == 1) {
             usedName = p0Name;
         } else {
             usedName = p1Name;
@@ -260,8 +268,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         this.p1Name = allPlayerNames[1];
     }
 
-
-
+    /**
+     * click listener for the buttons on the GUI
+     * @param v the view
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -382,6 +392,12 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         }
     }
 
+    /**
+     * touch listener to respond to touch events on cards
+     * @param view the view
+     * @param motionEvent used for where the touch occured
+     * @return
+     */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         int x = (int)motionEvent.getX();

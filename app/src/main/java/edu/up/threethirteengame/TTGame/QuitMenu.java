@@ -9,6 +9,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import edu.up.threethirteengame.R;
 
+/**
+ * @description: QuitMenu class displays a new window if the user wants to quit the game
+ * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version: 10/20/2020
+ */
 public class QuitMenu extends AppCompatActivity {
     /**External Citation
      * Date: 11/10/20

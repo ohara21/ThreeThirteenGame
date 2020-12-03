@@ -1,11 +1,5 @@
 package edu.up.threethirteengame.TTGame;
 
-/**
- * @description: Computer Player Smart class contains the AI actions and optimization for a smart AI opponent
- * @author: Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
- * @version: 10/24/2020
- */
-
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -16,18 +10,27 @@ import edu.up.threethirteengame.game.GameFramework.GameComputerPlayer;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
+/**
+ * @description: Computer Player Smart class contains the AI actions and optimization for a smart AI opponent
+ * @author: Nick Ohara, Shane Matsushima, Adrian Muth, Lindsey Warren
+ * @version: 10/24/2020
+ */
 public class TTComputerPlayerSmart extends GameComputerPlayer {
 
+    //the GameState to be initialized from the LocalGame
     private TTGameState newState = null;
 
+    //an arrayList of the cards that are needed
     private ArrayList<Card> needCard = new ArrayList<>();
 
+    //the groupings for the Smart AI (later sent to the local game to be added to their real hand)
     private ArrayList<ArrayList<Card>> compGroup = new ArrayList<>();
 
+    //an arrayList of the cards that can be discarded first
     private ArrayList<Card> canDiscard = new ArrayList<>();
 
     /**
-     * constructor
+     * constructor for the smart computer player
      *
      * @param name the player's name (e.g., "John")
      */
@@ -35,6 +38,10 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         super(name);
     }
 
+    /**
+     * receives info from the LocalGame to make a move
+     * @param info
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
 

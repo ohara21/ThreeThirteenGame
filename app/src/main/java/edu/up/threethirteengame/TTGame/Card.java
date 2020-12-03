@@ -48,7 +48,12 @@ public class Card implements Serializable {
 
     private int cardId = R.drawable.back_vert;
 
-    // constructor sets the type of card and scales the card
+    /**
+     * Card constructor to initially create cards and scale them
+     * @param cType
+     * @param suit
+     * @param value
+     */
     public Card(int cType, char suit, int value){
         this.cardType = cType;
         this.cardRank = value;
@@ -61,14 +66,20 @@ public class Card implements Serializable {
         this.inValidGroup = false;
     }
 
-    //base constructor for the card object
+    /**
+     * base constructor for the card object
+     * @param cType
+     */
     public Card(int cType){
         this.cardType = cType;
         scaleCard(this.cardType);
         this.isClick = false;
     }
 
-    //copy Construct
+    /**
+     * copy constructor for Cards
+     * @param orig
+     */
     public Card(Card orig){
         this.cardType = orig.cardType;
         this.cardRank = orig.cardRank;
@@ -79,9 +90,11 @@ public class Card implements Serializable {
         this.inValidGroup = orig.inValidGroup;
     }
 
-
-    //scales the card and accounts for the different orientations of each card
-    //sets the height and width with respect to its orientation in the screen
+    /**
+     * scales the card and accounts for the different orientations of each card
+     * sets the height and width with respect to its orientation in the screen
+     * @param cType
+     */
     public void scaleCard(int cType){
         if(cType == 1){
             finalCardWidth = (int) (CARDWIDTH * scale);
@@ -93,23 +106,47 @@ public class Card implements Serializable {
         }
     }
 
-    // returns and sets whether the card has been clicked or not
+    /**
+     * returns and sets whether the card has been clicked or not
+     * @return
+     */
     public boolean getIsClick() {return isClick;}
 
+    /**
+     * sets if the card is clicked
+     * @param isClick
+     */
     public void setIsClick(boolean isClick) {
         this.isClick = isClick;
     }
 
+    /**
+     * sets if this card is in a valid group
+     * @param inValidGroup
+     */
     public void setInValidGroup(boolean inValidGroup){this.inValidGroup = inValidGroup;}
 
+    /**
+     * gets if this card is in a valid group
+     * @return
+     */
     public boolean getInValidGroup(){return this.inValidGroup;}
 
-    // returns and sets the spot of the card on the board, if any
+    /**
+     * returns the spot of the card on the board, if any
+     */
     public int getBoardLocation() {return boardLocation;}
 
+    /**
+     * sets the spot of the card on the board, if any
+     * @param boardLocation
+     */
     public void setBoardLocation(int boardLocation) {this.boardLocation = boardLocation;}
 
-    //returns the vertical height of the card depending on its type
+    /**
+     * returns the vertical height of the card depending on its type
+     * @return the cards height
+     */
     public int getHeight(){
         if(cardType == 1) {
             return this.finalCardHeight;
@@ -120,17 +157,24 @@ public class Card implements Serializable {
 
     }
 
-    //returns if its a front or back card
+    /**
+     * @return if its a front or back card
+     */
     public int getCardType(){
         return this.cardType;
     }
 
-    //returns the drawable Id
+    /**
+     * @return the cardID
+     */
     public int getCardId() {
         return cardId;
     }
 
-    //returns the horizontal width of the card depending on its type
+    /**
+     *
+     * @return the horizontal width of the card depending on its type
+     */
     public int getWidth(){
         if(cardType == 1) {
             return this.finalCardWidth;
@@ -141,17 +185,27 @@ public class Card implements Serializable {
 
     }
 
-    //returns card suit
+    /**
+     *
+     * @return the horizontal width of the card depending on its type
+     */
     public char getCardSuit() {
         return cardSuit;
     }
 
-    //returns card rank
+    /**
+     *
+     * @return card rank
+     */
     public int getCardRank() {
         return cardRank;
     }
 
-    //returns the picture id based on the suit and value of the card
+    /**
+     * @param suit the suit of the card
+     * @param value the rank of the card
+     * @return the picture id based on the suit and value of the card
+     */
     private int getId(char suit, int value){
         int cardId = 3;
 
@@ -335,7 +389,6 @@ public class Card implements Serializable {
                 break;
 
         }
-
 
         return cardId;
     }

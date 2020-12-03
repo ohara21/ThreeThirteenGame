@@ -314,15 +314,15 @@ public class TTGameState extends GameState implements Serializable {
             dealHand();
 
             //set the wild card in the current player's hand
-            currentPlayerHand().setWildCard(this.wildCard);
-        } 
+            player0Hand.setWildCard(this.wildCard);
+            player1Hand.setWildCard(this.wildCard);
 
-        //it is a new round so reset that player's went out and drew cards
-        player0GoneOut = false;
-        player1GoneOut = false;
-        player0Drawn = false;
-        player1Drawn = false;
-
+            //it is a new round so reset that player's went out and drew cards
+            player0GoneOut = false;
+            player1GoneOut = false;
+            player0Drawn = false;
+            player1Drawn = false;
+        }
 
     }
 
@@ -393,6 +393,10 @@ public class TTGameState extends GameState implements Serializable {
         actionTextVal = 3;
     }
 
+    /**
+     * used to show the important GameState info
+     * @return string containing GameState info
+     */
     @Override
     public String toString() {
         String round = "Round number: " + roundNum;
@@ -558,16 +562,7 @@ public class TTGameState extends GameState implements Serializable {
         }
 
         //checks if it is currently the player's turn and they have enough cards
-        //Log.d("TTGameState","playerDiscard(): current player "+playerTurn+" hand size "+currentPlayerHand().getSize());
         if(currentPlayerHand().getSize() == (this.roundNum+3)){
-            //Log.d("TTGameState","playerDiscard(): entered if statement to find the card in hand");
-            for(Card test : currentPlayerHand().getHand()){
-                //Log.d("TTGameState","playerDiscard(): card in player 0 hand "+test.getCardRank()+test.getCardSuit());
-            }
-            //Log.d("TTGameState","playerDiscard(): ");
-            for(Card test1 : player1Hand.getHand()){
-                //Log.d("TTGameState","playerDiscard(): card in player 1 hand "+test1.getCardRank()+test1.getCardSuit());
-            }
             if(isCardInHand(c)) {
                 return true;
             }
@@ -932,6 +927,9 @@ public class TTGameState extends GameState implements Serializable {
         currentPlayerHand().removeGrouping(cardToRemove);
     }
 
+    /**
+     * @return the actionTextVal to determine what action was taken
+     */
     public int getActionTextVal() {return actionTextVal;}
 
 }

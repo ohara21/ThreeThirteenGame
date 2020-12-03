@@ -51,29 +51,27 @@ public class TTMainActivity extends GameMainActivity {
         // Define the allowed player types
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
-        // a human player player type (player type 0)
+        // a human player player type (player type 0 and 1)
         playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
                 return new TTHumanPlayer(name);
             }});
+        playerTypes.add(new GamePlayerType("Remote Human Player") {
+            public GamePlayer createPlayer(String name) {
+                return new TTHumanPlayer(name);
+            }});
 
-        // a computer player type (player type 1)
+        // an easy computer player (player type 2)
         playerTypes.add(new GamePlayerType("Easy AI") {
             public GamePlayer createPlayer(String name) {
                 return new TTComputerPlayerDumb(name);
             }});
 
-        //a smart computer player
+        //a smart computer player (player type 3)
         playerTypes.add(new GamePlayerType("Difficult AI") {
             public GamePlayer createPlayer(String name) {
                 return new TTComputerPlayerSmart(name);
             }});
-
-//        // a computer player type (player type 2)
-//        playerTypes.add(new GamePlayerType("Computer Player (GUI)") {
-//            public GamePlayer createPlayer(String name) {
-//                return new TTComputerPlayer2(name);
-//            }});
 
         // Create a game configuration class for Three Thirteen:
         // - player types as given above
@@ -84,19 +82,22 @@ public class TTMainActivity extends GameMainActivity {
                 PORT_NUMBER);
 
         // Add the default players to the configuration
-        defaultConfig.addPlayer("Human", 0); // player 1: a human player
-        defaultConfig.addPlayer("Computer", 1); // player 2: a computer player
+        defaultConfig.addPlayer("Player 1", 0); // player 1: a human player
+        defaultConfig.addPlayer("Computer", 2); // player 2: a computer player
 
         // Set the default remote-player setup:
         // - player name: "Remote Player"
         // - IP code: (empty string)
         // - default player type: human player
-        defaultConfig.setRemoteData("Remote Player", "", 0);
+        defaultConfig.setRemoteData("Player 2", "", 1);
 
         // return the configuration
         return defaultConfig;
     }//createDefaultConfig
 
+    /**
+     * @return the new LocalGame
+     */
     @Override
     public LocalGame createLocalGame() {
         return new TTLocalGame();

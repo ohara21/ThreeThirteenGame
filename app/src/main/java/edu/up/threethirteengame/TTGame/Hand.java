@@ -12,11 +12,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * @description: Hand class contains each player's hand and their groupings
+ * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version: 10/20/2020
+ */
 public class Hand implements Serializable {
+
+    //arrayList of cards to represent the player's hand
     private ArrayList<Card> userHand = null;
+
+    //a 2D arrayList of cards to represent the player's groupings
     private ArrayList<ArrayList<Card>> groupings = null;
     public static final int MAX_NUM_GROUPS = 4;
 
+    //the wildCard needs to be updated every round, this is done in TTGameState updateGameState()
     private int wildCard;
 
     /**
@@ -272,11 +282,6 @@ public class Hand implements Serializable {
             return false;
         }
 
-        //check to make sure there are groups in the current player's hand
-        //if(this.groupings.get(MAX_NUM_GROUPS-1).isEmpty()){
-            //return false;
-        //}
-
         //iterate through the current player's groupings for the given card
         for(ArrayList<Card> groups : this.groupings){
             for(Card c : groups){
@@ -373,11 +378,9 @@ public class Hand implements Serializable {
     public boolean createGrouping(ArrayList<Card> group){
         //checks to make sure group is not null and isn't empty
         if((group == null) || group.isEmpty()){
-            //Log.d("Hand","the group passed in was null or empty");
             return false;
         }
 
-        //Log.d("Hand","the size of groupings"+groupings.size());
         //checks to make sure the groupings is not already full
         boolean hasEmptyGroup = false;
         for(ArrayList<Card> checkGroups : groupings){
@@ -387,7 +390,6 @@ public class Hand implements Serializable {
             }
         }
         if(!hasEmptyGroup){
-            //Log.d("Hand","the groupings is already full");
             return false;
         }
 
@@ -400,7 +402,6 @@ public class Hand implements Serializable {
         }
 
         //this group can be created
-        //Log.d("Hand","the group was successfully made");
         //must be valid group
         if (checkIfRun(group) || checkIfSet(group)) {
             groupings.add(group);
@@ -454,15 +455,6 @@ public class Hand implements Serializable {
         if (groupToRemove != null) {
             this.groupings.remove(groupToRemove);
         }
-
-
-        //remove the whole group if the group is too small
-        //if (this.groupings.get(groupNum).size() < 3) {
-
-            //for (int i = 0; i < groupToRemove.size() + 1; i++) {
-                //groupToRemove.remove(0);
-            //}
-       // }
 
         return true;
     }

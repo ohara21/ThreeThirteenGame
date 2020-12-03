@@ -230,16 +230,6 @@ public class GameBoard extends SurfaceView implements Serializable {
         Bitmap rotObj = Bitmap.createBitmap(cardObj, 0, 0, cardObj.getWidth(),cardObj.getHeight(), rotate, true);
         canvas.drawBitmap(rotObj, x , y,null);
 
-//        //draw the borders
-//        if(card.getCardType() == 1) {
-//            //this is for a normal front facing card
-//            if (ttGameState.currentPlayerHand().getHand().size() == ttGameState.getRoundNum() + 2) {
-//                canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), darkGreen);
-//            }
-//            else {
-//                canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), black);
-//            }
-//        }
         if (ttGameState.currentPlayerHand().getHand().size() == ttGameState.getRoundNum() + 2) {
             canvas.drawRect(x, y, x + card.getHeight(), y + card.getWidth(), yellow);
         }
@@ -267,8 +257,8 @@ public class GameBoard extends SurfaceView implements Serializable {
     }
 
     /**
-     * displays the GUI
-     * @param canvas
+     * draws the cards on the SurfaceView in a grid-like pattern
+     * @param canvas to be drawn on
      */
     @Override
     public void onDraw(Canvas canvas){

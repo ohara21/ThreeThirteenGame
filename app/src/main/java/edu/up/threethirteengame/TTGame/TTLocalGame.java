@@ -9,7 +9,6 @@ import edu.up.threethirteengame.game.GameFramework.actionMessage.GameAction;
 /**
  * @description The LocalGame class for a Three Thirteen game.  Defines and enforces
  * the game rules; handles interactions between players.
- *
  * @author Nick Ohara, Shane Matsushima, Lindsey Warren, Adrian Muth
  * @version 11/5/20
  */

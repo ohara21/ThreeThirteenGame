@@ -9,26 +9,36 @@ import edu.up.threethirteengame.game.GameFramework.GameComputerPlayer;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.GameInfo;
 import edu.up.threethirteengame.game.GameFramework.infoMessage.NotYourTurnInfo;
 
+/**
+ * @description: TTComputerPlayerDumb class takes actions for the Easy AI player
+ * @author: Nick Ohara, Adrian Muth, Shane Matsushima, Lindsey Warren
+ * @version: 10/20/2020
+ */
 public class TTComputerPlayerDumb extends GameComputerPlayer {
 
     //the local game state
     private TTGameState newState = null;
 
+    //groupings for the dumb AI
     private ArrayList<ArrayList<Card>> setGroup = new ArrayList<>();
 
 
     /**
-     * constructor
+     * constructor for the dumb AI
      *
      * @param name the player's name (e.g., "John")
      */
     public TTComputerPlayerDumb(String name) { super(name); }
 
+    /**
+     * receives info from the LocalGame to make a move
+     * @param info
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
 
         //dumb ai could also just discard randomly from hand
-
+        Log.d("Received"," info in TTComputerPlayer");
         Random rand = new Random();
 
         //ignore if instance of NotYourTurnInfo
@@ -46,8 +56,8 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
 
         //return if it's not the Computer Player's turn
         if (newState.getPlayerTurn() != playerNum){
-            Log.d("Computer Player","it is not your turn AI!");
-            Log.d("Computer Player",newState.toString());
+//            Log.d("Computer Player","it is not your turn AI!");
+//            Log.d("Computer Player",newState.toString());
             return;
         }
 
