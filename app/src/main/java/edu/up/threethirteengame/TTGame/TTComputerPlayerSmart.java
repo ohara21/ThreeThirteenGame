@@ -131,6 +131,8 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         // final grouping used to create groups in computer hand
         ArrayList<ArrayList<Card>> finalGrouping = new ArrayList<>();
 
+        //TODO: Take out System.out.prints when debugging is complete
+
         // Check for Wild Card
         int wildValue = gameState.getWildCard();
         System.out.println("Wild Card Value: "+wildValue);

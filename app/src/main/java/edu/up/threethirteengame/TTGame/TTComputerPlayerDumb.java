@@ -2,6 +2,7 @@ package edu.up.threethirteengame.TTGame;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import edu.up.threethirteengame.game.GameFramework.GameComputerPlayer;
@@ -12,6 +13,8 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
 
     //the local game state
     private TTGameState newState = null;
+
+    private ArrayList<ArrayList<Card>> setGroup = new ArrayList<>();
 
 
     /**
@@ -37,7 +40,6 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
         if(!(info instanceof TTGameState)){
             return;
         }
-
 
         //initialize the game state
         newState = (TTGameState)info;
@@ -65,12 +67,52 @@ public class TTComputerPlayerDumb extends GameComputerPlayer {
             int handSize = newState.currentPlayerHand().getSize();
             int randomIndex = rand.nextInt(handSize-1);
             discard = newState.currentPlayerHand().getCard(randomIndex);
+            optimizeHand(newState);
+            for(ArrayList<Card> group: setGroup){
+                game.sendAction(new TTAddGroupAction(this, group));
+            }
             Log.d("Computer Player"," is discarding a random card");
             Log.d("Computer Player","discarding "+discard.getCardRank()+discard.getCardSuit());
             //sleep(2);
             game.sendAction(new TTDiscardAction(this, discard));
         }
 
+    }
+
+    /**
+     *
+     * dumbed down version of optimize hand algorithm for dumb ai
+     * @param gameState
+     */
+    public void optimizeHand(TTGameState gameState){
+        Hand computerHand = new Hand(gameState.currentPlayerHand());
+        this.setGroup = checkForSet(computerHand);
+    }
+
+    /**
+     * Returns groups of set
+     * @param hand
+     * @return
+     */
+    public ArrayList<ArrayList<Card>> checkForSet(Hand hand){
+        ArrayList<ArrayList<Card>> set = new ArrayList<>();
+        ArrayList<Card> tempHand = hand.sortByRank(hand.getHand());
+        ArrayList<Card> tempGroup = new ArrayList<>();
+
+        for(int i = 1; i <= 13; i++){
+            for(Card c: tempHand){
+                if(c.getCardRank() == i){
+                    tempGroup.add(c);
+                }
+            }
+            if(tempGroup.size() >= 3){
+                //Log.d("TTComputerPlayerSmart:","checkForSet() found a set to add rank:"+i);
+                set.add(new ArrayList<Card>(tempGroup));
+            }
+            tempGroup.clear();
+        }
+
+        return set;
     }
 
 
