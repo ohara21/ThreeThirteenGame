@@ -315,7 +315,7 @@ public class TTComputerPlayerSmart extends GameComputerPlayer {
         //finds cards not in group and adds it to the can discard pile
         this.canDiscard.clear();
         for(Card c: computerHand.getHand()){
-            if(!compareGroupingToCard(finalGrouping, c) && !compareGroupingToCard(incompleteTemp, c)){
+            if(!compareGroupingToCard(finalGrouping, c) && !compareGroupingToCard(incompleteTemp, c) && c.getCardRank() != wildValue){
                 this.canDiscard.add(c);
             }
         }
