@@ -57,6 +57,8 @@ public class GameBoard extends SurfaceView implements Serializable {
     //the empty card if the player needs to draw before discarding
     Card emptyCard = new Card(1,'e',0);
 
+    int playerNum = 0;
+
     /**
      * constructors that were inherited from SurfaceView class
      */
@@ -267,7 +269,13 @@ public class GameBoard extends SurfaceView implements Serializable {
         if(ttGameState == null){
             return;
         }
-        ArrayList<Card> userHand = ttGameState.currentPlayerHand().getHand();
+        ArrayList<Card> userHand = null;
+        if(playerNum == 0){
+            userHand = ttGameState.getPlayer0Hand().getHand();
+        }
+        else{
+            userHand = ttGameState.getPlayer1Hand().getHand();
+        }
 
         //Discard and Deck pile
         rotate.setRotate(90);
@@ -304,5 +312,9 @@ public class GameBoard extends SurfaceView implements Serializable {
             }
         }
     }//onDraw
+
+    public void setPlayerToDraw(int playerNum){
+        this.playerNum = playerNum;
+    }
 
 }

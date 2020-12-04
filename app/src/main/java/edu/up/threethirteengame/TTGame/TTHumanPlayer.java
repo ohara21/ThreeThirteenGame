@@ -113,6 +113,7 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
             this.state = (TTGameState)info;
 
             //send the current state to the GameBoard and redraws it
+            gameBoard.setPlayerToDraw(playerNum);
             gameBoard.setTtGameState(this.state);
             updateDisplay();
             gameBoard.invalidate();
