@@ -111,6 +111,10 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
         else{
             //this is the correct info message and this state needs to be updated
             this.state = (TTGameState)info;
+
+            //send the current state to the GameBoard and redraws it
+            gameBoard.setTtGameState(this.state);
+            updateDisplay();
             gameBoard.invalidate();
 
             if(this.state.getPlayerTurn() != playerNum){
@@ -121,9 +125,6 @@ public class TTHumanPlayer extends GameHumanPlayer implements View.OnClickListen
                 return;
             }
             Log.d("TTHumanPlayer", "action val: " + String.valueOf(state.getActionTextVal()));
-            //send the current state to the GameBoard and redraws it
-            gameBoard.setTtGameState(this.state);
-            gameBoard.invalidate();
             // get current actionInfoTextValue
             actionInfoTextValue = state.getActionTextVal();
             updateDisplay();

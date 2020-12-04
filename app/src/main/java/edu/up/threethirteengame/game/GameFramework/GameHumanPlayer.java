@@ -214,7 +214,10 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
 
         // post message to the handler
         Log.d(TAG, "sendInfo - about to post");
-        myHandler.post(new MyRunnable(info, false));
+        boolean handlerTest = myHandler.post(new MyRunnable(info, false));
+        //find out what post is returning (most likely false)
+        Log.d(TAG,"handler post return:"+handlerTest);
+        //kick off a new thread
         Log.d(TAG, "sendInfo - done with post");
     }
 
