@@ -15,14 +15,15 @@
 
     \nA run is a group with 3 or more cards of incrementing ranks and same suit.
 
-    \nWhenever you have a set or run, select the cards and click add to group.
-    To undo, select the cards and click remove from group.
+    \nWhenever you have a set or run, select the cards and click create group.
+    You can also select a card and click remove from group.
 
     \nYou must discard each turn. Select the card you want to get rid of and click the
     discard button.
 
     \nOnce all of the cards in your hand except for one have been put into groups, click
-    the go out button. This will give your opponent one last turn before ending the round.
+    the go out button. Your remaining card will be discarded and your opponent will have one last turn
+    before the round ends.
 
     \nCards are associated with a certain point value, starting with 1 point for an ace and
     going up to 13 points for a king. Points for cards in your hand at the
